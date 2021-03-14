@@ -1,0 +1,241 @@
+<html xmlns:og="http://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container." />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="beguier cyber security post-it blog volatility profile symbols table docker 4.4.0-72-lowlatency forensic ctf" />
+    <meta property="og:title" content="Security Post-it #3 - Volatility Linux Profiles" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/images/logo_secu-postit3.jpg" />
+    <meta property="og:description" content="In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container." />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html" />
+    <meta property="og:type" content="article" />
+    <title>Security Post-it #3 - Volatility Linux Profiles</title>
+    <script src="../../js/redirect.min.js" type="text/javascript" async></script>
+    <link href="../../css/pub/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../css/nicolas-main.min.css" rel="stylesheet" />
+    <link href="../../css/nicolas-article.min.css" rel="stylesheet" />
+    <link href="../../css/pub/ionicons.css" rel="stylesheet" async />
+    <link rel="icon" href="../../favicon.png" />
+  </head>
+
+  <body>
+    <section class="menu cid-beaver" once="menu" id="menu1-7v" data-rv-view="8334">
+      <nav class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-fixed-top navbar-toggleable-sm bg-color transparent">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="menu-logo">
+          <div class="navbar-brand">
+            <span class="navbar-caption-wrap">
+              <a class="navbar-caption text-white display-4" href="../">
+                <b>Return HOME</b>
+              </a>
+            </span>
+          </div>
+        </div>
+      </nav>
+    </section>
+    <section class="mbr-section content5 cid-mickey mbr-parallax-background banner-logo" id="content5-7w" data-rv-view="8336">
+      <div class="mbr-overlay banner-overlay"></div>
+      <div class="container">
+        <div class="media-container-row">
+          <div class="title col-12 col-md-8">
+            <h1 class="align-center mbr-bold mbr-white pb-3 mbr-fonts-style display-1">Security Post-it #3</h1>
+            <h3 class="mbr-section-subtitle align-center mbr-light mbr-white pb-3 mbr-fonts-style display-5">Volatility Linux Profiles</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section content4 cid-dog" id="content4-7x" data-rv-view="8339">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="title col-12 col-md-8">
+            <h3 class="mbr-section-subtitle align-center mbr-light mbr-fonts-style display-7">
+              <em> By Nicolas Béguier - March 15, 2021</em>
+            </h3>
+            <br />
+            <br />
+            <br />
+            <h2 class="align-center pb-3 mbr-fonts-style display-5">How to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section article content1 cid-kitty" id="content1-7y" data-rv-view="8341">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="mbr-text col-12 col-md-8 mbr-fonts-style display-7">
+            Volatility is a tool supported by the <a href="https://www.volatilityfoundation.org/" onclick="window.open(this.href); return false;"><b>Volatility Foundation</b></a> and aims to assist the forensic investigator when analyzing a
+            computer memory dump.<br />
+            In this article, I'll be focusing on both Volatility 2 & 3.<br />
+            <br />
+
+            This security post-it is about generating <b>a new Linux profile</b> for a memory dump. By default, Volatility only integrates Windows profiles, but none for Linux and Mac. A Linux Volatility profile or symbol table is unique for each version of the Linux kernel.
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section content4 cid-turtle" id="content4-81" data-rv-view="8345">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="title col-12 col-md-8">
+            <h2 class="align-center pb-3 mbr-fonts-style display-5">Identify the kernel version</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section article content1 cid-kitty" id="content1-7y" data-rv-view="8341">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="mbr-text col-12 col-md-8 mbr-fonts-style display-7">
+            Run the banner plugin of Volatility 3 on your memory dump to display the Linux kernel version:<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">volatility3 </p><p class="code-github">-f dump.raw </p><p class="code-github color-purple">banner</p><br>
+            <p class="code-github color-grey">0x1a000e0 Linux version </p><p class="code-github">4.4.0-72-lowlatency </p><p class="code-github color-grey">(buildd@lcy01-17) </p><p class="code-github color-grey">(gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6</p><p class="code-github">ubuntu1~16.04.4</p><p class="code-github color-grey">) ) </p><p class="code-github color-grey">#93-Ubuntu SMP PREEMPT Fri Mar 31 15:25:21 UTC 2017 </p><p class="code-github color-grey">(Ubuntu 4.4.0-72.93-lowlatency 4.4.49)</p>
+            <br><br>
+            On my example, it's a <p class="code-github">4.4.0-72-lowlatency</p> kernel, on an Ubuntu 16.04.4.
+            <br>
+            Before creating your own profile or symbol table, you may be lucky and find your match in the <a href="https://github.com/volatilityfoundation/profiles/" onclick="window.open(this.href); return false;"><b>Volatility 2 profiles repository</b></a> or the <a href="https://pypi.org/project/volatility3/" onclick="window.open(this.href); return false;"><b>Volatility 3 Pypi project</b></a>.
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section content4 cid-turtle" id="content4-81" data-rv-view="8345">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="title col-12 col-md-8">
+            <h2 class="align-center pb-3 mbr-fonts-style display-5">Generating a profile for Volatility 2</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section article content1 cid-kitty" id="content1-7y" data-rv-view="8341">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="mbr-text col-12 col-md-8 mbr-fonts-style display-7">
+            A Linux Volatility 2 profile can be generated from valid Linux headers and a System map. You just need the file, not necessarily the operating system booted on it. Using Docker is a good way to get the file into a suitable environment without starting a virtual machine.<br><br>
+
+            First, clone Volatility 2 to use their Linux tools.<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">git </p><p class="code-github">clone https://github.com/volatilityfoundation/volatility</p><br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">cd </p><p class="code-github">volatility/tools/linux/</p><br>
+            I advise you to replace the automatic kernel detection with a static value, which is your target linux kernel, in my case it is <p class="code-github">4.4.0-72-lowlatency</p>.<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">sed </p><p class="code-github">-i 's/$(shell uname -r)/4.4.0-72-lowlatency/g' Makefile</p><br>
+            Next, run a docker container that matches the target operating system, in my case Ubuntu 16.04, and install the necessary packages.<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">docker </p><p class="code-github">run -it --rm </p><p class="code-github">-v $PWD:/volatility </p><p class="code-github">ubuntu:16.04 /bin/bash</p><br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">apt </p><p class="code-github">update</p><br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">apt </p><p class="code-github">install </p><p class="code-github">linux-image-4.4.0-72-lowlatency </p><p class="code-github">linux-headers-4.4.0-72-lowlatency </p><p class="code-github">build-essential </p><p class="code-github">dwarfdump make zip</p><br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">cd </p><p class="code-github">/volatility/</p><br>
+            Finally, create the dwarf file with the volatility tool.<br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">make</p><br>
+            Create a zip archive containing the dwarf file and the System map.<br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">zip </p><p class="code-github">Ubuntu1604.zip module.dwarf /boot/System.map-4.4.0-72-lowlatency</p><br>
+            You now have an Ubuntu1604.zip archive containing the correct profile.<br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">exit</p><br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">cp </p><p class="code-github">Ubuntu1604.zip &lt;volatility&gt;/plugins/overlays/linux/</p><br><br>
+            Your profile is ready, you can check that Volatility has loaded it with the following command:<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">volatility </p><p class="code-github">--info | grep Profile</p><br>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section content4 cid-turtle" id="content4-81" data-rv-view="8345">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="title col-12 col-md-8">
+            <h2 class="align-center pb-3 mbr-fonts-style display-5">Generating a symbol table for Volatility 3</h2>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section article content1 cid-kitty" id="content1-7y" data-rv-view="8341">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="mbr-text col-12 col-md-8 mbr-fonts-style display-7">
+            There is no profile in Volatility 3, and you could not create a symbol table from a Volatility 2 profile.<br><br>
+
+            First, you need to clone the dwarf2json repository which allows to get a json file from an elf file. Build the go binary before running the docker container.<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">git </p><p class="code-github">clone https://github.com/volatilityfoundation/dwarf2json</p><br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">cd </p><p class="code-github">dwarf2json/</p><br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">go </p><p class="code-github">mod download github.com/spf13/pflag</p><br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">go </p><p class="code-github">build</p><br><br>
+
+            Then you need to download the debug symbols from the target Linux kernel. Several methods are possible to get it, but I recommend to google it and to download it manually.
+            In my case, it was available on the official Ubuntu mirrors.<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">wget </p><p class="code-github">http://launchpadlibrarian.net/313821743/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</p><br><br>
+
+            Next, run a docker container that matches the target operating system, in my case Ubuntu 16.04, and install the debug symbols.<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">docker </p><p class="code-github">run -it --rm </p><p class="code-github">-v $PWD:/volatility </p><p class="code-github">ubuntu:16.04 /bin/bash</p><br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">dpkg </p><p class="code-github">-i </p><p class="code-github">/volatility/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</p><br><br>
+
+            Run the dwarf2json binary to generate the symbol table.<br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">/volatility/dwarf2json </p><p class="code-github">linux --elf </p><p class="code-github">/usr/lib/debug/boot/vmlinux-4.4.0-72-lowlatency </p><p class="code-github">&gt; </p><p class="code-github">linux-image-4.4.0-72-lowlatency-amd64.json</p><br>
+            <p class="code-github color-purple"># </p><p class="code-github color-red">exit</p><br><br>
+
+            Find the volatility3 symbols directory and move your symbol table in it.<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">volatility3 </p><p class="code-github">-vvv -f dump.raw </p><p class="code-github color-purple">banner</p><br>
+            <p class="code-github color-grey">Volatility 3 Framework 1.0.1</p>
+            <p class="code-github color-grey">INFO     root        : Volatility plugins path: ['&lt;volatility3&gt;/framework/plugins']</p>
+            <p class="code-github color-grey">INFO     root        : Volatility symbols path: ['&lt;volatility3&lt;/symbols']</p><br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">cp </p><p class="code-github">linux-image-4.4.0-72-lowlatency-amd64.json </p><p class="code-github">&lt;volatility3&gt;/symbols/</p><br><br>
+            Your symbols are ready, you can check that Volatility has loaded it with the following command:<br>
+            <p class="code-github color-purple">$ </p><p class="code-github color-red">volatility3 </p><p class="code-github">-f dump.raw linux.pstree.PsTree</p><br>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="mbr-section article content1 cid-kitty" id="content1-7y" data-rv-view="8341">
+      <div class="container">
+        <div class="media-container-row">
+          <div class="mbr-text col-12 col-md-8 mbr-fonts-style display-7">
+            <strong>If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="bg-191 color-ash pt-50 pb-20 text-left center-sm-text">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-1"></div>
+          <div class="col-md-4 col-lg-6 mb-30">
+            <div class="card h-100">
+              <div class="dplay-tbl">
+                <div class="dplay-tbl-cell">
+                  <li>
+                    <img src="../images/me.webp" class="img-fluid rounded-circle mx-w-30percent" />
+                  </li>
+                  <p class="color-ash mt-10">
+                    Nicolas Béguier <br />
+                    Copyright &copy;
+                    <script type="text/javascript">
+                      document.write(new Date().getFullYear());
+                    </script>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 col-lg-2 mb-30 text-left"></div>
+          <div class="col-md-4 col-lg-2 mb-30 text-center">
+            <div class="card h-100">
+              <div class="dplay-tbl">
+                <div class="dplay-tbl-cell">
+                  <ul class="list-a-plr-10">
+                    <li>
+                      <a href="https://github.com/nbeguier/" onclick="window.open(this.href); return false;"><i class="ion-social-github badge-color-github"></i></a>
+                    </li>
+                    <li>
+                      <a href="https://www.linkedin.com/in/nicolasbeguier/" onclick="window.open(this.href); return false;"><i class="ion-social-linkedin badge-color-linkedin"></i></a>
+                    </li>
+                    <li>
+                      <a href="mailto:nicolas_beguier@hotmail.com"><i class="ion-email badge-color-mail"></i></a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="../../js/pub/bootstrap.min.js"></script>
+  </body>
+</html>
