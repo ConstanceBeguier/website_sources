@@ -1,172 +1,154 @@
-<html xmlns:og="http://ogp.me/ns#">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Site web de Constance Beguier contenant des articles de cryptographie et de machine learning">
-    <meta name="author" content="Beguier Constance">
-    <meta name="keywords" content="cryptographie machine learning finance informatique smc">
-    <meta property="og:title" content="Site web de Constance Beguier"/>
-    <meta property="og:image" content="https://beguier.eu/constance/img/banner.jpg"/>
-    <meta property="og:description" content="Site web de Constance Beguier contenant des articles de cryptographie et de machine learning"/>
-    <meta property="og:url" content="https://beguier.eu/constance/index.html"/>
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Site web de Constance Beguier contenant des articles de cryptographie et de machine learning" />
+    <meta name="author" content="Beguier Constance" />
+    <meta name="keywords" content="cryptographie machine learning finance informatique smc" />
+    <meta property="og:title" content="Site web de Constance Beguier" />
+    <meta property="og:image" content="https://beguier.eu/constance/img/banner.jpg" />
+    <meta property="og:description" content="Site web de Constance Beguier contenant des articles de cryptographie et de machine learning" />
+    <meta property="og:url" content="https://beguier.eu/constance/" />
     <meta property="og:type" content="article" />
 
     <title>Constance Béguier</title>
     <script src="../js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../css/beguier.min.css" />
+    <link rel="icon" href="../favicon.png" />
+  </head>
 
-    <link rel="stylesheet" href="../css/pub/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/constance-article.min.css">
-    <link rel="stylesheet" href="../css/constance-main.min.css">
-    <link href="../css/pub/ionicons.css" rel="stylesheet">
-    <link rel="icon" href="../favicon.png">
+  <body class="d-flex flex-column h-100">
+    <!-- Begin nav header -->
+    <div id="includedNavbar"></div>
 
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
-</head>
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-4 text-center">
+            <img src=./img/profile.jpg width=300 height=300 class="img-fluid rounded-circle mb-5" alt="me">
+          </div>
+          <div class="col-auto col-sm-8">
+            <p class="fs-5 mb-5">
+              After studying cryptography at Telecom ParisTech and machine learning at KTH (Stockholm), I started my career at Morpho Safran (now IDEMIA) as a cryptography researcher in biometrics.<br />
+              For four years, I worked on cooperative projects on how to secure biometric authentication. This research has led to the publication of several articles in international conferences and the filing of some patents.<br />
+              <br />
+              Then, I joined BNP Paribas as an IT quantitative researcher. For three years, I worked on the design and improvement of services to traders.<br />
+              <br />
+              Since 2020, I am a privacy research scientist at Owkin where my research focuses on privacy preserving machine learning in healthcare.
+            </p>
 
-<body>
+            <h3 class="mb-3">Research Interests</h3>
 
-    <div class="wrapper">
-        <nav id="sidebar">
-            <div class="sidebar-header text-center">
-                <img src=./img/profile.jpg class="img-fluid rounded-circle" style="max-width: 60%;">
-                <h3>Constance Béguier</h3>
-            </div>
-            <div class="sidebar-body text-justify">
-                Après des études en cryptographie et en machine learning, j'ai commencé à travailler sur la sécurisation des données biométriques au sein de Morpho, une filiale de Safran. 
-                <br>
-                Puis, j'ai intégré BNP Paribas en tant que IT Quant où j'ai développé des outils pour la gestion des données de marché.
-                <br>
-                Maintenant, je fais de la recherche chez Owkin sur la sécurisation des algorithmes de machine learning.
-                <br><br>
-                <div class="text-center">
-                <a href="https://github.com/ConstanceMorel">Github</a> | <a href="https://linkedin.com/in/constancemorel/">LinkedIn</a>
-                </div>
-                <div class="text-center">
-                <a href="https://dblp.org/pers/hd/m/Morel:Constance">Publications</a> | <a href="https://patents.google.com/?inventor=Constance+MOREL">Brevets</a>
-            </div>
-        </nav>
-
-        <div id="content">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2 class="mb-4">Derniers articles</h2>
-                    </div>
-                </div>
-                <div class="row blog-entries">
-                    <div class="col-md-6">
-                        <a href="./articles/tensorflow/tensorflow.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                            <img src="./img/tensorflow/cover.jpg" alt="Image placeholder">
-                            <div class="blog-content-body">
-                                <div class="post-meta">
-                                    <span class="author mr-2"><i class="ion-ios-book-outline" style="color: #000;"></i> Machine Learning</span>&bullet;
-                                    <span class="mr-2">Février, 2020 </span>
-                                </div>
-                                <h2>TensorFlow</h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="./articles/cnn/cnn.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                            <img src="./img/cnn/cover.jpg" alt="Image placeholder">
-                            <div class="blog-content-body">
-                                <div class="post-meta">
-                                    <span class="author mr-2"><i class="ion-ios-book-outline" style="color: #000;"></i> Machine Learning</span>&bullet;
-                                    <span class="mr-2">Janvier, 2020 </span>
-                                </div>
-                                <h2>Réseau de neurones convolutifs</h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="./articles/smc/smc.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                            <img src="./img/smc/cover.jpg" alt="Image placeholder">
-                            <div class="blog-content-body">
-                                <div class="post-meta">
-                                    <span class="author mr-2"><i class="ion-ios-unlocked" style="color: #000;"></i> Cryptographie</span>&bullet;
-                                    <span class="mr-2">Décembre, 2019 </span>
-                                </div>
-                                <h2>Secure Multiparty Computation</h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="./articles/blockchain/blockchain.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                            <img src="./img/blockchain/cover.jpg" alt="Image placeholder">
-                            <div class="blog-content-body">
-                                <div class="post-meta">
-                                    <span class="author mr-2"><i class="ion-ios-unlocked" style="color: #000;"></i> Cryptographie</span>&bullet;
-                                    <span class="mr-2">Octobre, 2019</span>
-                                </div>
-                                <h2>Blockchain</h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="./articles/machinelearning/machinelearning.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                            <img src="./img/machinelearning/cover.jpg" alt="Image placeholder">
-                            <div class="blog-content-body">
-                                <div class="post-meta">
-                                    <span class="author mr-2"><i class="ion-ios-book-outline" style="color: #000;"></i> Machine Learning</span>&bullet;
-                                    <span class="mr-2">Octobre, 2019</span>
-                                </div>
-                                <h2>Machine learning</h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="./articles/finance/finance.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                            <img src="./img/finance/cover.jpg" alt="Image placeholder">
-                            <div class="blog-content-body">
-                                <div class="post-meta">
-                                    <span class="author mr-2"><i class="ion-stats-bars" style="color: #000;"></i> Finance</span>&bullet;
-                                    <span class="mr-2">Octobre, 2019</span>
-                                </div>
-                                <h2>Finance</h2>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6">
-                        <a href="./articles/mathmusic/mathmusic.html" class="blog-entry element-animate" data-animate-effect="fadeIn">
-                            <img src="./img/mathmusic/cover.jpg" alt="Image placeholder">
-                            <div class="blog-content-body">
-                                <div class="post-meta">
-                                    <span class="author mr-2"><i class="ion-ios-musical-note" style="color: #000;"></i> Musique</span>&bullet;
-                                    <span class="mr-2">Mai, 2011</span>
-                                </div>
-                                <h2>Math et musique</h2>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+              <dl class="row">
+                <dt class="col-sm-3">Cryptography</dt>
+                <dd class="col-sm-9">Secure Multiparty Computation</dd>
+                <dt class="col-sm-3"></dt>
+                <dd class="col-sm-9">Homomorphic Encryption</dd>
+                <dt class="col-sm-3"></dt>
+                <dd class="col-sm-9">Differential Privacy</dd>
+
+                <dt class="col-sm-3 mt-2">Machine Learning</dt>
+                <dd class="col-sm-9 mt-2">Federated Learning</dd>
+                <dt class="col-sm-3"></dt>
+                <dd class="col-sm-9">PPML</dd>
+              </dl>
             </div>
+
+            <h3 class="mb-3 mt-5">Experience</h3>
+
+            <div class="accordion" id="accordionExperience">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button experience-accordion" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <div>
+                      <img src="./img/logo/owkin.jpg" alt="owkin_logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Privacy Research Scientist at Owkin<br />
+                      <small class="text-muted">Jan 2020 – Present</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body">
+                    Research topics:
+                    <ul>
+                      <li>Privacy Preserving Machine Learning (Differential Privacy, Secure Multiparty Computation, Homomorphic Encryption)</li>
+                      <li>Federated Learning (how to train a joint model on privacy-held datasets)</li>
+                      <li>Machine Learning in healthcare (histopathology, clinical data, ...)</li>
+                    </ul>
+                    Participation in iDASH 2020 competition Track III on Differentially private federated learning for cancer prediction model (3rd place)<br />
+                    <br />
+
+                    Some <a href="./publications.html" class="text-dark">publications</a> in international conferences
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    <div>
+                      <img src="./img/logo/bnp.jpg" alt="bnp_logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> IT Quant at BNP Paribas<br />
+                      <small class="text-muted">Fev 2017 – Dec 2019</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body">
+                    Design and improvement of the traders' services:
+                    <ul>
+                      <li>Development and evolution of the Market Data Dispatcher (several hundreds of millions of requests per day) [Go]</li>
+                      <li>Development and evolution of the market data storage systems [Go, Python]</li>
+                      <li>Contribution to the global improvement of our services (monitoring, production incidents, continuous improvement) [Python, Bash]</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingThree">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    <div>
+                      <img src="./img/logo/idemia.gif" alt="idemia_logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Cryptography Research Engineer at Safran Identity & Security<br />
+                      <small class="text-muted">Jan 2013 – Dec 2016</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body">
+                    Research topics:
+                    <ul>
+                      <li>Biometric cryptography (secure sketch, fuzzy vault, biometric statistics, Bloom filters)</li>
+                      <li>General cryptography (Secure multiparty computation, Fully/Somewhat homomorphic encryption, Bitcoin/blockchain, White-box)</li>
+                      <li>Machine Learning and privacy (Secure multiparty computation, Fully/Somewhat homomorphic encryption, differential privacy, Convolutional Neural Network, k-means, genetic algorithms)</li>
+                    </ul>
+
+                    Some <a href="./publications.html" class="text-dark">publications</a> in international conferences<br />
+                    Inventor of some <a href="https://patents.google.com/?inventor=Constance+MOREL" class="text-dark">patents</a><br />
+                    <br />
+                    Participation in some cooperative projects (ANR SecuLar, FP7 FIDELITY, FP7 BEAT, RCN SWAN, CRYPTOCOMP FUI17, FP7-SEC-2013-1-607049 EKSISTENZ)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
-</body>
+      </div>
+      <br />
+    </main>
 
-<script src="../js/pub/jquery.min.js"></script>
-<script src="../js/pub/jquery-migrate-3.0.0.min.js"></script>
-<script src="../js/pub/jquery.waypoints.min.js"></script>
-<script src="../js/pub/bootstrap.min.js"></script>
-<script src="../js/pub/owl.carousel.min.js"></script>
-<script src="../js/pub/stellar.js"></script>
-<script src="../js/rocket-loader.min.js"></script>
-<script src="../js/main.min.js"></script>
+    <hr />
 
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="../js/pub/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="../js/constance.min.js"></script>
+    <script>
+      DrawNavbar();
+      DrawFooter();
+    </script>
+  </body>
 </html>

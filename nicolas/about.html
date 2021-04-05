@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="description" content="Nicolas Beguier website, providing articles about security." />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="nicolas beguier cyber security blog" />
+    <meta property="og:title" content="Nicolas Béguier website" />
+    <meta property="og:image" content="https://beguier.eu/favicon_vignette.png" />
+    <meta property="og:description" content="Nicolas Beguier website, providing articles about security." />
+    <meta property="og:url" content="https://beguier.eu/nicolas/about.html" />
+    <meta property="og:type" content="about" />
+    <title>Nicolas Béguier</title>
+    <script src="../js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../css/beguier.min.css" />
+    <link rel="icon" href="../favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100 bg-black text-light">
+    <!-- Begin nav header -->
+    <div id="includedNavbar"></div>
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-3 text-center">
+            <img src=./img/nicolas.jpg width=200 height=200 class="img-fluid rounded-circle mb-5" alt="me" >
+            <p class="fs-4">Nicolas Béguier</p>
+            <p>
+              Offensive & Defensive Security Engineer at <a class="link-warning" href="https://www.leboncoin.fr/" style="text-decoration: none;"><b>leboncoin</b></a>
+            </p>
+          </div>
+          <div class="col-auto col-sm-9">
+            <h3 class="mb-3 mt-5">Formations and Certifications</h3>
+
+            <div class="row row-cols-2 row-cols-md-4 g-4">
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm" style="max-width: 18rem;">
+                  <div class="card-header text-middark">SANS Technology Institute</div>
+                  <div class="card-body">
+                    <h4 class="card-title">SEC575</h4>
+                    <small class="text-muted">Oct 2020</small>
+                    <p class="card-text">
+                      GIAC Mobile Device Security Analyst<br />
+                      <br />
+                      <strong class="text-info"><ion-icon name="school-outline"></ion-icon> Certified</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm" style="max-width: 18rem;">
+                  <div class="card-header text-middark">SANS Technology Institute</div>
+                  <div class="card-body">
+                    <h4 class="card-title">SEC642</h4>
+                    <small class="text-muted">Mar 2020</small>
+                    <p class="card-text">Advanced Web App Penetration Testing, Ethical Hacking, and Exploitation Techniques</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm" style="max-width: 18rem;">
+                  <div class="card-header text-middark">CERTyou</div>
+                  <div class="card-body">
+                    <h4 class="card-title">CISSP</h4>
+                    <small class="text-muted">Apr 2019</small>
+                    <p class="card-text">Certified Information Systems Security Professional</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm" style="max-width: 18rem;">
+                  <div class="card-header text-middark">Université de Bordeaux</div>
+                  <div class="card-body">
+                    <h4 class="card-title">Master CSI</h4>
+                    <small class="text-muted">Mar 2013</small>
+                    <p class="card-text">
+                      Cryptology and Computer Security<br />
+                      <br />
+                      <strong class="text-info"><ion-icon name="school-outline"></ion-icon> Certified</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="mb-3 mt-5">Experience</h3>
+
+            <div class="accordion" id="accordionExperience">
+              <div class="accordion-item bg-black shadow-sm">
+                <h2 class="accordion-header" id="headingLBCSecu">
+                  <button class="accordion-button experience-accordion bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLbcSecu" aria-expanded="true" aria-controls="collapseLbcSecu">
+                    <div>
+                      <img src="./img/logo/leboncoin.ico" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Offensive & Defensive Security Engineer at leboncoin<br />
+                      <small class="text-muted">Oct 2019 – Present</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseLbcSecu" class="accordion-collapse collapse show" aria-labelledby="headingLbcSecu" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body bg-dark text-middark">
+                    Pentest of web and mobile applications, internal infrastructures of Leboncoin Group.<br />
+                    <br />
+                    Defensive activity, development of tools to automate the detection of malicious domain names, public exposure of our assets and vulnerabilities on our infrastructure.<br />
+                    <br />
+                    Forensic analysis, incident response, technology intelligence, support for developers on the correction of identified vulnerabilities.<br />
+                    <br />
+                    Safety awareness of Leboncoin employees and IT.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item bg-black shadow-sm">
+                <h2 class="accordion-header" id="headingLbcSRE">
+                  <button class="accordion-button experience-accordion collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLbcSRE" aria-expanded="false" aria-controls="collapseLbcSRE">
+                    <div>
+                      <img src="./img/logo/leboncoin.ico" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Site Reliability Engineer at leboncoin<br />
+                      <small class="text-muted">Mar 2017 – Oct 2019</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseLbcSRE" class="accordion-collapse collapse" aria-labelledby="headingLbcSRE" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body bg-dark text-middark">
+                    I worked with multiple features teams and helped them to deploy and in a high availability environment:
+                    <ul>
+                      <li>FT Authentication & Security (2019)</li>
+                      <li>FT Identity: Identity and Access Management (IAM) (2017-2018)</li>
+                      <li>FT Ads: Ad deposit and Ad view (2017-2018)</li>
+                    </ul>
+
+                    With Authentication & Security:
+                    <ul>
+                      <li>Implement OAuth2 flow for a Leboncoin SSO and preserve users personal identifiers information</li>
+                      <li>Blue: Observe, Alert and Mesure security events (NIDS Suricata, HIDS, Security dashboard Patrowl)</li>
+                      <li>Red: Web Application mostly</li>
+                    </ul>
+
+                    As a SRE/devops/sysadmin :
+                    <ul>
+                      <li>Manage a large IaaS (OpenNebula) and PaaS (Kubernetes)</li>
+                      <li>Security improvement (authentication with CASSH, IDS)</li>
+                      <li>Fireman</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item bg-black shadow-sm">
+                <h2 class="accordion-header" id="headingMinDef">
+                  <button class="accordion-button experience-accordion collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMinDef" aria-expanded="false" aria-controls="collapseMinDef">
+                    <div>
+                      <img src="./img/logo/mindef.jpg" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> System Engineer at Ministère de la Défense<br />
+                      <small class="text-muted">Apr 2013 – Mar 2017</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseMinDef" class="accordion-collapse collapse" aria-labelledby="headingMinDef" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body bg-dark text-middark">
+                    Within the system administrator team, we were responsible of a large number of servers located in several datacenters.<br />
+                    <br />
+                    Automated infrastructure deployment via Puppet<br />
+                    Monitoring and log managment<br />
+                    Fireman
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item bg-black shadow-sm">
+                <h2 class="accordion-header" id="headingCdiscount">
+                  <button class="accordion-button experience-accordion collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCdiscount" aria-expanded="false" aria-controls="collapseCdiscount">
+                    <div>
+                      <img src="./img/logo/cdiscount.png" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> System Administrator Intern at CDiscount<br />
+                      <small class="text-muted">Apr 2012 – Jul 2012</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseCdiscount" class="accordion-collapse collapse" aria-labelledby="headingCdiscount" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body bg-dark text-middark">
+                    Set up of a RADIUS server in a large infrastructure (>1000 employees)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+    </main>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+    <script src="../js/pub/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="../js/nico.min.js"></script>
+    <script>
+      DrawNavbar();
+      DrawFooter();
+    </script>
+  </body>
+</html>
