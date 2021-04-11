@@ -700,7 +700,7 @@ function ListDessert() {
     },
     cornes_de_gazelle: {
       name: "Cornes de Gazelle de Cathy",
-      nb_person: 40,
+      nb_person: 8,
       recipe: {
         "Pâte brisée": 4,
         "Poudre d'amande": "400g",
