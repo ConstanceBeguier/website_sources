@@ -27,33 +27,48 @@
 
     <div class="container-fluid">
       <div class="row">
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 bg-light text-dark">
-          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Cahier de recettes</h1>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 mx-auto text-dark">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap py-1 mb-3 border-bottom">
+            <h1 class="h2 ms-auto ms-md-0 me-auto">Cahier de recettes</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-              <div class="dropdown mx-2">
-                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="sunny"></ion-icon> Repas midi</button>
+              <div class="dropdown m-2">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton-lunch" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="sunny"></ion-icon> Repas midi</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="lunch"></div>
               </div>
-              <div class="dropdown mx-2">
-                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="moon"></ion-icon> Repas soir</button>
+              <div class="dropdown m-2">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton-dinner" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="moon"></ion-icon> Repas soir</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dinner"></div>
               </div>
-              <div class="dropdown mx-2">
-                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="ice-cream"></ion-icon> Dessert</button>
+              <div class="dropdown m-2">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton-dessert" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="ice-cream"></ion-icon> Dessert</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dessert"></div>
               </div>
-              <button class="btn btn-danger mx-2" type="button" onclick="Dropall()">
-                Drop
+              <button class="btn btn-danger m-2" type="button" onclick="Dropall()">
+                Vider
               </button>
+              <div class="btn-group m-2" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnrecette" autocomplete="off" checked />
+                <label class="btn btn-outline-primary" for="btnrecette" onclick="EventSwitchRecipe()">Recette</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btncourse" autocomplete="off" />
+                <label class="btn btn-outline-primary" for="btncourse" onclick="EventSwitchShopping()">Liste course</label>
+              </div>
             </div>
           </div>
         </main>
       </div>
 
-      <div class="row">
-        <div class="col-6" id="listing"></div>
-        <div class="col-6" id="recipe"></div>
+      <div class="row" id="bodyRecipe">
+        <div class="col-12 col-md-8" id="listing"></div>
+        <div class="col-auto mt-3 mt-md-0" id="recipe"></div>
+      </div>
+      <div class="row" id="bodyShopping">
+        <div class="col-8 col-md-8 col-lg-4 mx-auto">
+          <div id="shopping"></div>
+          <div class="input-group input-group-sm mb-3">
+            <button class="btn btn-outline-primary" type="button" id="button-add" onclick="EventAddShopping()"><b>+</b></button>
+            <input type="text" class="form-control" placeholder="Ajouter ingrédient" aria-label="Ajouter ingrédient" aria-describedby="button-add" id="inputAdd" />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -68,11 +83,7 @@
     <script src="../js/constance.min.js"></script>
     <script>
       DrawNavbar();
-      DrawDropDownLunch();
-      DrawDropDownDinner();
-      DrawDropDownDessert();
-      DrawListing();
-      DrawRecipe();
+      DrawBody();
       DrawFooter();
     </script>
   </body>
