@@ -1,4 +1,3 @@
-/// DRAW
 function GenerateHTMLDropdownElement(e_type, e_className, e_key, e_textContent) {
   var element = document.createElement(e_type);
   element.className = e_className;
@@ -9,20 +8,18 @@ function GenerateHTMLDropdownElement(e_type, e_className, e_key, e_textContent) 
   }
   return element.outerHTML;
 }
-
 function GenerateHTMLCollapseElement(meals, key) {
   var drop = document.createElement("div");
-  drop.innerHTML = '<i class="fas fa-trash drop-one" id=' + key + ' onclick="DropOne(this)"></i> ';
-
+  drop.className = "col-1 p-0 text-end";
+  drop.innerHTML = '<ion-icon name="trash-outline" class="drop-one" id=' + key + ' onclick="DropOne(this)"></ion-icon> ';
   var textArea = document.createElement("div");
-  textArea.setAttribute("data-toggle", "collapse");
+  textArea.className = "col-11";
+  textArea.setAttribute("data-bs-toggle", "collapse");
   textArea.setAttribute("href", "#collapse" + key);
   textArea.setAttribute("role", "button");
   textArea.setAttribute("aria-expanded", "false");
   textArea.setAttribute("aria-controls", "collapse" + key);
-  textArea.setAttribute("onclick", "UpdateColListing(this)");
   textArea.innerHTML = "<b>" + meals[key]["name"] + "</b>  x" + basketCRUD.get(key);
-
   var collapse = document.createElement("div");
   collapse.className = "collapse";
   collapse.id = "collapse" + key;
@@ -38,10 +35,8 @@ function GenerateHTMLCollapseElement(meals, key) {
   }
   recipe += "</p>";
   collapse.innerHTML = GenerateHTMLElement("div", "card card-body formula-ingredient", "", recipe) + GenerateHTMLElement("div", "card card-body formula", "", full_formula);
-
   return GenerateHTMLElement("div", "row", "", drop.outerHTML + textArea.outerHTML + collapse.outerHTML);
 }
-
 function GenerateHTMLElement(e_type, e_className, e_textContent, e_innerHTML) {
   var element = document.createElement(e_type);
   element.className = e_className;
@@ -53,11 +48,10 @@ function GenerateHTMLElement(e_type, e_className, e_textContent, e_innerHTML) {
   }
   return element.outerHTML;
 }
-
 function DrawMeal(text, key) {
   return GenerateHTMLDropdownElement("a", "dropdown-item", key, text["name"] + " - (" + text["nb_person"] + ")");
 }
-function DrawDropDownLunch() {
+function drawDropDownLunch() {
   var lunchs = ListLunch();
   var dropdownHTML = "";
   for (var key in lunchs) {
@@ -65,7 +59,7 @@ function DrawDropDownLunch() {
   }
   document.getElementById("lunch").innerHTML = dropdownHTML;
 }
-function DrawDropDownDinner() {
+function drawDropDownDinner() {
   var lunchs = ListDinner();
   var dropdownHTML = "";
   for (var key in lunchs) {
@@ -73,7 +67,7 @@ function DrawDropDownDinner() {
   }
   document.getElementById("dinner").innerHTML = dropdownHTML;
 }
-function DrawDropDownDessert() {
+function drawDropDownDessert() {
   var lunchs = ListDessert();
   var dropdownHTML = "";
   for (var key in lunchs) {
@@ -81,8 +75,7 @@ function DrawDropDownDessert() {
   }
   document.getElementById("dessert").innerHTML = dropdownHTML;
 }
-
-function DrawListing() {
+function drawListing() {
   var lunchs = ListLunch();
   var dinners = ListDinner();
   var desserts = ListDessert();
@@ -93,7 +86,7 @@ function DrawListing() {
   }
   document.getElementById("listing").innerHTML = ListHTML;
 }
-function DrawRecipe() {
+function drawRecipe() {
   var full_recipe = GetFullRecipe();
   var sortedIngredients = SortIngredients(full_recipe);
   var RecipeHTML = "";
@@ -102,39 +95,99 @@ function DrawRecipe() {
     if (full_recipe[ingredient]["unit"] != null) {
       full_recipe[ingredient]["value"] += full_recipe[ingredient]["unit"];
     }
-    RecipeHTML += GenerateHTMLElement("div", "", "", "<b>" + ingredient + "</b>  " + full_recipe[ingredient]["value"]);
+    var checkbox = document.createElement("input");
+    checkbox.className = "form-check-input";
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("name", "flexRadioDefault");
+    checkbox.setAttribute("id", "flexRadio" + ingredient);
+    RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + ingredient + '"><b>' + ingredient + "</b> " + full_recipe[ingredient]["value"] + "</label>");
   }
   document.getElementById("recipe").innerHTML = RecipeHTML;
 }
 
-// EVENTS
-function LunchDropDownUpdate(origin) {
-  basketCRUD.increment(origin.id);
-  DrawListing();
-  DrawRecipe();
+function drawShopping() {
+  if (window.sessionStorage.getItem("shopping") == null) {
+    shoppingCRUD.create();
+    var full_recipe = GetFullRecipe();
+    var sortedIngredients = SortIngredients(full_recipe);
+    for (var i in sortedIngredients) {
+      var ingredient = sortedIngredients[i];
+      if (full_recipe[ingredient]["unit"] != null) {
+        full_recipe[ingredient]["value"] += full_recipe[ingredient]["unit"];
+      }
+      shoppingCRUD.add(ingredient, full_recipe[ingredient]["value"]);
+    }
+  }
+  var RecipeHTML = "";
+  for (var ingredient in shoppingCRUD.getAll()) {
+    if (!ingredient.endsWith("_checked")) {
+      var checkbox = document.createElement("input");
+      checkbox.className = "form-check-input";
+      checkbox.setAttribute("type", "checkbox");
+      checkbox.setAttribute("name", "flexRadioDefault");
+      if (shoppingCRUD.get(ingredient + "_checked")) {
+        checkbox.setAttribute("checked", true);
+      }
+      checkbox.setAttribute("id", "flexRadio" + ingredient);
+      checkbox.setAttribute("onchange", 'shoppingCRUD.switch("' + ingredient + '")');
+      RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + ingredient + '"><b>' + ingredient + "</b> " + shoppingCRUD.get(ingredient) + "</label>");
+    }
+  }
+  document.getElementById("shopping").innerHTML = RecipeHTML;
 }
-
-function Dropall() {
-  basketCRUD.deleteAll();
-  DrawListing();
-  DrawRecipe();
+function EventSwitchRecipe() {
+  window.sessionStorage.setItem("view", "recipe");
+  DrawBody();
 }
-
-function DropOne(origin) {
-  basketCRUD.delete(origin.id);
-  DrawListing();
-  DrawRecipe();
+function EventSwitchShopping() {
+  window.sessionStorage.setItem("view", "shopping");
+  DrawBody();
 }
-
-function UpdateColListing(origin) {
-  if (origin.getAttribute("aria-expanded") == "true") {
-    document.getElementById("listing").className = "col-6";
+function EventAddShopping() {
+  shoppingCRUD.add(document.getElementById("inputAdd").value, "");
+  DrawBody();
+}
+function DrawBody() {
+  if (window.sessionStorage.getItem("view") == null || window.sessionStorage.getItem("view") == "recipe") {
+    document.getElementById("btnrecette").checked = true;
+    document.getElementById("btncourse").checked = false;
+    document.getElementById("dropdownMenuButton-lunch").hidden = false;
+    document.getElementById("dropdownMenuButton-dinner").hidden = false;
+    document.getElementById("dropdownMenuButton-dessert").hidden = false;
+    document.getElementById("bodyRecipe").hidden = false;
+    document.getElementById("bodyShopping").hidden = true;
+    drawDropDownLunch();
+    drawDropDownDinner();
+    drawDropDownDessert();
+    drawListing();
+    drawRecipe();
+    shoppingCRUD.deleteAll();
   } else {
-    document.getElementById("listing").className = "col-12";
+    document.getElementById("btnrecette").checked = false;
+    document.getElementById("btncourse").checked = true;
+    document.getElementById("dropdownMenuButton-lunch").hidden = true;
+    document.getElementById("dropdownMenuButton-dinner").hidden = true;
+    document.getElementById("dropdownMenuButton-dessert").hidden = true;
+    document.getElementById("bodyRecipe").hidden = true;
+    document.getElementById("bodyShopping").hidden = false;
+    drawShopping();
   }
 }
-
-/// CRUD
+function LunchDropDownUpdate(origin) {
+  basketCRUD.increment(origin.id);
+  drawListing();
+  drawRecipe();
+}
+function Dropall() {
+  basketCRUD.deleteAll();
+  shoppingCRUD.deleteAll();
+  DrawBody();
+}
+function DropOne(origin) {
+  basketCRUD.delete(origin.id);
+  drawListing();
+  drawRecipe();
+}
 var basketCRUD = {
   create: function () {
     sessionStorage.setItem("basket", "{}");
@@ -174,7 +227,44 @@ var basketCRUD = {
     return true;
   },
 };
-
+var shoppingCRUD = {
+  create: function () {
+    sessionStorage.setItem("shopping", "{}");
+    return true;
+  },
+  deleteAll: function () {
+    sessionStorage.removeItem("shopping");
+    return true;
+  },
+  getAll: function () {
+    if (sessionStorage.getItem("shopping") == null) {
+      this.create();
+    }
+    return JSON.parse(sessionStorage.getItem("shopping"));
+  },
+  get: function (key) {
+    return this.getAll()[key];
+  },
+  delete: function (key) {
+    var shopping = this.getAll();
+    delete shopping[key];
+    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    return true;
+  },
+  add: function (key, value) {
+    var shopping = this.getAll();
+    shopping[key] = value;
+    shopping[key + "_checked"] = false;
+    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    return true;
+  },
+  switch: function (key) {
+    var shopping = this.getAll();
+    shopping[key + "_checked"] = !shopping[key + "_checked"];
+    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    return true;
+  },
+};
 function SortIngredients(recipe) {
   list_ingredients = [];
   for (var ingredient in recipe) {
@@ -183,7 +273,6 @@ function SortIngredients(recipe) {
   list_ingredients.sort();
   return list_ingredients;
 }
-
 function GetFullRecipe() {
   var lunchs = ListLunch();
   var dinners = ListDinner();

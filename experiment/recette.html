@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="fr" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Cahier de recettes" />
+    <meta name="author" content="Beguier Constance and Nicolas" />
+    <meta name="keywords" content="beguier experiment cuisine courses recette" />
+    <meta property="og:title" content="Cahier de recettes" />
+    <meta property="og:image" content="https://beguier.eu/favicon_vignette.png" />
+    <meta property="og:description" content="Génération de liste de courses." />
+    <meta property="og:url" content="https://beguier.eu/experiment/recette.html" />
+    <meta property="og:type" content="article" />
+
+    <title>Cahier de recettes</title>
+    <!-- Auto redirect to HTTPs-->
+    <script src="../js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+    <link href="../css/cuisine.min.css" rel="stylesheet" async />
+    <link href="../css/beguier.min.css" rel="stylesheet" async />
+    <link rel="icon" href="../favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <!-- Begin nav header -->
+    <div id="includedNavbar"></div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4 mx-auto text-dark">
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap py-1 mb-3 border-bottom">
+            <h1 class="h2 ms-auto ms-md-0 me-auto">Cahier de recettes</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="dropdown m-2">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton-lunch" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="sunny"></ion-icon> Repas midi</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="lunch"></div>
+              </div>
+              <div class="dropdown m-2">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton-dinner" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="moon"></ion-icon> Repas soir</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dinner"></div>
+              </div>
+              <div class="dropdown m-2">
+                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton-dessert" data-bs-toggle="dropdown" aria-expanded="false"><ion-icon name="ice-cream"></ion-icon> Dessert</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dessert"></div>
+              </div>
+              <button class="btn btn-danger m-2" type="button" onclick="Dropall()">
+                Vider
+              </button>
+              <div class="btn-group m-2" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="btnrecette" autocomplete="off" checked />
+                <label class="btn btn-outline-primary" for="btnrecette" onclick="EventSwitchRecipe()">Recette</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btncourse" autocomplete="off" />
+                <label class="btn btn-outline-primary" for="btncourse" onclick="EventSwitchShopping()">Liste course</label>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div class="row" id="bodyRecipe">
+        <div class="col-12 col-md-8" id="listing"></div>
+        <div class="col-auto mt-3 mt-md-0" id="recipe"></div>
+      </div>
+      <div class="row" id="bodyShopping">
+        <div class="col-8 col-md-8 col-lg-4 mx-auto">
+          <div id="shopping"></div>
+          <div class="input-group input-group-sm mb-3">
+            <button class="btn btn-outline-primary" type="button" id="button-add" onclick="EventAddShopping()"><b>+</b></button>
+            <input type="text" class="form-control" placeholder="Ajouter ingrédient" aria-label="Ajouter ingrédient" aria-describedby="button-add" id="inputAdd" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="../js/pub/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="../js/recette.js"></script>
+    <script src="../js/cuisine.js"></script>
+    <script src="../js/constance.min.js"></script>
+    <script>
+      DrawNavbar();
+      DrawBody();
+      DrawFooter();
+    </script>
+  </body>
+</html>

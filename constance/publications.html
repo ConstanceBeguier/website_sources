@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Site web de Constance Beguier contenant des articles de cryptographie et de machine learning" />
+    <meta name="author" content="Beguier Constance" />
+    <meta name="keywords" content="cryptographie machine learning finance informatique smc" />
+    <meta property="og:title" content="Site web de Constance Beguier" />
+    <meta property="og:image" content="https://beguier.eu/constance/img/banner.jpg" />
+    <meta property="og:description" content="Site web de Constance Beguier contenant des articles de cryptographie et de machine learning" />
+    <meta property="og:url" content="https://beguier.eu/constance/publications.html" />
+    <meta property="og:type" content="article" />
+
+    <title>Constance Beguier</title>
+    <script src="../js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../css/beguier.min.css" />
+    <link rel="icon" href="../favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <!-- Begin nav header -->
+    <div id="includedNavbar"></div>
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-sm-4 text-center">
+            <h4 class="mb-3">Conference and workshop papers</h4>
+          </div>
+          <div class="col-auto col-sm-8">
+            <div class="accordion" id="accordionConference">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingMICCAI2020">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMICCAI2020" aria-expanded="false" aria-controls="collapseMICCAI2020">
+                    <div>
+                      Siloed Federated Learning for Multi-Centric Histopathology Datasets<br />
+                      <small class="text-muted">MICCAI 2020 DCL workshop</small><br />
+                      <strong class="text-success"><ion-icon name="school-outline"></ion-icon> Best paper award</strong>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseMICCAI2020" class="accordion-collapse collapse" aria-labelledby="headingMICCAI2020" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    While federated learning is a promising approach for training deep learning models over distributed sensitive datasets, it presents new challenges for machine learning, especially when applied in the medical domain where
+                    multi-centric data heterogeneity is common. Building on previous domain adaptation works, this paper proposes a novel federated learning approach for deep learning architectures via the introduction of local-statistic
+                    batch normalization (BN) layers, resulting in collaboratively-trained, yet center-specific models. This strategy improves robustness to data heterogeneity while also reducing the potential for information leaks by not
+                    sharing the center-specific layer activation statistics. We benchmark the proposed method on the classification of tumorous histopathology image patches extracted from the Camelyon16 and Camelyon17 datasets. We show that
+                    our approach compares favorably to previous state-of-the-art methods, especially for transfer learning across datasets.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingMSPN2018">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMSPN2018" aria-expanded="false" aria-controls="collapseMSPN2018">
+                    <div>
+                      Recognition Over Encrypted Faces<br />
+                      <small class="text-muted">MSPN 2018: Mobile, Secure and Programmable Networking</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseMSPN2018" class="accordion-collapse collapse" aria-labelledby="headingMSPN2018" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    Neural Networks (NN) are today increasingly used in Machine Learning where they have become deeper and deeper to accurately model or classify high-level abstractions of data. Their development however also gives rise to
+                    important data privacy risks. This observation motives Microsoft researchers to propose a framework, called Cryptonets. The core idea is to combine simplifications of the NN with Fully Homomorphic Encryptions (FHE)
+                    techniques to get both confidentiality of the manipulated data and efficiency of the processing. While efficiency and accuracy are demonstrated when the number of non-linear layers is small (e.g. 2), Cryptonets
+                    unfortunately becomes ineffective for deeper NNs which let the privacy preserving problem open in these contexts. This work successfully addresses this problem by combining several new ideas including the use of the
+                    batch normalization principle and the splitting of the learning phase in several iterations. We experimentally validate the soundness of our approach with a neural network with 6 non-linear layers. When applied to the
+                    MNIST database, it competes with the accuracy of the best non-secure versions, thus significantly improving Cryptonets. Additionally, we applied our approach to secure a neural network used for face recognition. This
+                    problem is usually considered much harder than the MNIST hand-written digits recognition and can definitely not be addressed with a simple network like Cryptonets. By combining our new ideas with an iterative (learning)
+                    approach we experimentally show that we can build an FHE-friendly network achieving good accuracy for face recognition.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingSACMAT2016">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSACMAT2016" aria-expanded="false" aria-controls="collapseSACMAT2016">
+                    <div>
+                      Boosting GSHADE Capabilities: New Applications and Security in Malicious Setting<br />
+                      <small class="text-muted">SACMAT 2016: 21st ACM Symposium on Access Control Models and Technologies</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseSACMAT2016" class="accordion-collapse collapse" aria-labelledby="headingSACMAT2016" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    The secure two-party computation (S2PC) protocols SHADE and GSHADE have been introduced by Bringer et al. in the last two years. The protocol GSHADE permits to compute different distances (Hamming, Euclidean,
+                    Mahalanobis) quite efficiently and is one of the most efficient compared to other S2PC methods. Thus, this protocol can be used to efficiently compute one-to-many identification for several biometrics data (iris, face,
+                    fingerprint). In this paper, we introduce two extensions of GSHADE. The first one enables us to evaluate new multiplicative functions. This way, we show how to apply GSHADE to a classical machine learning algorithm. The
+                    second one is a new proposal to secure GSHADE against malicious adversaries following the recent dual execution and cut-and-choose strategies. The additional cost is very small. By preserving the GSHADE's structure, our
+                    extensions are very efficient compared to other S2PC methods.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingBIOSIG2016">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBIOSIG2016" aria-expanded="false" aria-controls="collapseBIOSIG2016">
+                    <div>
+                      Partially Re-Usable Garbled Circuits for Iris Recognition<br />
+                      <small class="text-muted">BIOSIG 2016: International Conference of the Biometrics Special Interest Group</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseBIOSIG2016" class="accordion-collapse collapse" aria-labelledby="headingBIOSIG2016" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    In iris-based video authentication, the best frames from the video are selected in order to compare them to a reference data. As biometric data are sensitive, a non-secure matching score evaluation can leak private
+                    information. We here focus on Garbled circuits which are widely employed to securely compare biometric data. Our main idea consists in introducing a new efficient partially re-usable garbled circuit. To do that, we take
+                    advantage of the similarities between templates from the same video in order to reduce the cost of several secure matching evaluations on close inputs. We validate our proposal through experiments showing that it is
+                    practical.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingICB2015">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseICB2015" aria-expanded="false" aria-controls="collapseICB2015">
+                    <div>
+                      Security analysis of Bloom filter-based iris biometric template protection<br />
+                      <small class="text-muted">ICB 2015: International Conference On Biometrics</small><br />
+                      <strong class="text-success"><ion-icon name="school-outline"></ion-icon> Oral session: Best reviewed papers</strong>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseICB2015" class="accordion-collapse collapse" aria-labelledby="headingICB2015" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    This paper analyses the unlinkability and the irreversibility of the iris biometric template protection system based on Bloom filters introduced at ICB 2013. Hermans et al. presented at BIOSIG 2014 an attack on the
+                    unlinkability of these templates. In the worst case, their attack succeeds with probability at least 96%. But in their attack, they assume protected templates generated from the same iriscode. In this paper, we analyze
+                    unlinkability on protected templates generated with two different iriscodes coming from the same iris, and we moreover introduce irreversibility analysis that exploits non-uniformity of the data. Our experiments thus
+                    practically demonstrate new vulnerabilities of the scheme.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingIJCB2014">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIJCB2014" aria-expanded="false" aria-controls="collapseIJCB2014">
+                    <div>
+                      Shuffling is not sufficient: Security analysis of cancelable iriscodes based on a secret permutation<br />
+                      <small class="text-muted">IJCB 2014: International Joint Conference On Biometrics</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseIJCB2014" class="accordion-collapse collapse" aria-labelledby="headingIJCB2014" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    Since the seminal paper of Ratha et al. in 2001 that introduced cancelable biometrics, inner permutation of biometric templates has been widely suggested as one of the basic components to protect biometric data against
+                    compromised or cross-checking between two databases. In this paper, we study the case of iris biometrics where an inner permutation corresponds to shuffling the bits of a template in order to diversify the stored data.
+                    We analyze the security brought by a permutation and underline the impact of non-uniformity of templates on the robustness of cancelable biometrics: we introduce new attack strategies on permuted biometric databases that
+                    enable to reconstruct part of the permutation, leading to a potential privacy leakage. We finally suggest ways to improve efficiently the protection, by designing specific countermeasures, with no impact on accuracy and
+                    a low impact on the overall architecture of the system.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 col-sm-4 text-center">
+            <h4 class="mb-3">Preprints</h4>
+          </div>
+          <div class="col-auto col-sm-8">
+            <div class="accordion" id="accordionPreprint">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading210102997">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse210102997" aria-expanded="false" aria-controls="collapse210102997">
+                    <div>
+                      Differentially Private Federated Learning for Cancer Prediction<br />
+                      <small class="text-muted">arXiv:2101.02997</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapse210102997" class="accordion-collapse collapse" aria-labelledby="heading210102997" data-bs-parent="#accordionPreprint">
+                  <div class="accordion-body text-justify">
+                    Since 2014, the NIH funded iDASH (integrating Data for Analysis, Anonymization, SHaring) National Center for Biomedical Computing has hosted yearly competitions on the topic of private computing for genomic data. For one
+                    track of the 2020 iteration of this competition, participants were challenged to produce an approach to federated learning (FL) training of genomic cancer prediction models using differential privacy (DP), with
+                    submissions ranked according to held-out test accuracy for a given set of DP budgets. More precisely, in this track, we are tasked with training a supervised model for the prediction of breast cancer occurrence from
+                    genomic data split between two virtual centers while ensuring data privacy with respect to model transfer via DP. In this article, we present our 3rd place submission to this competition. During the competition, we
+                    encountered two main challenges discussed in this article: i) ensuring correctness of the privacy budget evaluation and ii) achieving an acceptable trade-off between prediction performance and privacy budget.
+                    <div class="text-center">
+                      <a href="https://arxiv.org/pdf/2101.02997.pdf" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="document-text-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading200714861">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse200714861" aria-expanded="false" aria-controls="collapse200714861">
+                    <div>
+                      SAFER: Sparse Secure Aggregation for Federated Learning<br />
+                      <small class="text-muted">arXiv:2007.14861</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapse200714861" class="accordion-collapse collapse" aria-labelledby="heading200714861" data-bs-parent="#accordionPreprint">
+                  <div class="accordion-body text-justify">
+                    Federated learning enables one to train a common machine learning model across separate, privately-held datasets via distributed model training. During federated training, only intermediate model parameters are
+                    transmitted to a central server which aggregates these parameters to create a new common model, thus exposing only intermediate parameters rather than the training data itself. However, some attacks (e.g. membership
+                    inference) are able to infer properties of local data from these intermediate model parameters. Hence, performing the aggregation of these client-specific model parameters in a secure way is required. Additionally, the
+                    communication cost is often the bottleneck of the federated systems, especially for large neural networks. So, limiting the number and the size of communications is necessary to efficiently train large neural
+                    architectures. In this article, we present an efficient and secure protocol for performing secure aggregation over compressed model updates in the context of collaborative, few-party federated learning, a context common
+                    in the medical, healthcare, and biotechnical use-cases of federated systems. By making compression-based federated techniques amenable to secure computation, we develop a secure aggregation protocol between multiple
+                    servers with very low communication and computation costs and without preprocessing overhead. Our experiments demonstrate the efficiency of this new approach for secure federated training of deep convolutional neural
+                    networks.
+                    <div class="text-center">
+                      <a href="https://arxiv.org/pdf/2007.14861.pdf" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="document-text-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2017035">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2017035" aria-expanded="false" aria-controls="collapse2017035">
+                    <div>
+                      Privacy-Preserving Classification on Deep Neural Network<br />
+                      <small class="text-muted">IACR Cryptology ePrint Archive: Report 2017/035</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapse2017035" class="accordion-collapse collapse" aria-labelledby="heading2017035" data-bs-parent="#accordionPreprint">
+                  <div class="accordion-body text-justify">
+                    Neural Networks (NN) are today increasingly used in Machine Learning where they have become deeper and deeper to accurately model or classify high-level abstractions of data. Their development however also gives rise to
+                    important data privacy risks. This observation motives Microsoft researchers to propose a framework, called Cryptonets. The core idea is to combine simplifications of the NN with Fully Homomorphic Encryptions (FHE)
+                    techniques to get both confidentiality of the manipulated data and efficiency of the processing. While efficiency and accuracy are demonstrated when the number of non-linear layers is small (eg 22), Cryptonets
+                    unfortunately becomes ineffective for deeper NNs which let the problem of privacy preserving matching open in these contexts. This work successfully addresses this problem by combining the original ideas of Cryptonets'
+                    solution with the batch normalization principle introduced at ICML 2015 by Ioffe and Szegedy. We experimentally validate the soundness of our approach with a neural network with 66 non-linear layers. When applied to the
+                    MNIST database, it competes the accuracy of the best non-secure versions, thus significantly improving Cryptonets.
+                    <div class="text-center">
+                      <a href="https://eprint.iacr.org/2017/035.pdf" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="document-text-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 col-sm-4 text-center">
+            <h4 class="mb-3">Journal articles</h4>
+          </div>
+          <div class="col-auto col-sm-8">
+            <div class="accordion" id="accordionJournal">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingJournal">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJournal" aria-expanded="false" aria-controls="collapseJournal">
+                    <div>
+                      Security analysis and improvement of some biometric protected templates based on Bloom filters<br />
+                      <small class="text-muted">Image and Vision Computing - Elsevier - Volume 58, pages 239-253</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseJournal" class="accordion-collapse collapse" aria-labelledby="headingJournal" data-bs-parent="#accordionJournal">
+                  <div class="accordion-body text-justify">
+                    In this work, we develop an unlinkability and irreversibility analysis of the so-called Bloom filter-based iris biometric template protection introduced at ICB 2013. We go further than the unlinkability analysis of
+                    Hermans et al. presented at BIOSIG 2014. Firstly, we analyse unlinkability on protected templates built from two different iriscodes coming from the same iris whereas Hermans et al. analysed only protected templates from
+                    the same iriscode. Moreover, we introduce an irreversibility analysis that exploits non-uniformity of the biometric data. Our experiments demonstrate new vulnerabilities of this scheme. Then we will discuss the security
+                    of other similar protected biometric templates based on Bloom filters that have been suggested in the literature since 2013. Finally, we suggest a Secure Multiparty Computation (SMC) protocol, that benefits of the
+                    alignment-free feature of this Bloom filter construction, in order to compute efficiently and securely the matching scores.<br />
+                    This work is an extended version of a conference paper presented at ICB 2015.
+                    <div class="text-center">
+                      <a href="https://www.sciencedirect.com/science/article/abs/pii/S0262885616301263" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="newspaper-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 col-sm-4 text-center">
+            <h4 class="mb-3">Books</h4>
+          </div>
+          <div class="col-auto col-sm-8">
+            <div class="accordion" id="accordionBook">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingBook">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBook" aria-expanded="false" aria-controls="collapseBook">
+                    <div>
+                      Iris and Periocular Biometric Recognition<br />
+                      <small class="text-muted">Chapter 15: Privacy-preserving distance computation for IrisCodes</small><br />
+                      <small class="text-muted">IET (ISBN: 1785611681)</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseBook" class="accordion-collapse collapse" aria-labelledby="headingBook" data-bs-parent="#accordionBook">
+                  <div class="accordion-body text-justify">
+                    In this chapter, we describe how to perform a secure and efficient IrisCode-based identification. In this use case, the first party has an IrisCode, the second party has one or several IrisCodes and they would like to
+                    discover whether the first party’s IrisCode is close to at least one IrisCode belonging to the second party without revealing any information about their own IrisCodes to the opposing party. Secure Two-Party Computation
+                    (S2PC) protocols are dedicated to this use case because they enable two parties to jointly evaluate a function over their inputs while preserving the privacy of their inputs. In this chapter, we explain how to
+                    efficiently use S2PC protocols for secure iris-based identification.
+                    <div class="text-center">
+                      <a href="https://digital-library.theiet.org/content/books/sc/pbse005e" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="book-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 col-sm-4 text-center">
+            <h4 class="mb-3">Talks</h4>
+          </div>
+          <div class="col-auto col-sm-8">
+            <div class="accordion" id="accordionTalk">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingNext40">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNext40" aria-expanded="false" aria-controls="collapseNext40">
+                    <div>
+                      Analyse de données respectueuse de la vie privée<br />
+                      <small class="text-muted">Next 40 Data Meetup – Jan 19, 2021</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseNext40" class="accordion-collapse collapse" aria-labelledby="headingNext40" data-bs-parent="#accordionTalk">
+                  <div class="accordion-body text-justify">
+                    Federated learning: Constance Beguier d'Owkin vous expliquera comment entraîner un modèle de machine learning, sans avoir accès aux données sources
+                    <div class="text-center">
+                      <a href="https://www.youtube.com/watch?v=-hmVE7z9rRo" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="logo-youtube" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingRWC">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRWC" aria-expanded="false" aria-controls="collapseRWC">
+                    <div>
+                      Privacy-Preserving Classiﬁcation on Deep Neural Network<br />
+                      <small class="text-muted">RWC 2017: Real World Crypto</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseRWC" class="accordion-collapse collapse" aria-labelledby="headingRWC" data-bs-parent="#accordionTalk">
+                  <div class="accordion-body text-justify">
+                    Machine learning based on Neural Networks (NN) is increasingly used in areas such as medical diagnosis, computer vision and speech recognition. To accurately model or classify high-level abstractions of data, they have
+                    become deeper, leading to new algorithms, called deep neural networks, with more and more layers. Their unprecedented accuracy has turned them into the foundation of many new services and applications. Recently,
+                    Cryptonets has been introduced by Microsoft to combine these NN computations with homomorphic encryptions to ensure confidentiality of manipulated data. Considering face recognition, this could be a must-have feature to
+                    have to ensure privacy. Our work improves their proposal by modifying underlying NNs while keeping excellent accuracy performances. For instance, following their experiment with the MNIST database, we obtain with our
+                    experiments an accuracy similar to that for the non-secure version, achieving a significant improvement compared to Cryptonets. This can be seen as another step to handle the many layers of deep NN with encrypted data.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-12 col-sm-4 text-center">
+            <h4 class="mb-3">Patents</h4>
+          </div>
+          <div class="col-auto col-sm-8">
+            <div class="accordion" id="accordionPatent">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEP3301617">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEP3301617" aria-expanded="false" aria-controls="collapseEP3301617">
+                    <div>
+                      Methods for secure learning of parameters of a convolutional neural network, and secure classification of input data<br />
+                      <small class="text-muted">eu EP3301617</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseEP3301617" class="accordion-collapse collapse" aria-labelledby="headingEP3301617" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    The present invention relates to a secure parameter learning method of a convolutional neuron network, CNN, for data classification; the method comprising the implementation by data processing means (11a) of a first
+                    server (1a) of steps of: (a0) receiving from a second server (1b) a previously classified learning database, said training data being homomorphically encrypted; (a1) Learning in the encrypted domain, from said learning
+                    database, the parameters of a reference CNN comprising at least: a nonlinear layer (POLYNOME) operating a polynomial function of degree at least two approximating an activation function; a batch normalization layer (BN)
+                    before each non-linear layer (POLYNOME); (a2) Transmission to said second server (1b) of the learned parameters for decryption and use in classification The present invention also relates to methods of securely
+                    classifying an input data item.
+                    <div class="text-center">
+                      <a href="https://patents.google.com/patent/EP3301617/en" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="school-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEP3270538B1">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEP3270538B1" aria-expanded="false" aria-controls="collapseEP3270538B1">
+                    <div>
+                      Authentication method and system using confused circuits<br />
+                      <small class="text-muted">eu EP3270538</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseEP3270538B1" class="accordion-collapse collapse" aria-labelledby="headingEP3270538B1" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    The invention proposes a method and an associated system for authenticating a user, by means of the redundancy present between several images of a video, the method using garbled circuits, named variant garbled circuits,
+                    associated with the alternative bits between the images of the video and a garbled circuit named invariant garbled circuit, associated with the invariant bits between the images of the video, so that the invariant
+                    garbled circuit only needs to be evaluated a single time.
+
+                    <div class="text-center">
+                      <a href="https://patents.google.com/patent/EP3270538/en" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="school-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEP3200387">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEP3200387" aria-expanded="false" aria-controls="collapseEP3200387">
+                    <div>
+                      Secure multi-party processing method protected against a malicious party<br />
+                      <small class="text-muted">eu EP3200387</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseEP3200387" class="accordion-collapse collapse" aria-labelledby="headingEP3200387" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    The invention proposes a method comprising the evaluation of a function F obtained by the application to n sub-functions f i of a first operation, the evaluation comprising: implementing a series of calculation steps in
+                    which a first unit takes on a client role and a second unit takes on a server role, and the repetition of the series of calculation steps in which the client and server roles are exchanged between the units, each series
+                    of steps comprising: a) random generation, by the server, of first data, and a second datum, b) for each subfunction f i, generation by the server of a set of elements formed by: o a result of f i evaluated in the data
+                    of the client and the server, o masked by a first datum, by applying the first operation between the result and the first datum, and o masked by the second datum, by application between the masked result and the second
+                    datum of a second operation different from the first and distributive with respect thereto, c) recovery by transfer unconscious, by the client, of intermediate data corresponding to one of the elements generated by the
+                    server, d) generation, by the server, of a first part of result, by: € ¢ the masking of each first data by the second data, The application to all the first masked data of the first operation, and e) generating, by the
+                    client, a second result part, by application to all the intermediate data of the first operation.
+
+                    <div class="text-center">
+                      <a href="https://patents.google.com/patent/EP3200387/en" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="school-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEP3200384">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEP3200384" aria-expanded="false" aria-controls="collapseEP3200384">
+                    <div>
+                      Method of execution of a cryptographic calculation and application to classification by support vector machines<br />
+                      <small class="text-muted">eu EP3200384</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseEP3200384" class="accordion-collapse collapse" aria-labelledby="headingEP3200384" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    <div class="text-center">
+                      <a href="https://patents.google.com/patent/EP3200384/en" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="school-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEP3091689">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEP3091689" aria-expanded="false" aria-controls="collapseEP3091689">
+                    <div>
+                      Method for generating a message signature from a signature token encrypted by means of an homomorphic encryption function<br />
+                      <small class="text-muted">eu EP3091689</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseEP3091689" class="accordion-collapse collapse" aria-labelledby="headingEP3091689" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    The invention relates to a method for generating a signature of a message intended to be validated by a verification server, a client device configured to hold a private key and a corresponding public key and comprising
+                    steps of: -calculus (103) previously offline by a hardware security module of a signature token resulting from an encryption using a homomorphic encryption function, storage (104) of said signature token; generating
+                    (105) said signature of said encrypted message using said homomorphic encryption function from the result of the encryption by said homomorphic encryption function of the private key stored by the client device, the
+                    signature token and said message said signature being intended to be validated by said verification server using said public key.
+
+                    <div class="text-center">
+                      <a href="https://patents.google.com/patent/EP3091689/en" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="school-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingEP3043511">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEP3043511" aria-expanded="false" aria-controls="collapseEP3043511">
+                    <div>
+                      Method for identifying an entity<br />
+                      <small class="text-muted">eu EP3043511</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseEP3043511" class="accordion-collapse collapse" aria-labelledby="headingEP3043511" data-bs-parent="#accordionConference">
+                  <div class="accordion-body text-justify">
+                    The present invention relates to a method for identifying an entity implemented by an identification system from indexed distance data (d 1, ..., d n) corresponding to reference entities and comprising: a phase of
+                    determining a set (I) of minimum indices (index 1,..., index k) among said binary indexed distance data of length q 'comprising an execution step comprising, for each set of jth bits of the indexed distance data included
+                    in a list of data to be processed, j being an integer varying from q'-1 to 0, starting with the set of most significant bits of the data to be processed and ending with the set of least significant bits of the data to be
+                    processed, the search for minimum indices including, if a number of indices of a first group of indexes of distance indexed data (p) is greater than a remaining number of indexed data to discard (r), adding said indices
+                    of a second group to the set of minimum indices; an identification phase of the entity to be identified from among the reference entities corresponding to the stored reference biometric data associated with the
+                    determined minimum distance data indexes (index 1,... index k), operations on binary integers for implementing at least said execution step, being translated in the form of at least one Boolean circuit used to implement
+                    at least said execution step in a secure manner between the control server and the management server using a multiparty secure computing protocol for secure evaluation of said Boolean circuit.
+
+                    <div class="text-center">
+                      <a href="https://patents.google.com/patent/EP3043511/en" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="school-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <hr class="mt-5" />
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+    <script src="../js/pub/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="../js/constance.min.js"></script>
+    <script>
+      DrawNavbar();
+      DrawFooter();
+    </script>
+  </body>
+</html>
