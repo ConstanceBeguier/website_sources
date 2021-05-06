@@ -331,7 +331,7 @@ function ListDinner() {
       nb_person: 4,
       recipe: {
         Farine: "250g",
-        Huile: "5cL",
+        "Huile d'olives": "5cL",
         Oignon: 2,
         Lardons: "200g",
         "Fromage blanc": "100g",
@@ -344,6 +344,8 @@ function ListDinner() {
         "Préchauffer votre four à 280°C. Émincer les oignons en fines lanières et faites-les fondre à feu doux pendant 5 min dans une noix de beurre, sans les colorer",
         "Faire rissoler rapidement les lardons",
         "Mélanger le fromage blanc et la crème, assaisonner de sel, de poivre et de noix muscade",
+        "Etaler la pate, ajouter le mélange de fromage blanc, ajouter la garniture et du gruyère rapé (et du munster)",
+        "Cuire 15 minutes au four",
       ],
     },
     "cake-jambon-olive": {
@@ -545,7 +547,7 @@ function ListDessert() {
         "Ajouter un oeuf, battre 3 minutes, x3.",
         "Ajouter farine et une cuillère et demi à café de levure.",
         "Ajouter les fruits. Mettre dans un moule à cake.",
-        "5 minutes à 225°C, puis baisser à 170°C pendant 35 minutes.",
+        "5 minutes à 225°C, puis baisser à 170°C pendant 25 minutes.",
       ],
     },
     cake_banane_chocolat: {
@@ -584,7 +586,7 @@ function ListDessert() {
         Sucre: "75g",
         Pomme: 3,
       },
-      formula: ["Préchauffer le four à 120°C.", "Couper les pommes et les mettre au fond du plat.", "Mélanger à la main le beurre, la farine et le sucre.", "Saupoudrer la pate sur les pommes.", "Cuire 30 minutes."],
+      formula: ["Préchauffer le four à 180°C.", "Couper les pommes et les mettre au fond du plat.", "Mélanger à la main le beurre, la farine et le sucre.", "Saupoudrer la pate sur les pommes.", "Cuire 30 minutes."],
     },
     gateau_pommes: {
       name: "Gateau aux pommes",
