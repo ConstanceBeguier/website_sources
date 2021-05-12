@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="In this short security post-it, I explain how exploit XSS with the inline style." />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="beguier cyber security post-it blog xss inline style" />
+    <meta property="og:title" content="Security Post-it #4 – XSS yes, but with &lt;style&gt; !" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/logo_secu-postit4.jpg" />
+    <meta property="og:description" content="In this short security post-it, I explain how exploit XSS with the inline style." />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/security-tips-4-xss-with-style.html" />
+    <meta property="og:type" content="article" />
+    <title>Security Post-it #4 – XSS yes, but with &lt;style&gt; !</title>
+    <script src="/js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100 bg-black">
+    <!-- Begin nav header -->
+    <div id="includedNavbar"></div>
+
+    <!-- Begin article body -->
+    <main class="flex-shrink-0">
+      <div class="container col-lg-8 p-0 bg-dark text-light">
+        <!-- Begin title banner -->
+        <div
+          class="position-relative overflow-hidden text-center"
+          style="background: url('/nicolas/img/cover/logo_secu-postit4.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
+        >
+          <div class="col-md-6 m-5 mx-md-auto">
+            <h1 class="display-4 fw-normal">Security Post-it #4 – XSS yes, but with <b class="text-danger">&lt;</b>style<b class="text-danger">&gt;</b> !</h1>
+            <p class="lead fw-normal">In this short security post-it, I explain how exploit XSS with the inline style.</p>
+          </div>
+        </div>
+        <!-- Begin article content -->
+        <div class="p-5">
+          <p class="text-muted">May 11, 2021 by Nicolas Béguier</p>
+
+          <h2 class="my-5 fs-3">XSS 101</h2>
+
+          <div class="lead fs-5 text-middark">
+            Why XSS are important ? Because they facilitate phishing and it makes the victim want to click on the link. The rest is a code reflection (stored or not) that allows executing an arbitrary code.<br />
+            <br />
+            This "code" in question is generally <b class="text-light">a smudge of the HTML</b> which makes it possible to execute Javascript code. It sometimes happens that the injection point is directly in a
+            <span class="text-code">&lt;script&gt;</span> tag but this is rare.<br />
+            A typical example is:<br />
+            <br />
+            <div class="text-center">
+              <span class="text-code text-secondary fs-6">
+                https&colon;&sol;&sol;beguier&period;eu&sol;&quest;q&equals;1&apos;&gt;<span class="text-danger">&lt;script&gt;alert&lpar;&quot;XSS&quot;&rpar;&lt;&sol;script&gt;</span>&lt;&apos;
+              </span>
+            </div>
+          </div>
+
+          <h2 class="my-5 fs-3">XSS with CSS</h2>
+
+          <div class="lead fs-5 text-middark">
+            I am going to present to you here a type of code injection which is underestimated but which allows to do similar damage to a classic XSS. Here is the magic <span class="text-code">&lt;style&gt;</span> that allows your element
+            to <b class="text-light">span the entire page and be transparent</b>:<br />
+            <br />
+
+            <span class="text-code text-secondary fs-6">
+              <span class="text-info">position</span>: fixed; <span class="text-info">z-index</span>: 100000; <span class="text-info">opacity</span>: 0; <span class="text-info">top</span>: 0; <span class="text-info">left</span>: 0;
+              <span class="text-info">width</span>: 10000px; <span class="text-info">height</span>: 10000px;
+            </span>
+            <br />
+            <br />
+            Thus, the victim can only click on it. Here is a variant with a <b class="text-light">slightly transparent red background to see the attack surface</b>.<br />
+            <br />
+
+            <span class="text-code text-secondary fs-6">
+              <span class="text-info">position</span>: fixed; <span class="text-info">z-index</span>: 100000; <span class="text-warning">opacity</span>: 0.5; <span class="text-info">top</span>: 0; <span class="text-info">left</span>: 0;
+              <span class="text-info">width</span>: 10000px; <span class="text-info">height</span>: 10000px; <span class="text-warning">background-color</span>: red;
+            </span>
+            <br />
+            <br />
+
+            Then it all depends on the type of tag. At best, it's an <span class="text-code">&lt;a&gt;</span> tag (very common) so it's possible to set an <span class="text-code">href</span> to redirect the victim to an arbitrary website.
+            <br />
+            <br />
+            For example, <b class="text-light">a copy of the current website with fake login page</b>, to steal credentials. Here is the entire PoC with the <span class="text-code">&lt;a&gt;</span> tag:<br />
+            <br />
+
+            <span class="text-code text-light fs-6">
+              &lt;<span class="text-danger">a</span> <span class="text-info">href</span>&equals;&quot;https&colon;&sol;&sol;beguier&period;eu&sol;nicolas&sol;about&period;html&quot;
+              <span class="text-info">style</span>
+              &equals;&quot;position&colon;fixed&semi;z-index&colon;100000&semi;opacity&colon;0&period;5&semi;top&colon;0&semi;left&colon;0&semi;width&colon;10000px&semi;height&colon;10000px&semi;background-color&colon;red&semi;&quot;&gt;
+              &lt;&sol;<span class="text-danger">a</span>&gt;
+            </span>
+          </div>
+          <h2 class="my-5 fs-3">How to protect your production</h2>
+
+          <div class="lead fs-5 text-middark">
+            Now regarding defense, here are the CSS properties to be banned:<br />
+            <br />
+
+            <a class="text-decoration-none" href="https://developer.mozilla.org/en-US/docs/Web/CSS/position">
+              <span class="text-code text-secondary"><span class="text-info">position</span>: fixed</span>
+            </a>
+            <br />
+
+            The element is removed from the normal document flow, and no space is created for the element in the page layout. It is positioned relative to the initial containing block[...] Its final position is determined by the values of
+            top, right, bottom, and left.
+            <br />
+            <br />
+
+            <a class="text-decoration-none" href="https://developer.mozilla.org/en-US/docs/Web/CSS/z-index"><span class="text-code text-info">z-index</span></a><br />
+            [...] Overlapping elements with a larger z-index cover those with a smaller one. These two CSS properties are the ones that allow you to get out of the HTML structure.<br />
+            <br />
+
+            Of course, I don't really recommend reflecting HTML code as a feature. If you can, ban this practice. In case you have no choice, via a comment feature for example. Use a <b class="text-light">whitelist of HTML tags</b>, like
+            <span class="text-code">&lt;b&gt;</span> for instance and strip the others.<br />
+            <br />
+
+            Then, in the same way, use a <b class="text-light">whitelist of HTML attributes</b>, such as href for an <span class="text-code">&lt;a&gt;</span> or src for an <span class="text-code">&lt;img&gt;</span>.<br />
+            <br />
+
+            Finally, if possible, <b class="text-light">limit the values of these attributes</b>. In the case of a style attribute allowed, only allow a predefined list of CSS attributes.<br />
+            <br />
+
+            As presented in this security post-it, the inline style allows the attack presented above, and the class attribute allows to use one already defined in the CSS, or even to trigger JavaScript functions called by this function :
+            <br />
+            <div class="text-center">
+              <span class="text-code text-secondary fs-6">
+                document.getElementsByClassName('className');
+              </span>
+            </div>
+          </div>
+
+          <h2 class="my-5 fs-3">Demo</h2>
+
+          <div class="lead fs-5 text-middark">
+            Here, you have a button to enable the demo attack. The first one display the attack with a red background, to understand what happend, the second is transparent.<br />
+            <br />
+
+            <div class="text-center">
+              <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <button
+                  type="button"
+                  class="btn btn-outline-info"
+                  onclick="this.style='position:fixed;z-index:100000;opacity:0.5;top:0;left:0;width:10000px;height:10000px;background-color:red;';this.setAttribute('onclick', 'window.location.reload(false);')"
+                >
+                  Demo with red background
+                </button>
+                <button type="button" class="btn btn-outline-info" onclick="this.style='position:fixed;z-index:100000;opacity:0;top:0;left:0;width:10000px;height:10000px;';this.setAttribute('onclick', 'window.location.reload(false);')">
+                  Real-life demo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Begin Thanks -->
+      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
+    </main>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="/js/pub/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="/js/nico.min.js"></script>
+    <script>
+      DrawNavbar();
+      DrawFooter();
+    </script>
+  </body>
+</html>
