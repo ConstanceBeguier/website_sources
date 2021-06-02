@@ -106,7 +106,7 @@ function drawRecipe() {
 }
 
 function drawShopping() {
-  if (window.sessionStorage.getItem("shopping") == null) {
+  if (window.localStorage.getItem("shopping") == null) {
     shoppingCRUD.create();
     var full_recipe = GetFullRecipe();
     var sortedIngredients = SortIngredients(full_recipe);
@@ -136,19 +136,20 @@ function drawShopping() {
   document.getElementById("shopping").innerHTML = RecipeHTML;
 }
 function EventSwitchRecipe() {
-  window.sessionStorage.setItem("view", "recipe");
+  window.localStorage.setItem("view", "recipe");
   DrawBody();
 }
 function EventSwitchShopping() {
-  window.sessionStorage.setItem("view", "shopping");
+  window.localStorage.setItem("view", "shopping");
   DrawBody();
 }
 function EventAddShopping() {
   shoppingCRUD.add(document.getElementById("inputAdd").value, "");
+  document.getElementById("inputAdd").value = "";
   DrawBody();
 }
 function DrawBody() {
-  if (window.sessionStorage.getItem("view") == null || window.sessionStorage.getItem("view") == "recipe") {
+  if (window.localStorage.getItem("view") == null || window.localStorage.getItem("view") == "recipe") {
     document.getElementById("btnrecette").checked = true;
     document.getElementById("btncourse").checked = false;
     document.getElementById("dropdownMenuButton-lunch").hidden = false;
@@ -190,18 +191,18 @@ function DropOne(origin) {
 }
 var basketCRUD = {
   create: function () {
-    sessionStorage.setItem("basket", "{}");
+    localStorage.setItem("basket", "{}");
     return true;
   },
   deleteAll: function () {
-    sessionStorage.removeItem("basket");
+    localStorage.removeItem("basket");
     return true;
   },
   getAll: function () {
-    if (sessionStorage.getItem("basket") == null) {
+    if (localStorage.getItem("basket") == null) {
       this.create();
     }
-    return JSON.parse(sessionStorage.getItem("basket"));
+    return JSON.parse(localStorage.getItem("basket"));
   },
   get: function (key) {
     return this.getAll()[key];
@@ -209,13 +210,13 @@ var basketCRUD = {
   delete: function (key) {
     var lunch = this.getAll();
     delete lunch[key];
-    sessionStorage.setItem("basket", JSON.stringify(lunch));
+    localStorage.setItem("basket", JSON.stringify(lunch));
     return true;
   },
   update: function (key, value) {
     var lunch = this.getAll();
     lunch[key] = value;
-    sessionStorage.setItem("basket", JSON.stringify(lunch));
+    localStorage.setItem("basket", JSON.stringify(lunch));
     return true;
   },
   increment: function (key) {
@@ -229,18 +230,18 @@ var basketCRUD = {
 };
 var shoppingCRUD = {
   create: function () {
-    sessionStorage.setItem("shopping", "{}");
+    localStorage.setItem("shopping", "{}");
     return true;
   },
   deleteAll: function () {
-    sessionStorage.removeItem("shopping");
+    localStorage.removeItem("shopping");
     return true;
   },
   getAll: function () {
-    if (sessionStorage.getItem("shopping") == null) {
+    if (localStorage.getItem("shopping") == null) {
       this.create();
     }
-    return JSON.parse(sessionStorage.getItem("shopping"));
+    return JSON.parse(localStorage.getItem("shopping"));
   },
   get: function (key) {
     return this.getAll()[key];
@@ -248,20 +249,20 @@ var shoppingCRUD = {
   delete: function (key) {
     var shopping = this.getAll();
     delete shopping[key];
-    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    localStorage.setItem("shopping", JSON.stringify(shopping));
     return true;
   },
   add: function (key, value) {
     var shopping = this.getAll();
     shopping[key] = value;
     shopping[key + "_checked"] = false;
-    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    localStorage.setItem("shopping", JSON.stringify(shopping));
     return true;
   },
   switch: function (key) {
     var shopping = this.getAll();
     shopping[key + "_checked"] = !shopping[key + "_checked"];
-    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    localStorage.setItem("shopping", JSON.stringify(shopping));
     return true;
   },
 };
