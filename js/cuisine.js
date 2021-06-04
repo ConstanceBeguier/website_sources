@@ -157,7 +157,9 @@ function EventLoadShopping() {
   drawShopping();
 }
 function EventShareShopping() {
-  navigator.clipboard.writeText(btoa(window.localStorage.getItem("shopping")));
+  code = btoa(window.localStorage.getItem("shopping"));
+  document.getElementById("sharedCode").innerHTML = code;
+  navigator.clipboard.writeText(code);
   document.getElementById("pasted").hidden = false;
 }
 function DrawBody() {
