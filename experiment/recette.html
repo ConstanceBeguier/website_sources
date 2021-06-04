@@ -68,6 +68,13 @@
             <button class="btn btn-outline-primary" type="button" id="button-add" onclick="EventAddShopping()"><b>+</b></button>
             <input type="text" class="form-control" placeholder="Ajouter ingrédient" aria-label="Ajouter ingrédient" aria-describedby="button-add" id="inputAdd" />
           </div>
+            <button class="btn btn-outline-warning m-2" type="button" onclick="EventLoadShopping()">
+              Importer <ion-icon name="create"></ion-icon>
+            </button>
+            <button class="btn btn-outline-warning m-2" type="button" onclick="EventShareShopping()">
+              Partager <ion-icon name="share"></ion-icon>
+            </button>
+            <span id="pasted" hidden>Copié dans le presse-papier !</span>
         </div>
       </div>
     </div>

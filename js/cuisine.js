@@ -151,6 +151,15 @@ function EventAddShopping() {
   document.getElementById("inputAdd").value = "";
   DrawBody();
 }
+function EventLoadShopping() {
+  window.localStorage.setItem("shopping", atob(document.getElementById("inputAdd").value));
+  document.getElementById("inputAdd").value = "";
+  drawShopping();
+}
+function EventShareShopping() {
+  navigator.clipboard.writeText(btoa(window.localStorage.getItem("shopping")));
+  document.getElementById("pasted").hidden = false;
+}
 function DrawBody() {
   if (window.localStorage.getItem("view") == null || window.localStorage.getItem("view") == "recipe") {
     document.getElementById("btnrecette").checked = true;
@@ -185,6 +194,7 @@ function LunchDropDownUpdate(origin) {
 function Dropall() {
   basketCRUD.deleteAll();
   shoppingCRUD.deleteAll();
+  document.getElementById("inputAdd").value = "";
   DrawBody();
 }
 function DropOne(origin) {
