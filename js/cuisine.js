@@ -1,3 +1,6 @@
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 function GenerateHTMLDropdownElement(e_type, e_className, e_key, e_textContent) {
   var element = document.createElement(e_type);
   element.className = e_className;
@@ -100,7 +103,7 @@ function drawRecipe() {
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("name", "flexRadioDefault");
     checkbox.setAttribute("id", "flexRadio" + ingredient);
-    RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + ingredient + '"><b>' + ingredient + "</b> " + full_recipe[ingredient]["value"] + "</label>");
+    RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + htmlEntities(ingredient) + '"><b>' + htmlEntities(ingredient) + "</b> " + htmlEntities(full_recipe[ingredient]["value"]) + "</label>");
   }
   document.getElementById("recipe").innerHTML = RecipeHTML;
 }
@@ -129,8 +132,8 @@ function drawShopping() {
         checkbox.setAttribute("checked", true);
       }
       checkbox.setAttribute("id", "flexRadio" + ingredient);
-      checkbox.setAttribute("onchange", 'shoppingCRUD.switch("' + ingredient + '")');
-      RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + ingredient + '"><b>' + ingredient + "</b> " + shoppingCRUD.get(ingredient) + "</label>");
+      checkbox.setAttribute("onchange", 'shoppingCRUD.switch("' + htmlEntities(ingredient) + '")');
+      RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + htmlEntities(ingredient) + '"><b>' + htmlEntities(ingredient) + "</b> " + htmlEntities(shoppingCRUD.get(ingredient)) + "</label>");
     }
   }
   document.getElementById("shopping").innerHTML = RecipeHTML;
