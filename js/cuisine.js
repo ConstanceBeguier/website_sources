@@ -190,6 +190,7 @@ function DrawBody() {
     document.getElementById("bodyRecipe").hidden = true;
     document.getElementById("bodyShopping").hidden = false;
     drawShopping();
+    document.getElementById("inputAdd").focus()
   }
 }
 function LunchDropDownUpdate(origin) {
