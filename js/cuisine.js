@@ -151,11 +151,6 @@ function EventAddShopping() {
   document.getElementById("inputAdd").value = "";
   DrawBody();
 }
-function EventLoadShopping() {
-  window.localStorage.setItem("shopping", atob(document.getElementById("inputAdd").value));
-  document.getElementById("inputAdd").value = "";
-  drawShopping();
-}
 function EventShareShopping() {
   code = window.location.href.split("?")[0] + "?shopping=" + btoa(window.localStorage.getItem("shopping"));
   document.getElementById("sharedCode").innerHTML = "<a href="+code+">"+code+"</a>";
@@ -167,6 +162,7 @@ function DrawBody() {
   if (urlParams.has("shopping")) {
     window.localStorage.setItem("view", "shopping");
     window.localStorage.setItem("shopping", atob(urlParams.get("shopping")));
+    window.location = window.location.href.split("?")[0];
   }
   if (window.localStorage.getItem("view") == null || window.localStorage.getItem("view") == "recipe") {
     document.getElementById("btnrecette").checked = true;
@@ -202,7 +198,7 @@ function Dropall() {
   basketCRUD.deleteAll();
   shoppingCRUD.deleteAll();
   document.getElementById("inputAdd").value = "";
-  window.location = window.location.href.split("?")[0];
+  DrawBody();
 }
 function DropOne(origin) {
   basketCRUD.delete(origin.id);
