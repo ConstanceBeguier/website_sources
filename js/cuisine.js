@@ -109,7 +109,7 @@ function drawRecipe() {
 }
 
 function drawShopping() {
-  if (window.localStorage.getItem("shopping") == null) {
+  if (window.localStorage.getItem("shopping") == null || window.localStorage.getItem("shopping") == "{}") {
     shoppingCRUD.create();
     var full_recipe = GetFullRecipe();
     var sortedIngredients = SortIngredients(full_recipe);
@@ -157,12 +157,17 @@ function EventLoadShopping() {
   drawShopping();
 }
 function EventShareShopping() {
-  code = btoa(window.localStorage.getItem("shopping"));
-  document.getElementById("sharedCode").innerHTML = code;
+  code = window.location.href.split("?")[0] + "?shopping=" + btoa(window.localStorage.getItem("shopping"));
+  document.getElementById("sharedCode").innerHTML = "<a href="+code+">"+code+"</a>";
   navigator.clipboard.writeText(code);
   document.getElementById("pasted").hidden = false;
 }
 function DrawBody() {
+  const urlParams = new URLSearchParams(location.search);
+  if (urlParams.has("shopping")) {
+    window.localStorage.setItem("view", "shopping");
+    window.localStorage.setItem("shopping", atob(urlParams.get("shopping")));
+  }
   if (window.localStorage.getItem("view") == null || window.localStorage.getItem("view") == "recipe") {
     document.getElementById("btnrecette").checked = true;
     document.getElementById("btncourse").checked = false;
@@ -176,7 +181,6 @@ function DrawBody() {
     drawDropDownDessert();
     drawListing();
     drawRecipe();
-    shoppingCRUD.deleteAll();
   } else {
     document.getElementById("btnrecette").checked = false;
     document.getElementById("btncourse").checked = true;
@@ -197,7 +201,7 @@ function Dropall() {
   basketCRUD.deleteAll();
   shoppingCRUD.deleteAll();
   document.getElementById("inputAdd").value = "";
-  DrawBody();
+  window.location = window.location.href.split("?")[0];
 }
 function DropOne(origin) {
   basketCRUD.delete(origin.id);
