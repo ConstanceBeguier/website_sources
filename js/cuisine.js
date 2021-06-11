@@ -146,17 +146,27 @@ function EventSwitchShopping() {
   window.localStorage.setItem("view", "shopping");
   DrawBody();
 }
-function EventAddShopping() {
+function EventAddIngredient() {
   shoppingCRUD.add(document.getElementById("inputAdd").value, "");
   document.getElementById("inputAdd").value = "";
   DrawBody();
 }
-function EventKeyAddShopping() {
+function EventKeyAddIngredient() {
   document.getElementById("inputAdd").onkeydown = function (e) {
     if (e.keyCode == 13) {
-      EventAddShopping();
+      EventAddIngredient();
     }
   };
+}
+function EventDeleteSelectedIngredient() {
+  for (var ingredient in shoppingCRUD.getAll()) {
+    if (!ingredient.endsWith("_checked")) {
+      if (shoppingCRUD.get(ingredient+"_checked")) {
+        shoppingCRUD.delete(ingredient);
+      }
+    }
+  }
+  DrawBody();
 }
 function EventShareShopping() {
   code = window.location.href.split("?")[0] + "?shopping=" + btoa(window.localStorage.getItem("shopping"));

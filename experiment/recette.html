@@ -44,7 +44,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dessert"></div>
               </div>
               <button class="btn btn-danger m-2" type="button" onclick="Dropall()">
-                Vider
+                Tout supprimer
               </button>
               <div class="btn-group m-2" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnrecette" autocomplete="off" checked />
@@ -65,9 +65,12 @@
         <div class="col-8 col-md-8 col-lg-4 mx-auto">
           <div id="shopping"></div>
           <div class="input-group input-group-sm mb-3">
-            <button class="btn btn-outline-primary" type="button" id="button-add" onclick="EventAddShopping()"><b>+</b></button>
-            <input type="text" class="form-control" placeholder="Ajouter ingrédient" aria-label="Ajouter ingrédient" aria-describedby="button-add" id="inputAdd" autofocus onkeydown="EventKeyAddShopping()" />
+            <button class="btn btn-outline-primary" type="button" id="button-add" onclick="EventAddIngredient()"><b>+</b></button>
+            <input type="text" class="form-control" placeholder="Ajouter ingrédient" aria-label="Ajouter ingrédient" aria-describedby="button-add" id="inputAdd" autofocus onkeydown="EventKeyAddIngredient()" />
           </div>
+            <button class="btn btn-outline-danger m-2" type="button" onclick="EventDeleteSelectedIngredient()">
+              Supprimer la selection
+            </button>
             <button class="btn btn-outline-warning m-2" type="button" onclick="EventShareShopping()">
               Partager <ion-icon name="share"></ion-icon>
             </button>
