@@ -151,6 +151,13 @@ function EventAddShopping() {
   document.getElementById("inputAdd").value = "";
   DrawBody();
 }
+function EventKeyAddShopping() {
+  document.getElementById("inputAdd").onkeydown = function (e) {
+    if (e.keyCode == 13) {
+      EventAddShopping();
+    }
+  };
+}
 function EventShareShopping() {
   code = window.location.href.split("?")[0] + "?shopping=" + btoa(window.localStorage.getItem("shopping"));
   document.getElementById("sharedCode").innerHTML = "<a href="+code+">"+code+"</a>";

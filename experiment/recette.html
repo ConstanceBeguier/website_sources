@@ -66,7 +66,7 @@
           <div id="shopping"></div>
           <div class="input-group input-group-sm mb-3">
             <button class="btn btn-outline-primary" type="button" id="button-add" onclick="EventAddShopping()"><b>+</b></button>
-            <input type="text" class="form-control" placeholder="Ajouter ingrédient" aria-label="Ajouter ingrédient" aria-describedby="button-add" id="inputAdd" autofocus/>
+            <input type="text" class="form-control" placeholder="Ajouter ingrédient" aria-label="Ajouter ingrédient" aria-describedby="button-add" id="inputAdd" autofocus onkeydown="EventKeyAddShopping()" />
           </div>
             <button class="btn btn-outline-warning m-2" type="button" onclick="EventShareShopping()">
               Partager <ion-icon name="share"></ion-icon>
