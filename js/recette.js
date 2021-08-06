@@ -547,7 +547,7 @@ function ListDessert() {
         "Ajouter un oeuf, battre 3 minutes, x3.",
         "Ajouter farine et une cuillère et demi à café de levure.",
         "Ajouter les fruits. Mettre dans un moule à cake.",
-        "5 minutes à 225°C, puis baisser à 170°C pendant 25 minutes.",
+        "10 minutes à 215°C, puis baisser à 160°C pendant 25 minutes.",
       ],
     },
     cake_banane_chocolat: {
@@ -576,6 +576,18 @@ function ListDessert() {
         "Pépites de chocolat": "200g",
       },
       formula: ["Préchauffer le four à 200°C.", "Mélanger la farine, la levure et les oeufs.", "Ajouter le sucre et la cassonade.", "Ajouter le beurre et bien mélanger à la main.", "Ajouter les pépites de chocolat.", "Cuire 5-7 minutes."],
+    },
+    confiture_banane_kiwi: {
+      name: "Confiture banane kiwi",
+      nb_person: 2,
+      recipe: {
+        "Sucre confiture": "150g",
+        Pruneaux: 5,
+        Pomme: 1,
+        Banane: 2,
+        Kiwi: 3,
+      },
+      formula: ["Couper les fruits en petits morceaux et les mettre dans un saladier avec le sucre.", "Bien mélanger et laisser massérer au frigo pendant 10h-12h.", "Mixer les fruits.", "Cuire dans une sauteuse à feu vif en remuant souvent pendant 10-15min.", "Mettre dans les pots, bien fermer et les retourner."],
     },
     crumble: {
       name: "Crumble",
