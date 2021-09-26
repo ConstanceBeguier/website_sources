@@ -169,7 +169,8 @@ function EventDeleteSelectedIngredient() {
   DrawBody();
 }
 function EventShareShopping() {
-  code = window.location.href.split("?")[0] + "?shopping=" + btoa(window.localStorage.getItem("shopping"));
+  code = window.location.href.split("?")[0] + "?shopping=" + encodeURIComponent(
+    btoa(window.localStorage.getItem("shopping")));
   document.getElementById("sharedCode").innerHTML = "<a href="+code+">"+code+"</a>";
   navigator.clipboard.writeText(code);
   document.getElementById("pasted").hidden = false;
