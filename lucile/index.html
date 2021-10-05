@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="description" content="Projet interactif de Lucile Béguier" />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="lucile beguier musique émotions marcher créer" />
+    <meta property="og:title" content="Marcher, créer" />
+    <meta property="og:image" content="https://beguier.eu/favicon_vignette.png" />
+    <meta property="og:description" content="Projet interactif de Lucile Béguier" />
+    <meta property="og:url" content="https://beguier.eu/lucile/index.html" />
+    <meta property="og:type" content="projects" />
+    <title>Lucile Béguier</title>
+    <script src="/js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/css/beguier.min.css" />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100 bg-black text-light">
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+      <div class="container">
+        <div class="row">
+          <div class="col text-center">
+            <h3 class="my-3">Dites-moi comment vous vous sentez et laissez vous guider par la musique qui convient</h3>
+
+            <div class="row row-cols-1 row-cols-lg-5">
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm modal-lg" onclick="youtube_video('nNQpVUYzV3M')">
+                  <div class="card-body">
+                    <h4 class="card-title">Heureux</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm modal-lg" onclick="youtube_video('-u6VKBFfCJ8')">
+                  <div class="card-body">
+                    <h4 class="card-title">Triste</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm modal-lg" onclick="youtube_video('8Rk3gH2bPhk')">
+                  <div class="card-body">
+                    <h4 class="card-title">Confiant</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm modal-lg" onclick="youtube_video('-o4cIEREUuU')">
+                  <div class="card-body">
+                    <h4 class="card-title">Chill</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm modal-lg" onclick="youtube_video('TvilrqAtu_A')">
+                  <div class="card-body">
+                    <h4 class="card-title">En colère</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <iframe width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen id=youtube_video></iframe>
+
+          <h5 id="form_link" class="my-3" hidden=true>Qu'en pensez-vous ? Répondez <a href="https://docs.google.com/forms/d/e/1FAIpQLSdfEsnM3Ntn88ldJTWUGPfuQE_iFBqP-FeHNkLt1CrVjMdwnw/viewform" class="link-info" onclick="window.open(this.href); return false;">ici</a></h5>
+
+        </div>
+      </div>
+      <br />
+    </main>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+
+    <script src="/js/pub/jquery.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"></script>
+    <script src="/js/nico.min.js"></script>
+    <script>
+      DrawFooter();
+      function youtube_video(video_tag) {
+        document.getElementById('youtube_video').src = 'https://www.youtube.com/embed/'+video_tag;
+        document.getElementById('form_link').hidden = false;
+        document.getElementById( 'youtube_video' ).scrollIntoView();
+      }
+    </script>
+  </body>
+</html>
