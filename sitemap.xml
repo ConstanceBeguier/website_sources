@@ -36,36 +36,6 @@
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://beguier.eu/constance/articles/cnn/cnn.html</loc>
-  <lastmod>2020-01-08T14:39:44+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/constance/articles/smc/smc.html</loc>
-  <lastmod>2020-01-05T14:39:44+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/constance/articles/blockchain/blockchain.html</loc>
-  <lastmod>2020-01-05T14:39:44+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/constance/articles/machinelearning/machinelearning.html</loc>
-  <lastmod>2020-01-05T14:39:44+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/constance/articles/finance/finance.html</loc>
-  <lastmod>2020-01-05T14:39:44+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/constance/articles/tensorflow/tensorflow.html</loc>
-  <lastmod>2020-03-01T14:39:44+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
   <loc>https://beguier.eu/nicolas/articles/koa.html</loc>
   <lastmod>2021-04-06T21:15:00+00:00</lastmod>
   <priority>0.64</priority>
@@ -84,5 +54,10 @@
   <loc>https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html</loc>
   <lastmod>2021-04-06T21:15:00+00:00</lastmod>
   <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/lucile/</loc>
+  <lastmod>2021-10-22T20:39:00+00:00</lastmod>
+  <priority>0.80</priority>
 </url>
 </urlset>
