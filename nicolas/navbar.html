@@ -13,7 +13,6 @@
 
       <div class="text-end">
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><p class="nav-link px-2 text-secondary mt-1" id="text-copied" hidden>Copied!</p></li>
           <li>
             <a class="nav-link px-2 text-dark" href="https://www.linkedin.com/in/nicolasbeguier/" onclick="window.open(this.href); return false;"><ion-icon name="logo-linkedin" size="large"></ion-icon></a>
           </li>
@@ -28,3 +27,11 @@
     </div>
   </div>
 </header>
+
+<!-- Toast mail -->
+<div class="position-fixed toast-position p-3">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body text-dark" id="ToastMail">
+    </div>
+  </div>
+</div>
