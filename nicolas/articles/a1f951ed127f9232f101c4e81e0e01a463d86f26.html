@@ -44,7 +44,7 @@
 
           <div class="lead fs-6 text-middark">
             In a real-life scenario, let's calculate the minimum length of an HMAC key to be breakable in more than 10 years, which is 315360000 seconds. I will theoretically take eight Nvidia GTX 1080s, using this
-            <a href="https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40" onclick="window.open(this.href); return false;" class="link-info">performance sheet</a>.
+            <a href="https://gist.github.com/epixoip/a83d38f412b4737e99bbef804a270c40" onclick="RedirectNewTab(this.href)" class="link-info">performance sheet</a>.
             <br />
             <br />
             By approximating, we consider that HMAC performs two SHA-1s and one XOR (0.5 times the number of SHA-1 per second). With this configuration, it is possible to generate about \(6.87 \times 10^{10}\) SHA-1 per second.
@@ -70,7 +70,7 @@
           <div class="lead fs-6 text-middark">
             Breaking SHA-1 by brute-force attack is not a solution.<br />
             <br />
-            In 2017, <a href="https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html" onclick="window.open(this.href); return false;" class="link-info">Google has found how to collide two SHA-1 hashes</a>. At the time,
+            In 2017, <a href="https://security.googleblog.com/2017/02/announcing-first-sha1-collision.html" onclick="RedirectNewTab(this.href)" class="link-info">Google has found how to collide two SHA-1 hashes</a>. At the time,
             it cost approximately 130k$ and relies on the birthday paradox.
 
             <div class="col-md-8 col-lg-6 mx-auto my-5">
@@ -80,7 +80,7 @@
             </div>
 
             In May 2019, some french and singapourien researches have found how to
-            <a href="https://eprint.iacr.org/2019/459.pdf" onclick="window.open(this.href); return false;" class="link-info">reduce the number of try to collide prefixes</a>.
+            <a href="https://eprint.iacr.org/2019/459.pdf" onclick="RedirectNewTab(this.href)" class="link-info">reduce the number of try to collide prefixes</a>.
 
             <figure class="text-end my-5">
               <blockquote class="blockquote">
@@ -106,7 +106,7 @@
             The compression function of HMAC successively applies several SHA-1s. Having the power to make collisions of SHA-1 does not predict the output of an HMAC.<br />
             <br />
             A much deeper break of SHA-1's round function would be needed to break HMAC. M. Bellare's New Proofs for NMAC and HMAC:
-            <a href="https://eprint.iacr.org/2006/043.pdf" onclick="window.open(this.href); return false;" class="link-info">Security without Collision-Resistance</a> shows that the security of HMAC holds assuming only weaker properties on
+            <a href="https://eprint.iacr.org/2006/043.pdf" onclick="RedirectNewTab(this.href)" class="link-info">Security without Collision-Resistance</a> shows that the security of HMAC holds assuming only weaker properties on
             its round function than needed for collision resistance of the corresponding hash.
           </div>
         </div>
