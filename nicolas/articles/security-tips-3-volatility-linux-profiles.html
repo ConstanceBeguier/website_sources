@@ -14,7 +14,7 @@
     <meta property="og:type" content="article" />
     <title>Security Post-it #3 – Volatility Linux Profiles</title>
     <script src="/js/redirect.min.js" type="text/javascript" async></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link href="/css/beguier.min.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.png" />
   </head>
@@ -27,7 +27,10 @@
     <main class="flex-shrink-0">
       <div class="container col-lg-8 p-0 bg-dark text-light">
         <!-- Begin title banner -->
-        <div class="position-relative overflow-hidden text-center" style="background: url('/nicolas/img/cover/logo_secu-postit3.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;">
+        <div
+          class="position-relative overflow-hidden text-center"
+          style="background: url('/nicolas/img/cover/logo_secu-postit3.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
+        >
           <div class="col-md-6 m-5 mx-md-auto">
             <h1 class="display-4 fw-normal">Security Post-it #3 – Volatility Linux Profiles</h1>
             <p class="lead fw-normal">In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.</p>
@@ -40,8 +43,8 @@
           <h2 class="my-5 fs-3">How to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container</h2>
 
           <div class="lead fs-6 text-middark">
-            Volatility is a tool supported by the <a href="https://www.volatilityfoundation.org/" class="link-info" onclick="RedirectNewTab(this.href)"><b>Volatility Foundation</b></a> and aims to assist the forensic
-            investigator when analyzing a computer memory dump.<br />
+            Volatility is a tool supported by the <a href="https://www.volatilityfoundation.org/" class="link-info" onclick="RedirectNewTab(this.href)"><b>Volatility Foundation</b></a> and aims to assist the forensic investigator when
+            analyzing a computer memory dump.<br />
             In this article, I'll be focusing on both Volatility 2 & 3.<br />
             <br />
             This security post-it is about generating <b class="text-warning">a new Linux profile</b> for a memory dump. By default, Volatility only integrates Windows profiles, but none for Linux and Mac. A Linux Volatility profile or
@@ -52,11 +55,7 @@
 
           <div class="lead fs-6 text-middark">
             Run the banner plugin of Volatility 3 on your memory dump to display the Linux kernel version:<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> volatility3 -f dump.raw banner</span><br />
-            <span class="text-code text-secondary">
-              0x1a000e0 Linux version 4.4.0-72-lowlatency (buildd@lcy01-17) (gcc version 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) ) #93-Ubuntu SMP PREEMPT Fri Mar 31 15:25:21 UTC 2017 (Ubuntu 4.4.0-72.93-lowlatency 4.4.49)
-            </span>
-            <br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility3 -f dump.raw banner</span>
             <br />
             On my example, it's a <b class="text-warning">4.4.0-72-lowlatency kernel</b>, on an Ubuntu 16.04.4.<br />
             Before creating your own profile or symbol table, you may be lucky and find your match in the
@@ -70,25 +69,24 @@
             environment without starting a virtual machine.<br />
             <br />
             First, clone Volatility 2 to use their Linux tools.<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> git clone https://github.com/volatilityfoundation/volatility</span><br />
-            <span class="text-code text-light"><span class="text-danger">$</span> cd volatility/tools/linux/</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> git clone https://github.com/volatilityfoundation/volatility</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cd volatility/tools/linux/</span><br />
             I advise you to replace the automatic kernel detection with a static value, which is your target linux kernel, in my case it is 4.4.0-72-lowlatency.<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> sed -i 's/$(shell uname -r)/4.4.0-72-lowlatency/g' Makefile</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> sed -i 's/$(shell uname -r)/4.4.0-72-lowlatency/g' Makefile</span><br />
             Next, run a docker container that matches the target operating system, in my case Ubuntu 16.04, and install the necessary packages.<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash</span><br />
-            <span class="text-code text-light"><span class="text-danger">#</span> apt update</span><br />
-            <span class="text-code text-light"><span class="text-danger">#</span> apt install linux-image-4.4.0-72-lowlatency linux-headers-4.4.0-72-lowlatency build-essential dwarfdump make zip</span><br />
-            <span class="text-code text-light"><span class="text-danger">#</span> cd /volatility/</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> apt update && apt install -y linux-image-4.4.0-72-lowlatency linux-headers-4.4.0-72-lowlatency build-essential dwarfdump make zip</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> cd /volatility/</span><br />
             Finally, create the dwarf file with the volatility tool.<br />
-            <span class="text-code text-light"><span class="text-danger">#</span> make</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> make</span>
             Create a zip archive containing the dwarf file and the System map.<br />
-            <span class="text-code text-light"><span class="text-danger">#</span> zip Ubuntu1604.zip module.dwarf /boot/System.map-4.4.0-72-lowlatency</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> zip Ubuntu1604.zip module.dwarf /boot/System.map-4.4.0-72-lowlatency</span>
             You now have an Ubuntu1604.zip archive containing the correct profile.<br />
-            <span class="text-code text-light"><span class="text-danger">#</span> exit</span><br />
-            <span class="text-code text-light"><span class="text-danger">$</span> cp Ubuntu1604.zip &lt;volatility&gt;/plugins/overlays/linux/</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> exit</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cp Ubuntu1604.zip &lt;volatility&gt;/plugins/overlays/linux/</span>
             <br />
             Your profile is ready, you can check that Volatility has loaded it with the following command:<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> volatility --info | grep Profile</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility --info | grep Profile</span>
           </div>
           <h2 class="my-5 fs-3">Generating a profile for Volatility 3</h2>
 
@@ -96,30 +94,30 @@
             There is no profile in Volatility 3, and you could not create a symbol table from a Volatility 2 profile.<br />
             <br />
             First, you need to clone the dwarf2json repository which allows to get a json file from an elf file. Build the go binary before running the docker container.<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> git clone https://github.com/volatilityfoundation/dwarf2json</span><br />
-            <span class="text-code text-light"><span class="text-danger">$</span> cd dwarf2json/</span><br />
-            <span class="text-code text-light"><span class="text-danger">$</span> go mod download github.com/spf13/pflag</span><br />
-            <span class="text-code text-light"><span class="text-danger">$</span> go build</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> git clone https://github.com/volatilityfoundation/dwarf2json</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cd dwarf2json/</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> go mod download github.com/spf13/pflag</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> go build</span>
             <br />
             Then you need to download the debug symbols from the target Linux kernel. Several methods are possible to get it, but I recommend to google it and to download it manually. In my case, it was available on the official Ubuntu
             mirrors.<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> wget http://launchpadlibrarian.net/313821743/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> wget http://launchpadlibrarian.net/313821743/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</span>
             <br />
             Next, run a docker container that matches the target operating system, in my case Ubuntu 16.04, and install the debug symbols.<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash</span><br />
-            <span class="text-code text-light"><span class="text-danger">#</span> dpkg -i /volatility/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> dpkg -i /volatility/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</span>
             <br />
             Run the dwarf2json binary to generate the symbol table.<br />
-            <span class="text-code text-light"><span class="text-danger">#</span> /volatility/dwarf2json linux --elf /usr/lib/debug/boot/vmlinux-4.4.0-72-lowlatency > linux-image-4.4.0-72-lowlatency-amd64.json</span><br />
-            <span class="text-code text-light"><span class="text-danger">#</span> exit</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> /volatility/dwarf2json linux --elf /usr/lib/debug/boot/vmlinux-4.4.0-72-lowlatency > linux-image-4.4.0-72-lowlatency-amd64.json</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">#</span> exit</span>
             <br />
             Find the volatility3 symbols directory and move your symbol table in it.<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> volatility3 -vvv -f dump.raw banner</span><br />
-            <span class="text-code text-secondary">Volatility 3 Framework 1.0.1 INFO root : Volatility plugins path: ['&lt;volatility3&gt;/framework/plugins'] INFO root : Volatility symbols path: ['&lt;volatility3&gt;/symbols']</span><br />
-            <span class="text-code text-light"><span class="text-danger">$</span> cp linux-image-4.4.0-72-lowlatency-amd64.json &lt;volatility3&gt;/symbols/</span><br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility3 -vvv -f dump.raw banner</span>
+            <span class="text-code text-secondary">Volatility 3 Framework 1.0.1 INFO root : Volatility plugins path: ['&lt;volatility3&gt;/framework/plugins'] INFO root : Volatility symbols path: ['&lt;volatility3&gt;/symbols']</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cp linux-image-4.4.0-72-lowlatency-amd64.json &lt;volatility3&gt;/symbols/</span>
             <br />
             Your symbols are ready, you can check that Volatility has loaded it with the following command:<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> volatility3 -f dump.raw linux.pstree.PsTree</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility3 -f dump.raw linux.pstree.PsTree</span>
           </div>
         </div>
       </div>
@@ -134,9 +132,5 @@
     <script src="/js/pub/jquery.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="/js/nico.min.js"></script>
-    <script>
-      DrawNavbar();
-      DrawFooter();
-    </script>
   </body>
 </html>

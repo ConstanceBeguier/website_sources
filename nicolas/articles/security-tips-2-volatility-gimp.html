@@ -59,13 +59,11 @@
             <br />
 
             Prepare the directory to dump the process memory dump:<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> mkdir /tmp/memdump/</span><br />
-            <br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> mkdir /tmp/memdump/</span><br />
             For a Windows profile, with the process PID 1234:<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> volatility -f dump.raw --profile=MyWinProfile memdump --pid 1234 --dump-dir /tmp/memdump/</span><br />
-            <br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility -f dump.raw --profile=MyWinProfile memdump --pid 1234 --dump-dir /tmp/memdump/</span><br />
             For a MacOS profile, with the process PID 1234:<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> volatility -f dump.raw --profile=MyMacProfile mac_memdump --pid 1234 --dump-dir /tmp/memdump/</span>
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility -f dump.raw --profile=MyMacProfile mac_memdump --pid 1234 --dump-dir /tmp/memdump/</span>
           </div>
           <h2 class="my-5 fs-3">Edit with GIMP and start digging</h2>
 
@@ -74,8 +72,7 @@
             understand as a raw input.<br />
             <br />
             Then, open it with gimp in command line:<br />
-            <span class="text-code text-light"><span class="text-danger">$</span> gimp /tmp/memdump/1234.data</span><br />
-            <br />
+            <span class="text-code text-light copy-code"><span class="text-danger">$</span> gimp /tmp/memdump/1234.data</span><br />
             First of all, set the <b class="text-danger">Image type</b> to <b class="text-code text-light">RGB Alpha</b>, <b class="text-success">width</b> to <b class="text-code text-light">1024</b> and
             <b class="text-success">height</b> to <b class="text-code text-light">733</b>, which represent a classic low computer resolution.
 
@@ -119,9 +116,5 @@
     <script src="/js/pub/jquery.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="/js/nico.min.js"></script>
-    <script>
-      DrawNavbar();
-      DrawFooter();
-    </script>
   </body>
 </html>
