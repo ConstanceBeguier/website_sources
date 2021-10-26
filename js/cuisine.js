@@ -168,11 +168,20 @@ function EventDeleteSelectedIngredient() {
   }
   DrawBody();
 }
+function CopyTextToClipboard(message) {
+    var tempInput = document.createElement("input");
+    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+    tempInput.value = message;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+}
 function EventShareShopping() {
   code = window.location.href.split("?")[0] + "?shopping=" + encodeURIComponent(
     btoa(window.localStorage.getItem("shopping")));
-  document.getElementById("sharedCode").innerHTML = "<a href="+code+">"+code+"</a>";
-  navigator.clipboard.writeText(code);
+  // document.getElementById("sharedCode").innerHTML = "<a href="+code+">"+code+"</a>";
+  CopyTextToClipboard(code);
   document.getElementById("pasted").hidden = false;
 }
 function DrawBody() {
