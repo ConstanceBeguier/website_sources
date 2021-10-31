@@ -6,7 +6,7 @@
     <meta charset="UTF-8" />
     <meta name="description" content="Nicolas Beguier website, providing articles about security." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="beguier cyber security blog" />
+    <meta name="keywords" content="beguier cyber security blog forensic" />
     <meta property="og:title" content="Nicolas Béguier website" />
     <meta property="og:image" content="https://beguier.eu/favicon_vignette.png" />
     <meta property="og:description" content="Nicolas Beguier website, providing articles about security." />
@@ -14,39 +14,38 @@
     <meta property="og:type" content="article" />
     <title>Nicolas Béguier</title>
     <script src="/js/redirect.min.js" type="text/javascript" async></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
     <link rel="stylesheet" href="/css/beguier.min.css" />
     <link rel="icon" href="/favicon.png" />
   </head>
 
   <body class="d-flex flex-column h-100 bg-black">
     <!-- Begin nav header -->
-    <div id="includedNavbar"></div>
+    <div id="includedNavbar">
+      <header class="p-3 border-bottom bg-white" />
+    </div>
 
     <!-- Begin blog highlight -->
     <main class="container my-3">
-      <div class="card mb-3 shadow-sm rounded bg-dark text-light card-zoom" onclick="window.location.href = './articles/security-tips-3-volatility-linux-profiles.html';">
-        <img src="./img/cover/logo_secu-postit3.jpg" class="d-block mx-lg-auto img-fluid" alt="Cover" width="700" height="500" loading="lazy" />
+      <div class="card mb-3 shadow-sm rounded bg-dark text-light card-zoom" onclick="window.location.href = './articles/security-postit-4-secrets.html';">
+        <img src="./img/cover/logo_secu-postit4.jpg" class="d-block mx-lg-auto img-fluid" alt="Cover" width="700" height="500" loading="lazy" />
         <div class="card-body">
-          <h5 class="card-title">Security Post-it #3 – Volatility Linux Profiles</h5>
-          <p class="card-text text-middark text-justify">In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.</p>
-          <p class="card-text"><small class="text-muted">Mar 15, 2021</small></p>
+          <h5 class="card-title">Security Post-it #4 – Looking for secrets</h5>
+          <p class="card-text text-middark text-justify">In this short security post-it, I explain how to look for secrets in files or outputs.</p>
+          <p class="card-text"><small class="text-muted">Oct 31, 2021</small></p>
         </div>
       </div>
 
       <div class="row mb-2">
         <div class="col-md-6">
-          <div
-            class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark text-light card-zoom"
-            onclick="window.location.href = 'https://medium.com/leboncoin-engineering-blog/aws-tower-b3242ca7ca1d';"
-          >
+          <div class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark text-light card-zoom" onclick="window.location.href = './articles/security-tips-3-volatility-linux-profiles.html';">
             <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-info"><ion-icon name="star"></ion-icon> Top Security article</strong>
-              <h3>AWS Tower</h3>
+              <strong class="d-inline-block mb-2 text-info"><ion-icon name="star"></ion-icon> Top Forensic article</strong>
+              <h3>Security Post-it #3 – Volatility Linux Profiles</h3>
               <p class="card-text text-middark text-justify">
-                AWS Tower has been developed by security engineers, for security engineers. Even without AWS knowledge you can still easily see the security issues or other information like DNS records, allowed IP addresses or opened ports.
+                AWS In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.
               </p>
-              <p class="card-text mb-auto"><small class="text-muted">Jan 06, 2021</small></p>
+              <p class="card-text mb-auto"><small class="text-muted">Mar 15, 2021</small></p>
             </div>
           </div>
         </div>
@@ -54,15 +53,15 @@
         <div class="col-md-6">
           <div
             class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark text-light card-zoom"
-            onclick="window.location.href = 'https://nbeguier.medium.com/nginx-security-configuration-tips-557c35e0d75b';"
+            onclick="window.location.href = 'https://nbeguier.medium.com/a-real-world-comparison-of-the-ssh-key-algorithms-b26b0b31bfd9';"
           >
             <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-warning"><ion-icon name="star"></ion-icon> Top Infrastructure article</strong>
-              <h3>Nginx : Security configuration tips</h3>
+              <strong class="d-inline-block mb-2 text-warning"><ion-icon name="star"></ion-icon> Top Security article</strong>
+              <h3>Comparison of the SSH Key Algorithms</h3>
               <p class="card-text text-middark text-justify">
-                This article is going to give you some advices to improve the security of you web server Nginx. Several criteria are taken into account: system security, SSL/TLS security and data security.
+                This story is about comparing the main algorithms use to generate an SSH key, describe their weaknesses and place them on the Moore Law.
               </p>
-              <p class="card-text mb-auto"><small class="text-muted">Jan 04, 2021</small></p>
+              <p class="card-text mb-auto"><small class="text-muted">Sep 23, 2018</small></p>
             </div>
           </div>
         </div>
@@ -71,6 +70,25 @@
 
     <!-- Begin blog articles -->
     <main class="bg-dark">
+      <div class="container col-xxl-8 px-4 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-5">
+          <div class="col-12 col-lg-6 text-center">
+            <img src="./img/cover/logo_secu-postit3.jpg" class="img-fluid" alt="Cover" width="400" height="500" loading="lazy" />
+          </div>
+          <div class="col-lg-6">
+            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #3 – Volatility Linux Profiles</h1>
+            <p class="mb-2"><small class="text-muted">Mar 15, 2021</small></p>
+            <p class="text-middark text-justify">
+              In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.
+            </p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-tips-3-volatility-linux-profiles.html">Read this article</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="b-large-divider"></div>
       <div class="container col-xxl-8 px-4 py-5">
         <div class="row flex-lg-row-reverse align-items-center g-5">
           <div class="col-12 col-lg-6 text-center">
