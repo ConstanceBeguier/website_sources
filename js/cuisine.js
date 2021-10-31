@@ -1,3 +1,6 @@
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 function GenerateHTMLDropdownElement(e_type, e_className, e_key, e_textContent) {
   var element = document.createElement(e_type);
   element.className = e_className;
@@ -100,13 +103,13 @@ function drawRecipe() {
     checkbox.setAttribute("type", "checkbox");
     checkbox.setAttribute("name", "flexRadioDefault");
     checkbox.setAttribute("id", "flexRadio" + ingredient);
-    RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + ingredient + '"><b>' + ingredient + "</b> " + full_recipe[ingredient]["value"] + "</label>");
+    RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + htmlEntities(ingredient) + '"><b>' + htmlEntities(ingredient) + "</b> " + htmlEntities(full_recipe[ingredient]["value"]) + "</label>");
   }
   document.getElementById("recipe").innerHTML = RecipeHTML;
 }
 
 function drawShopping() {
-  if (window.sessionStorage.getItem("shopping") == null) {
+  if (window.localStorage.getItem("shopping") == null || window.localStorage.getItem("shopping") == "{}") {
     shoppingCRUD.create();
     var full_recipe = GetFullRecipe();
     var sortedIngredients = SortIngredients(full_recipe);
@@ -129,26 +132,66 @@ function drawShopping() {
         checkbox.setAttribute("checked", true);
       }
       checkbox.setAttribute("id", "flexRadio" + ingredient);
-      checkbox.setAttribute("onchange", 'shoppingCRUD.switch("' + ingredient + '")');
-      RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + ingredient + '"><b>' + ingredient + "</b> " + shoppingCRUD.get(ingredient) + "</label>");
+      checkbox.setAttribute("onchange", 'shoppingCRUD.switch("' + htmlEntities(ingredient) + '")');
+      RecipeHTML += GenerateHTMLElement("div", "form-check", "", checkbox.outerHTML + '<label class="form-check-label" for="flexRadio' + htmlEntities(ingredient) + '"><b>' + htmlEntities(ingredient) + "</b> " + htmlEntities(shoppingCRUD.get(ingredient)) + "</label>");
     }
   }
   document.getElementById("shopping").innerHTML = RecipeHTML;
 }
 function EventSwitchRecipe() {
-  window.sessionStorage.setItem("view", "recipe");
+  window.localStorage.setItem("view", "recipe");
   DrawBody();
 }
 function EventSwitchShopping() {
-  window.sessionStorage.setItem("view", "shopping");
+  window.localStorage.setItem("view", "shopping");
   DrawBody();
 }
-function EventAddShopping() {
+function EventAddIngredient() {
   shoppingCRUD.add(document.getElementById("inputAdd").value, "");
+  document.getElementById("inputAdd").value = "";
   DrawBody();
+}
+function EventKeyAddIngredient() {
+  document.getElementById("inputAdd").onkeydown = function (e) {
+    if (e.keyCode == 13) {
+      EventAddIngredient();
+    }
+  };
+}
+function EventDeleteSelectedIngredient() {
+  for (var ingredient in shoppingCRUD.getAll()) {
+    if (!ingredient.endsWith("_checked")) {
+      if (shoppingCRUD.get(ingredient+"_checked")) {
+        shoppingCRUD.delete(ingredient);
+      }
+    }
+  }
+  DrawBody();
+}
+function CopyTextToClipboard(message) {
+    var tempInput = document.createElement("input");
+    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+    tempInput.value = message;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+}
+function EventShareShopping() {
+  code = window.location.href.split("?")[0] + "?shopping=" + encodeURIComponent(
+    btoa(window.localStorage.getItem("shopping")));
+  // document.getElementById("sharedCode").innerHTML = "<a href="+code+">"+code+"</a>";
+  CopyTextToClipboard(code);
+  document.getElementById("pasted").hidden = false;
 }
 function DrawBody() {
-  if (window.sessionStorage.getItem("view") == null || window.sessionStorage.getItem("view") == "recipe") {
+  const urlParams = new URLSearchParams(location.search);
+  if (urlParams.has("shopping")) {
+    window.localStorage.setItem("view", "shopping");
+    window.localStorage.setItem("shopping", atob(urlParams.get("shopping")));
+    window.location = window.location.href.split("?")[0];
+  }
+  if (window.localStorage.getItem("view") == null || window.localStorage.getItem("view") == "recipe") {
     document.getElementById("btnrecette").checked = true;
     document.getElementById("btncourse").checked = false;
     document.getElementById("dropdownMenuButton-lunch").hidden = false;
@@ -161,7 +204,6 @@ function DrawBody() {
     drawDropDownDessert();
     drawListing();
     drawRecipe();
-    shoppingCRUD.deleteAll();
   } else {
     document.getElementById("btnrecette").checked = false;
     document.getElementById("btncourse").checked = true;
@@ -171,6 +213,7 @@ function DrawBody() {
     document.getElementById("bodyRecipe").hidden = true;
     document.getElementById("bodyShopping").hidden = false;
     drawShopping();
+    document.getElementById("inputAdd").focus()
   }
 }
 function LunchDropDownUpdate(origin) {
@@ -181,6 +224,7 @@ function LunchDropDownUpdate(origin) {
 function Dropall() {
   basketCRUD.deleteAll();
   shoppingCRUD.deleteAll();
+  document.getElementById("inputAdd").value = "";
   DrawBody();
 }
 function DropOne(origin) {
@@ -190,18 +234,18 @@ function DropOne(origin) {
 }
 var basketCRUD = {
   create: function () {
-    sessionStorage.setItem("basket", "{}");
+    localStorage.setItem("basket", "{}");
     return true;
   },
   deleteAll: function () {
-    sessionStorage.removeItem("basket");
+    localStorage.removeItem("basket");
     return true;
   },
   getAll: function () {
-    if (sessionStorage.getItem("basket") == null) {
+    if (localStorage.getItem("basket") == null) {
       this.create();
     }
-    return JSON.parse(sessionStorage.getItem("basket"));
+    return JSON.parse(localStorage.getItem("basket"));
   },
   get: function (key) {
     return this.getAll()[key];
@@ -209,13 +253,13 @@ var basketCRUD = {
   delete: function (key) {
     var lunch = this.getAll();
     delete lunch[key];
-    sessionStorage.setItem("basket", JSON.stringify(lunch));
+    localStorage.setItem("basket", JSON.stringify(lunch));
     return true;
   },
   update: function (key, value) {
     var lunch = this.getAll();
     lunch[key] = value;
-    sessionStorage.setItem("basket", JSON.stringify(lunch));
+    localStorage.setItem("basket", JSON.stringify(lunch));
     return true;
   },
   increment: function (key) {
@@ -229,18 +273,18 @@ var basketCRUD = {
 };
 var shoppingCRUD = {
   create: function () {
-    sessionStorage.setItem("shopping", "{}");
+    localStorage.setItem("shopping", "{}");
     return true;
   },
   deleteAll: function () {
-    sessionStorage.removeItem("shopping");
+    localStorage.removeItem("shopping");
     return true;
   },
   getAll: function () {
-    if (sessionStorage.getItem("shopping") == null) {
+    if (localStorage.getItem("shopping") == null) {
       this.create();
     }
-    return JSON.parse(sessionStorage.getItem("shopping"));
+    return JSON.parse(localStorage.getItem("shopping"));
   },
   get: function (key) {
     return this.getAll()[key];
@@ -248,20 +292,20 @@ var shoppingCRUD = {
   delete: function (key) {
     var shopping = this.getAll();
     delete shopping[key];
-    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    localStorage.setItem("shopping", JSON.stringify(shopping));
     return true;
   },
   add: function (key, value) {
     var shopping = this.getAll();
     shopping[key] = value;
     shopping[key + "_checked"] = false;
-    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    localStorage.setItem("shopping", JSON.stringify(shopping));
     return true;
   },
   switch: function (key) {
     var shopping = this.getAll();
     shopping[key + "_checked"] = !shopping[key + "_checked"];
-    sessionStorage.setItem("shopping", JSON.stringify(shopping));
+    localStorage.setItem("shopping", JSON.stringify(shopping));
     return true;
   },
 };
