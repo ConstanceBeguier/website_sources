@@ -13,7 +13,7 @@ function ListLunch() {
         "Vin blanc": "100mL",
         Fenouil: 1,
         Champignons: "100g",
-        "Crème fraîche": "50g",
+        "Crème fraîche": "20cL",
         Parmesan: "100g",
       },
       formula: [
@@ -265,7 +265,7 @@ function ListDinner() {
       name: "Pâtes à la Carbonara",
       nb_person: 2,
       recipe: {
-        "Crème fraîche": "25cL",
+        "Crème fraîche": "20cL",
         Oeuf: 2,
         Lardons: "125g",
         Oignon: 1,
@@ -290,7 +290,7 @@ function ListDinner() {
       nb_person: 4,
       recipe: {
         "Pâte brisée": 1,
-        Tomate: 5,
+        Tomate: 6,
         Gruyère: "50g",
       },
       formula: ["todo"],
@@ -424,9 +424,9 @@ function ListDinner() {
       name: "Gratin de courgettes",
       nb_person: 4,
       recipe: {
-        Courgette: 3,
+        Courgette: 2,
         Raviolles: 1,
-        "Crème fraîche": "5cL",
+        "Crème fraîche": "20cL",
         Parmesan: "50g",
       },
       formula: [
