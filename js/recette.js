@@ -85,14 +85,17 @@ function ListLunch() {
     },
     crepes: {
       name: "Crêpes",
-      nb_person: 2,
+      nb_person: 3,
       recipe: {
         Farine: "250g",
         Oeuf: 4,
         Lait: "25cL",
         Bière: "25cL",
       },
-      formula: ["Mélanger énergiquement tout sauf la bière", "Ajouter la bière et mélanger doucement"],
+      formula: [
+        "Un total d'environ 8 crêpes",
+        "Mélanger énergiquement tout sauf la bière, vitesse 10",
+        "Ajouter la bière et mélanger doucement, vitesse 4"],
     },
     "saute-porc-chorizo": {
       name: "Sauté porc chorizo",
@@ -253,6 +256,39 @@ function ListLunch() {
         "Faire cuire une nouvelle fois 1h30 à 200°C.",
       ],
     },
+    "mont-dor": {
+      name: "Mont d'Or",
+      nb_person: 2,
+      recipe: {
+        "Mont d'Or": 1,
+        "Gousse d'ail": 3,
+        Patate: 3,
+      },
+      formula: [
+        "Préchauffer le four à 220°C.",
+        "Eplucher et couper les pommes de terre, puis les mettre à cuire à la vapeur 30 minutes.",
+        "Couper le dessus du fromage et retirer une partie de la croûte pour faire une ouverture.",
+        "Piquer les petites gousses d'ail dans le fromage et y verser 5 cL de vin blanc.",
+        "Mettre la boite du fromage dans un plat à four.",
+        "Baisser le four à 180°C et enfourner le plat pendant 30 minutes pour faire dorer le dessus.",
+      ],
+    },
+    "roti-de-porc": {
+      name: "Rôti de porc",
+      nb_person: 4,
+      recipe: {
+        "Rôti de porc": 1,
+        Echalotte: 4,
+      },
+      formula: [
+        "Préchauffer le four à 200°C.",
+        "Badigeonner le rôti de moutarde dessus-dessous.",
+        "Le saler, saupoudrer d'herbes de provence.",
+        "Couper l'échalote en morceaux et les disposer dans le fond du plat allant au four.",
+        "Déposer le rôti, mettre 1 verre d'eau ou de vin blanc.",
+        "Faire cuire au four (1 h par kilogramme).",
+      ],
+    },
   };
 }
 function ListDinner() {
@@ -406,9 +442,9 @@ function ListDinner() {
       nb_person: 3,
       recipe: {
         Quenelle: 4,
-        Farine: "50g",
-        Beurre: "50g",
-        Lait: "50cL",
+        Farine: "40g",
+        Beurre: "40g",
+        Lait: "40cL",
       },
       formula: [
         "Dans le robot muni du batteur, mettre la farine, le lait et la muscade. Saler et poivrer. Mixer en vitesse 7 pendant 1 minute",
@@ -571,7 +607,7 @@ function ListDessert() {
         Beurre: "170g",
         "Pépites de chocolat": "200g",
       },
-      formula: ["Préchauffer le four à 200°C.", "Mélanger la farine, la levure et les oeufs.", "Ajouter le sucre et la cassonade.", "Ajouter le beurre et bien mélanger à la main.", "Ajouter les pépites de chocolat.", "Cuire 5-7 minutes."],
+      formula: ["Préchauffer le four à 190°C.", "Mélanger la farine, la levure et les oeufs.", "Ajouter le sucre et la cassonade.", "Ajouter le beurre et bien mélanger à la main.", "Ajouter les pépites de chocolat.", "Cuire 10 minutes."],
     },
     confiture_banane_kiwi: {
       name: "Confiture banane kiwi",
