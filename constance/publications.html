@@ -159,6 +159,24 @@
           <div class="col-auto col-sm-8">
             <div class="accordion" id="accordionPreprint">
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2007148615">
+                  <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2007148615" aria-expanded="false" aria-controls="collapse2007148615">
+                    <div>
+Collaborative Federated Learning behind Hospitals' Firewalls for Predicting Histological Response to Neoadjuvant Chemotherapy in Triple-Negative Breast Cancer<br />
+                      <small class="text-muted">medRXiv:2021.10.27.21264834</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapse2007148615" class="accordion-collapse collapse" aria-labelledby="heading2007148615" data-bs-parent="#accordionPreprint">
+                  <div class="accordion-body text-justify">
+Triple-Negative Breast Cancer (TNBC) is a rare cancer, characterized by high metastatic potential and poor prognosis, and has limited treatment options compared to other breast cancers. The current standard of care in non-metastatic settings is neoadjuvant chemotherapy (NACT), with the goal of breast-conserving surgery and for an in vivo assessment of chemosensitivity. However, the efficacy of this treatment varies significantly across patients, and this histological response heterogeneity is still poorly understood partly due to the paucity of available curated TNBC data. Motivated by this problem, we investigate the use of machine learning (ML) to predict at diagnosis the histological response to NACT for early TNBC patients. To overcome the known biases of related small scale studies while respecting data privacy, we conduct, for the first time, a TNBC study in a multi-centric fashion behind hospitals’ firewalls using collaborative Federated Learning (FL). Thereby allowing access to enough TNBC data to sustain a complete response heterogeneity investigation. We show evidence that local ML models relying on Whole-Slide Images (WSIs) at diagnosis are able to predict the histological response to NACT as accurately as current clinical approaches, which rely on time-consuming expert annotations. We demonstrate that collaborative training further improves performance over single-center training outperforming clinical methods. Our ML model is interpretable by design, and we show that it is sensitive to specific histological patterns. While we identify known predictive biomarkers among them, this proof of concept for real-world collaborative FL paves the way for future biomarker discovery using unprecedently large datasets.
+                    <div class="text-center">
+                      <a href="https://www.medrxiv.org/content/10.1101/2021.10.27.21264834v1.full.pdf" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="document-text-outline" size="large"></ion-icon></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading210102997">
                   <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse210102997" aria-expanded="false" aria-controls="collapse210102997">
                     <div>
@@ -184,21 +202,14 @@
                 <h2 class="accordion-header" id="heading200714861">
                   <button class="accordion-button experience-accordion collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse200714861" aria-expanded="false" aria-controls="collapse200714861">
                     <div>
-                      SAFER: Sparse Secure Aggregation for Federated Learning<br />
+		      Efficient Sparse Secure Aggregation for Federated Learning<br />
                       <small class="text-muted">arXiv:2007.14861</small>
                     </div>
                   </button>
                 </h2>
                 <div id="collapse200714861" class="accordion-collapse collapse" aria-labelledby="heading200714861" data-bs-parent="#accordionPreprint">
                   <div class="accordion-body text-justify">
-                    Federated learning enables one to train a common machine learning model across separate, privately-held datasets via distributed model training. During federated training, only intermediate model parameters are
-                    transmitted to a central server which aggregates these parameters to create a new common model, thus exposing only intermediate parameters rather than the training data itself. However, some attacks (e.g. membership
-                    inference) are able to infer properties of local data from these intermediate model parameters. Hence, performing the aggregation of these client-specific model parameters in a secure way is required. Additionally, the
-                    communication cost is often the bottleneck of the federated systems, especially for large neural networks. So, limiting the number and the size of communications is necessary to efficiently train large neural
-                    architectures. In this article, we present an efficient and secure protocol for performing secure aggregation over compressed model updates in the context of collaborative, few-party federated learning, a context common
-                    in the medical, healthcare, and biotechnical use-cases of federated systems. By making compression-based federated techniques amenable to secure computation, we develop a secure aggregation protocol between multiple
-                    servers with very low communication and computation costs and without preprocessing overhead. Our experiments demonstrate the efficiency of this new approach for secure federated training of deep convolutional neural
-                    networks.
+Federated Learning enables one to jointly train a machine learning model across distributed clients holding sensitive datasets. In real-world settings, this approach is hindered by expensive communication and privacy concerns. Both of these challenges have already been addressed individually, resulting in competing optimisations. In this article, we tackle them simultaneously for one of the first times. More precisely, we adapt compression-based federated techniques to additive secret sharing, leading to an efficient secure aggregation protocol, with an adaptable security level. We prove its privacy against malicious adversaries and its correctness in the semi-honest setting. Experiments on deep convolutional networks demonstrate that our secure protocol achieves high accuracy with low communication costs. Compared to prior works on secure aggregation, our protocol has a lower communication and computation costs for a similar accuracy.
                     <div class="text-center">
                       <a href="https://arxiv.org/pdf/2007.14861.pdf" class="text-dark" onclick="window.open(this.href); return false;"><ion-icon name="document-text-outline" size="large"></ion-icon></a>
                     </div>
