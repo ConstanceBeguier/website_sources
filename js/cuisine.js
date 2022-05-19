@@ -292,6 +292,7 @@ var shoppingCRUD = {
   delete: function (key) {
     var shopping = this.getAll();
     delete shopping[key];
+    delete shopping[key + "_checked"];
     localStorage.setItem("shopping", JSON.stringify(shopping));
     return true;
   },

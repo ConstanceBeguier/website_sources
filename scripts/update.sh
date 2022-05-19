@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # https://getbootstrap.com/docs/5.0/getting-started/introduction/
-BOOTSTRAP_CSS="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-BOOTSTRAP_JS="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+BOOTSTRAP_CSS="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+BOOTSTRAP_JS="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
 # https://ionic.io/ionicons/usage
 IONICONS_JS="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
 
