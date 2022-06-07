@@ -1,0 +1,45 @@
+{
+    "home": {
+        "title": "Tandem Technology",
+        "description": [
+            "Founded in 2022 by cryptography and cybersecurity experts, Tandem Technology is an independent consulting and auditing firm.",
+            "",
+            "We provide <b>auditing and training</b> programs tailored to your needs.",
+            "This means working together to develop your <b>security goals</b>."
+        ]
+    },
+    "services": {
+        "title": "Our Services",
+        "description": [""]
+    },
+    "audit": {
+        "title": "Security Audit",
+        "description": [
+            "We simulate cyberattacks to <b>report</b> exploitable vulnerabilities on <b>websites and infrastructure</b>.",
+            "Our goal is not to provide a list of vulnerabilities, but to show you the security of the perimeter and <b>work together</b> to find a fix.",
+            "We build real business attacks specifically for your organization and we specialize in <b>AWS</b> infrastructure to help you protect your data and systems against the most sophistcated cyber threats today."
+        ]
+    },
+    "crypto": {
+        "title": "Crypto",
+        "description": [
+            "Techniques: SMC, DP, ZK",
+            "Application: PPML, sécurisation de la Biometrie."
+        ]
+    },
+    "tooling": {
+        "title": "Tooling <span class=color-dark>&amp;</span> Engineering",
+        "description": [
+            "It's not enough to rely on a dependency scanner, scan your own code too.",
+            "We'll help you improve your development practices during a <b>workshop</b> to harden your code repository.",
+            "Using <b>opensource</b> tools, you can perform a Static Application Security Testing (<b>SAST</b>) of your source code, as well as a Software Composition Analysis (<b>SCA</b>) to analyze your dependencies."
+        ]
+    },
+    "vision": {
+        "title": "Our vision",
+        "description": [
+            "Your products are exposed to the internet and are constantly being tested by cyber attackers.",
+            "Moving to AWS, or any other cloud provider, won't necessary give you extra security. Without physical restriction on your information system, you need a <b>well-established monitoring and alerting security system</b>."
+        ]
+    }
+}
