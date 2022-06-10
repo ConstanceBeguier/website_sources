@@ -17,14 +17,15 @@
         "description": [
             "We simulate cyberattacks to <b>report</b> exploitable vulnerabilities on <b>websites and infrastructure</b>.",
             "Our goal is not to provide a list of vulnerabilities, but to show you the security of the perimeter and <b>work together</b> to find a fix.",
-            "We build real business attacks specifically for your organization and we specialize in <b>AWS</b> infrastructure to help you protect your data and systems against the most sophistcated cyber threats today."
+            "We build real business attacks specifically for your organization and we specialize in <b>AWS</b> infrastructure to help you protect your data and systems against the most sophisticated cyber threats today."
         ]
     },
     "crypto": {
-        "title": "Crypto",
+        "title": "Cryptography",
         "description": [
-            "Techniques: SMC, DP, ZK",
-            "Application: PPML, sécurisation de la Biometrie."
+            "We apply the latest advances in cryptography to real world use cases. <b>Secure Multiparty Computation</b> and <b>Differential Privacy</b> are our primary techniques of expertise.",
+            "We can help you build secure applications, services and frameworks where <b>confidentiality</b> and information security are your top priorities.",
+            "Current application areas are PPML and biometrics, but any infrastructure involving two or more parties may be involved."
         ]
     },
     "tooling": {
@@ -36,10 +37,10 @@
         ]
     },
     "vision": {
-        "title": "Our vision",
+        "title": "Our Vision",
         "description": [
             "Your products are exposed to the internet and are constantly being tested by cyber attackers.",
-            "Moving to AWS, or any other cloud provider, won't necessary give you extra security. Without physical restriction on your information system, you need a <b>well-established monitoring and alerting security system</b>."
+            "Moving to AWS, or any other cloud provider, won't necessarily give you extra security. Without physical restriction on your information system, you need a <b>well-established monitoring and alerting security system</b>."
         ]
     }
 }
