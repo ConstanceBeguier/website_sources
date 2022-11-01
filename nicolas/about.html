@@ -33,14 +33,28 @@
             <img src=./img/nicolas.jpg width=200 height=200 class="img-fluid rounded-circle mb-5" alt="me" >
             <p class="fs-4">Nicolas Béguier</p>
             <p>
-              Offensive & Defensive Security Engineer at <a class="link-warning text-decoration-none" href="https://www.leboncoin.fr/"><b>leboncoin</b></a>
+              Security Architect at <a class="link-warning text-decoration-none" href="https://www.leboncoin.fr/"><b>leboncoin</b></a><br />Co-Founder at <a class="link-warning text-decoration-none" href="https://beguier.eu/tandem-technology/"><b>Tandem Technology</b></a>
             </p>
             <p><ion-icon name="key"></ion-icon> <a class="link-success text-decoration-none" href="https://keyserver.ubuntu.com/pks/lookup?op=hget&search=0dec584b2096a83830b40afdf05c5e87"><b>GPG key</b></a></p>
           </div>
           <div class="col-auto col-sm-9">
-            <h3 class="mb-3 mt-5">Formations and Certifications</h3>
+            <h3 class="mb-3 mt-5">Certification & Training</h3>
 
             <div class="row row-cols-2 row-cols-md-3 g-4">
+              <div class="col d-flex">
+                <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm" style="max-width: 18rem;">
+                  <div class="card-header text-middark">SANS Technology Institute</div>
+                  <div class="card-body">
+                    <h4 class="card-title">SEC530</h4>
+                    <small class="text-muted">Oct 2022</small>
+                    <p class="card-text">
+                      GIAC Defensible Security Architecture<br />
+                      <br />
+                      <strong class="text-info"><ion-icon name="school-outline"></ion-icon> Certified</strong>
+                    </p>
+                  </div>
+                </div>
+              </div>
               <div class="col d-flex">
                 <div class="card mb-3 bg-dark text-light card-zoom overflow-hidden shadow-sm" style="max-width: 18rem;">
                   <div class="card-header text-middark">SANS Technology Institute</div>
@@ -106,18 +120,55 @@
             </div>
 
             <h3 class="mb-3 mt-5">Experience</h3>
-
             <div class="accordion" id="accordionExperience">
               <div class="accordion-item bg-black shadow-sm">
-                <h2 class="accordion-header" id="headingLBCSecu">
-                  <button class="accordion-button experience-accordion bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLbcSecu" aria-expanded="true" aria-controls="collapseLbcSecu">
+                <h2 class="accordion-header" id="headingLBCArchi">
+                  <button class="accordion-button experience-accordion bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLbcArchi" aria-expanded="true" aria-controls="collapseLbcArchi">
                     <div>
-                      <img src="./img/logo/leboncoin.ico" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Offensive & Defensive Security Engineer at leboncoin<br />
-                      <small class="text-muted">Oct 2019 – Present</small>
+                      <img src="./img/logo/leboncoin.ico" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Security Architect at leboncoin<br />
+                      <small class="text-muted">Oct 2021 – Present</small>
                     </div>
                   </button>
                 </h2>
-                <div id="collapseLbcSecu" class="accordion-collapse collapse show" aria-labelledby="headingLbcSecu" data-bs-parent="#accordionExperience">
+                <div id="collapseLbcArchi" class="accordion-collapse collapse show" aria-labelledby="headingLbcArchi" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body bg-dark text-middark">
+                    Design infrastructure and applications to protect them against external or internal malicious adversaries.<br />
+                    <br />
+                    Performing information security monitoring, threat analysis and vulnerability management.<br />
+                    <br />
+                    Forensic analysis, incident response and internal formation about advanced developpement security practice.<br />
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item bg-black shadow-sm">
+                <h2 class="accordion-header" id="headingTT">
+                  <button class="accordion-button experience-accordion bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTT" aria-expanded="true" aria-controls="collapseTT">
+                    <div>
+                      <img src="/tandem-technology/img/logo.svg" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Co-Founder at Tandem Technology<br />
+                      <small class="text-muted">July 2022 – Present</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseTT" class="accordion-collapse collapse show" aria-labelledby="headingTT" data-bs-parent="#accordionExperience">
+                  <div class="accordion-body bg-dark text-middark">
+                    Founded in 2022 by cryptography and cybersecurity experts, Tandem Technology is an independent consulting and auditing firm.<br />
+                    <br />
+                    We provide auditing and training programs tailored to your needs.<br />
+                    <br />
+                    This means working together to develop your security goals.<br />
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item bg-black shadow-sm">
+                <h2 class="accordion-header" id="headingLBCSecu">
+                  <button class="accordion-button experience-accordion collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLbcSecu" aria-expanded="false" aria-controls="collapseLbcSecu">
+                    <div>
+                      <img src="./img/logo/leboncoin.ico" alt="logo" width="25" height="25" loading="lazy" class="me-2 mb-2" /> Offensive & Defensive Security Engineer at leboncoin<br />
+                      <small class="text-muted">Oct 2019 – Oct 2021</small>
+                    </div>
+                  </button>
+                </h2>
+                <div id="collapseLbcSecu" class="accordion-collapse collapse" aria-labelledby="headingLbcSecu" data-bs-parent="#accordionExperience">
                   <div class="accordion-body bg-dark text-middark">
                     Pentest of web and mobile applications, internal infrastructures of Leboncoin Group.<br />
                     <br />
