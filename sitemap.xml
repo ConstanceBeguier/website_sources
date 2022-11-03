@@ -12,37 +12,37 @@
 </url>
 <url>
   <loc>https://beguier.eu/constance/</loc>
-  <lastmod>2021-10-22T21:08:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://beguier.eu/constance/publications.html</loc>
-  <lastmod>2021-10-22T21:08:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/</loc>
-  <lastmod>2022-11-01T11:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/about.html</loc>
-  <lastmod>2021-11-09T21:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/projects.html</loc>
-  <lastmod>2021-10-31T21:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/articles/koa.html</loc>
-  <lastmod>2021-10-31T21:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/articles/a1f951ed127f9232f101c4e81e0e01a463d86f26.html</loc>
-  <lastmod>2021-10-31T21:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
@@ -52,17 +52,22 @@
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html</loc>
-  <lastmod>2021-10-31T21:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/articles/security-tips-4-xss-with-style.html</loc>
-  <lastmod>2021-10-31T21:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/articles/security-postit-5-secrets.html</loc>
-  <lastmod>2021-10-31T21:00:00+00:00</lastmod>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html</loc>
+  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
