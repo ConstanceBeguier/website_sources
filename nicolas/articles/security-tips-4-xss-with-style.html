@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="In this short security post-it, I explain how exploit XSS with the inline style." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="xss inline style tag attribute css" />
+    <meta name="keywords" content="xss inline style tag attribute css phishing" />
     <meta property="og:title" content="Security Post-it #4 – XSS yes, but with style !" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/logo_secu-postit4.jpg" />
     <meta property="og:description" content="In this short security post-it, I explain how exploit XSS with the inline style." />
@@ -87,12 +87,13 @@
             For example, <b class="text-light">a copy of the current website with fake login page</b>, to steal credentials. Here is the entire PoC with the <span class="text-code">&lt;a&gt;</span> tag:<br />
             <br />
 
-            <span class="text-code text-light fs-6">
-              &lt;<span class="text-danger">a</span> <span class="text-info">href</span>&equals;&quot;https&colon;&sol;&sol;beguier&period;eu&sol;nicolas&sol;about&period;html&quot;
-              <span class="text-info">style</span>
-              &equals;&quot;position&colon;fixed&semi;z-index&colon;100000&semi;opacity&colon;0&period;5&semi;top&colon;0&semi;left&colon;0&semi;width&colon;10000px&semi;height&colon;10000px&semi;background-color&colon;red&semi;&quot;&gt;
-              &lt;&sol;<span class="text-danger">a</span>&gt;
-            </span>
+            <div class="p-3" style="border: 1px solid;border-radius: 0.25rem;border-color: #dc3545;">
+              <span class="text-code text-light fs-6">
+                &lt;<span class="text-danger">a</span> <span class="text-info">href</span>&equals;&quot;https&colon;&sol;&sol;beguier&period;eu&sol;nicolas&sol;<span class="text-danger">phishing&period;html</span>&quot;
+                <span class="text-info">style</span>&equals;&quot;position&colon;fixed&semi;z-index&colon;100000&semi;opacity&colon;0&period;5&semi;top&colon;0&semi;left&colon;0&semi;width&colon;10000px&semi;height&colon;10000px&semi;background-color&colon;red&semi;&quot;&gt;
+                &lt;&sol;<span class="text-danger">a</span>&gt;
+              </span>
+            </div>
           </div>
           <h2 class="my-5 fs-3">How to protect your production</h2>
 
@@ -144,11 +145,11 @@
                 <button
                   type="button"
                   class="btn btn-outline-info"
-                  onclick="this.style='position:fixed;z-index:100000;opacity:0.5;top:0;left:0;width:10000px;height:10000px;background-color:red;';this.setAttribute('onclick', 'window.location.reload(false);')"
+                  onclick="this.style='position:fixed;z-index:100000;opacity:0.5;top:0;left:0;width:10000px;height:10000px;background-color:red;';this.setAttribute('onclick', 'window.location=\'https://beguier.eu/nicolas/phishing.html\'')"
                 >
                   Demo with red background
                 </button>
-                <button type="button" class="btn btn-outline-info" onclick="this.style='position:fixed;z-index:100000;opacity:0;top:0;left:0;width:10000px;height:10000px;';this.setAttribute('onclick', 'window.location.reload(false);')">
+                <button type="button" class="btn btn-outline-danger" onclick="this.style='position:fixed;z-index:100000;opacity:0;top:0;left:0;width:10000px;height:10000px;';this.setAttribute('onclick', 'window.location=\'https://beguier.eu/nicolas/phishing.html\'')">
                   Real-life demo
                 </button>
               </div>
