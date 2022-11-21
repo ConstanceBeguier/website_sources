@@ -40,7 +40,7 @@
         </div>
         <!-- Begin article content -->
         <div class="p-5">
-          <p class="text-muted">Nov 3, 2022 by Nicolas Béguier</p>
+          <p class="text-muted">Nov 21, 2022 by Nicolas Béguier</p>
 
           <div class="lead fs-6 text-light">
             We all agree that you have to secure your code. On the other hand, it is not always easy to know where to start and identify what is effective. I will present here the SAST and SCA implementations on your
@@ -107,7 +107,7 @@
 
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Clone the vulnerable repo in /tmp.</span><br />
-              <span class="text-danger">$</span> git clone https://github.com/juice-shop/juice-shop -o /tmp/juice-shop
+              <span class="text-danger">$</span> git clone https://github.com/juice-shop/juice-shop /tmp/juice-shop
             </span>
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Scan it with semgrep, in paranoiac mode.</span><br />
@@ -173,7 +173,8 @@
 
           <div class="lead fs-6 text-light">
             <b>Human readable output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --src __CODE_DIRECTORY__ -o /tmp/depscan.json </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cdxgen -o /tmp/bom.json __CODE_DIRECTORY__</span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --bom /tmp/bom.json -o /tmp/depscan.json</span>
             <br />
             <b>Work with a JSON output</b>
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/depscan.json | jq . </span>
@@ -184,9 +185,10 @@
             In this example, I'm using this random GitHub repository: <a class="link-secondary" href="https://github.com/Faten4/HW-Search">https://github.com/Faten4/HW-Search</a>
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Clone the vulnerable repo in /tmp.</span><br />
-              <span class="text-danger">$</span> git clone https://github.com/Faten4/HW-Search -o /tmp/HW-Search
+              <span class="text-danger">$</span> git clone https://github.com/Faten4/HW-Search /tmp/HW-Search
             </span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --src /tmp/HW-Search/ -o /tmp/depscan.json </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cdxgen -o /tmp/bom.json /tmp/HW-Search/</span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --bom /tmp/bom.json -o /tmp/depscan.json</span>
             <span class="text-code text-secondary">
               <div class="fs-6">
                 Dependency Scan Results (nodejs)<br />
@@ -196,6 +198,8 @@
                 ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
                 ║&nbsp;CVE-2021-3803&nbsp;&nbsp;│&nbsp;nth-check&nbsp;│&nbsp;ℹ&nbsp;Indirect&nbsp;dependency&nbsp;│&nbsp;<2.0.1&nbsp;&nbsp;│&nbsp;2.0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;HIGH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;7.5&nbsp;║
                 <br />
+                ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
+                ║&nbsp;CVE-2022-40215&nbsp;│&nbsp;tabs&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;🎯&nbsp;Direct&nbsp;usage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;<=3.7.1&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;MEDIUM&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;5.4&nbsp;║<br />
                 ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
                 ║&nbsp;CVE-2022-33154&nbsp;│&nbsp;schema&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;ℹ&nbsp;Indirect&nbsp;dependency&nbsp;│&nbsp;<1.13.1&nbsp;│&nbsp;1.13.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;MEDIUM&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;5.4&nbsp;║
                 <br />
