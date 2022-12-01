@@ -14,7 +14,7 @@
     <meta property="og:type" content="article" />
     <title>Security Post-it #7 – Software Security Testing for Golang</title>
     <script src="/js/redirect.min.js" type="text/javascript" async></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/beguier.min.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.png" />
   </head>
@@ -46,7 +46,7 @@
             We all agree that you have to secure your code. On the other hand, it is not always easy to know where to start and identify what is effective. I will present here the SAST and SCA implementations on your
             <b class="text-warning">Golang repositories</b>.<br />
             <br />
-            Oh wait, I forgot to tell you. This is to build it <b class="text-info">yourself</b> on your CI/CD or in your pre-commit hooks, with open-source tools.<br/>
+            Oh wait, I forgot to tell you. This is to build it <b class="text-info">yourself</b> on your CI/CD or in your pre-commit hooks, with open-source tools.<br />
             <br />
             Check out my other article to <a class="link-success" href="https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html"><b>protect your Javascript and Typescript repositiories</b></a>.
           </div>
@@ -67,23 +67,21 @@
 
           <h2 class="my-5 fs-4">Static Application Security Testing (SAST)</h2>
           <div class="lead fs-6 text-light">
-
             Today, the best SAST tool to audit your Golang repository is <a class="link-info" href="https://github.com/securego/gosec"><b>gosec</b></a>.
-
           </div>
 
-          <h3 class="my-3 fs-5 text-success">Install</h3>
+          <h3 class="my-3 fs-5 text-success pt-3">Install</h3>
           <div class="lead fs-6 text-light">
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> go install github.com/securego/gosec/v2/cmd/gosec@latest</span>
+
             <span class="text-code text-light copy-code">
-              <span class="text-danger">$</span> go install github.com/securego/gosec/v2/cmd/gosec@latest</span>
-            </span>
-            <span class="text-code text-light copy-code pt-4">
               <span class="text-secondary"># For a temporary install</span><br />
-              <span class="text-danger">$</span> curl -L https://github.com/securego/gosec/releases/download/v2.14.0/gosec_2.14.0_linux_amd64.tar.gz -o /tmp/gosec.tar.gz</span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> tar xvzf /tmp/gosec.tar.gz -C /tmp/ -x gosec <span class="text-secondary"># /tmp/gosec</span></span>
+              <span class="text-danger">$</span> curl -L https://github.com/securego/gosec/releases/download/v2.14.0/gosec_2.14.0_linux_amd64.tar.gz -o /tmp/gosec.tar.gz <span class="text-danger">&&</span> tar xvzf /tmp/gosec.tar.gz -C
+              /tmp/ -x gosec <span class="text-secondary"> # /tmp/gosec</span>
+            </span>
           </div>
 
-          <h3 class="my-3 fs-5 text-success">Audit</h3>
+          <h3 class="my-3 fs-5 text-success pt-3">Audit</h3>
 
           <div class="lead fs-6 text-light">
             <b>Human readable output</b>
@@ -93,36 +91,40 @@
 
             <br />
             <b>Work with a JSON output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> gosec -exclude=G301,G302,G303,G304,G305,G306,G307,G401,G402,G403,G404,G501,G502,G503,G504,G505,G601 -severity medium -confidence medium -exclude-dir vendor/ -fmt json -out /tmp/gosec.json __CODE_DIRECTORY__/...</span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/gosec.json | jq .Issues </span>
+            <span class="text-code text-light copy-code">
+              <span class="text-danger">$</span> gosec -exclude=G301,G302,G303,G304,G305,G306,G307,G401,G402,G403,G404,G501,G502,G503,G504,G505,G601 -severity medium -confidence medium -exclude-dir vendor/ -fmt json -out /tmp/gosec.json
+              __CODE_DIRECTORY__/...
+            </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/gosec.json <span class="text-danger">|</span> jq .Issues </span>
           </div>
-          <h3 class="my-3 fs-5 text-success">Example</h3>
+          <h3 class="my-3 fs-5 text-success pt-3">Example</h3>
 
           <div class="lead fs-6 text-light">
-            Let's take an example : <a class="link-secondary" href="https://github.com/newrelic/go-agent">https://github.com/newrelic/go-agent</a>, a random Golang repository, still maintain.
+            Let's take as an example this <a class="link-secondary" href="https://github.com/newrelic/go-agent">random Golang repository</a>, still maintain.
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Clone the repo in /tmp.</span><br />
               <span class="text-danger">$</span> git clone https://github.com/newrelic/go-agent /tmp/go-agent
             </span>
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Scan it with gosec.</span><br />
-              <span class="text-danger">$</span> gosec -exclude=G301,G302,G303,G304,G305,G306,G307,G401,G402,G403,G404,G501,G502,G503,G504,G505,G601 -severity medium -confidence medium -exclude-dir vendor/ /tmp/go-agent/...</span>
+              <span class="text-danger">$</span> gosec -exclude=G301,G302,G303,G304,G305,G306,G307,G401,G402,G403,G404,G501,G502,G503,G504,G505,G601 -severity medium -confidence medium -exclude-dir vendor/ /tmp/go-agent/...
+            </span>
             <span class="text-code text-secondary">
               …<br />
               <span class="text-warning">[/tmp/go-agent/internal/serverless.go:203] - G110 (CWE-409): Potential DoS vulnerability via decompression bomb (Confidence: MEDIUM, Severity: MEDIUM)</span><br />
-    202:  var out bytes.Buffer<br />
-  > 203:  io.Copy(&out, gz)<br />
-    204:  gz.Close()<br />
-<br />
-<span class="text-info">Summary:</span><br />
-  Gosec  : 2.14.0<br />
-  Files  : 364<br />
-  Lines  : 54408<br />
-  Nosec  : 0<br />
-  Issues : <span class="text-danger">14</span><br />
+              202: var out bytes.Buffer<br />
+              > 203: io.Copy(&out, gz)<br />
+              204: gz.Close()<br />
+              <br />
+              <span class="text-info">Summary:</span><br />
+              Gosec : 2.14.0<br />
+              Files : 364<br />
+              Lines : 54408<br />
+              Nosec : 0<br />
+              Issues : <span class="text-danger">14</span><br />
             </span>
           </div>
-          <h3 class="my-3 fs-5 text-success">Does it work on my CI ?</h3>
+          <h3 class="my-3 fs-5 text-success py-3">Does it work on my CI ?</h3>
 
           <div class="lead fs-6 text-light">
             <a class="link-info" href="https://github.com/securego/gosec#github-action">https://github.com/securego/gosec#github-action</a><br />
@@ -134,21 +136,24 @@
           </div>
           <h2 class="my-5 fs-4">Software Composition Analysis (SCA)</h2>
           <div class="lead fs-6 text-light">
-            <a class="link-info" href="https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck"><b>govulncheck</b></a> reports known vulnerabilities that affect Go code. It uses static analysis of source code or a binary's symbol table to narrow down reports to only those that could affect the application.<br/>
+            <a class="link-info" href="https://pkg.go.dev/golang.org/x/vuln/cmd/govulncheck"><b>govulncheck</b></a> reports known vulnerabilities that affect Go code. It uses static analysis of source code or a binary's symbol table to
+            narrow down reports to only those that could affect the application.<br />
             <br />
-            However, you need the precence of the <span class="text-code">go.mod</span> file and support badly errors. If you are blocked, you should use <a class="link-info" href="https://github.com/sonatype-nexus-community/nancy"><b>nancy</b></a>, sometimes less accurate but it's doing a great job.
+            However, you need the precence of the <span class="text-code">go.mod</span> file and support badly errors. If you are blocked, you should use
+            <a class="link-info" href="https://github.com/sonatype-nexus-community/nancy"><b>nancy</b></a>, sometimes less accurate but it's doing a great job.
           </div>
 
-          <h3 class="my-3 fs-5 text-success">Install</h3>
+          <h3 class="my-3 fs-5 text-success pt-3">Install</h3>
           <div class="lead fs-6 text-light">
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> go install golang.org/x/vuln/cmd/govulncheck@latest </span>
-            <span class="text-code text-light copy-code pt-4">
+            <span class="text-code text-light copy-code">
               <span class="text-secondary"># or try nancy</span><br />
-              <span class="text-danger">$</span> curl -L https://github.com/sonatype-nexus-community/nancy/releases/download/v1.0.42/nancy-v1.0.42-linux-amd64.tar.gz -o /tmp/nancy.tar.gz && tar xvzf /tmp/nancy.tar.gz -C /tmp/ -x nancy <span class="text-secondary"># /tmp/nancy</span></span>
+              <span class="text-danger">$</span> curl -L https://github.com/sonatype-nexus-community/nancy/releases/download/v1.0.42/nancy-v1.0.42-linux-amd64.tar.gz -o /tmp/nancy.tar.gz <span class="text-danger">&&</span> tar xvzf
+              /tmp/nancy.tar.gz -C /tmp/ -x nancy <span class="text-secondary"># /tmp/nancy</span>
             </span>
           </div>
 
-          <h3 class="my-3 fs-5 text-success">Audit</h3>
+          <h3 class="my-3 fs-5 text-success pt-3">Audit</h3>
 
           <div class="lead fs-6 text-light">
             <b>Human readable output</b>
@@ -156,34 +161,35 @@
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> govulncheck ./...</span>
             <br />
             <b>Work with a JSON output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> govulncheck -json ./...  > /tmp/gosec.json </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> govulncheck -json ./... > /tmp/gosec.json </span>
             <br />
             <b>... or you can try Nancy</b>
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cd __CODE_DIRECTORY__</span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> go list -e -json -deps ./... 2>/dev/null| /tmp/nancy sleuth</span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> go list -e -json -deps ./... 2>/dev/null <span class="text-danger">|</span> nancy sleuth</span>
           </div>
-          <h3 class="my-3 fs-5 text-success">Example</h3>
+          <h3 class="my-3 fs-5 text-success pt-3">Example</h3>
 
           <div class="lead fs-6 text-light">
-            In this example, I'm using this random GitHub repository: <a class="link-secondary" href="https://github.com/netlify/gotell.git">https://github.com/netlify/gotell.git</a>
+            Let's take as an example this <a class="link-secondary" href="https://github.com/netlify/gotell.git">random Golang repository</a>.
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Clone the vulnerable repo in /tmp.</span><br />
-              <span class="text-danger">$</span> git clone https://github.com/netlify/gotell.git /tmp/HW-gotell
+              <span class="text-danger">$</span> git clone https://github.com/netlify/gotell.git /tmp/gotell
             </span>
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cd /tmp/gotell</span>
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> govulncheck ./...</span>
             <span class="text-code text-secondary">
               <div class="fs-6">
-              …<br />
-Vulnerability #19: GO-2020-0012<br />
-  An attacker can craft an ssh-ed25519 or sk-ssh-ed25519@openssh.com public key, such that the library will panic when trying to verify a signature with it. If verifying signatures using user supplied public keys, this may be used as a denial of service vector.<br />
-  Found in: golang.org/x/crypto/ssh@v0.0.0-20160915071417-81372b2fc2f1<br />
-  Fixed in: golang.org/x/crypto/ssh@v0.0.0-20200220183623-bac4c82f6975<br />
-  More info: https://pkg.go.dev/vuln/GO-2020-0012<br />
+                …<br />
+                <span class="text-warning">Vulnerability #19: GO-2020-0012</span><br />
+                An attacker can craft an ssh-ed25519 or sk-ssh-ed25519@openssh.com public key, such that the library will panic when trying to verify a signature with it. If verifying signatures using user supplied public keys, this may be
+                used as a denial of service vector.<br />
+                Found in: golang.org/x/crypto/ssh@v0.0.0-20160915071417-81372b2fc2f1<br />
+                Fixed in: golang.org/x/crypto/ssh@v0.0.0-20200220183623-bac4c82f6975<br />
+                More info: https://pkg.go.dev/vuln/GO-2020-0012<br />
               </div>
             </span>
           </div>
-          <h3 class="my-3 fs-5 text-success">Does it work on my CI ?</h3>
+          <h3 class="my-3 fs-5 text-success pt-3">Does it work on my CI ?</h3>
 
           <div class="lead fs-6 text-light">
             <a class="link-info" href="https://github.com/sonatype-nexus-community/nancy">https://github.com/sonatype-nexus-community/nancy</a><br />
@@ -213,7 +219,7 @@ Vulnerability #19: GO-2020-0012<br />
     <div id="includedFooter" class="mt-auto"></div>
 
     <script src="/js/pub/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="/js/nico.min.js"></script>
   </body>
