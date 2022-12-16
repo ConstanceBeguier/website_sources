@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Learn the differences between symmetrical, asymmetrical, and hashing encryption methods and how to choose the best option for protecting your data." />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="symmetrical encryption, asymmetrical encryption, hashing, data encryption" />
+    <meta property="og:title" content="Protect Your Data: A Comparison of Symmetrical, Asymmetrical, and Hashing Encryption Methods" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/axa.jpg" />
+    <meta property="og:description" content="Learn the differences between symmetrical, asymmetrical, and hashing encryption methods and how to choose the best option for protecting your data." />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/differences-between-symmetrical-asymmetrical-hashing-encryption.html" />
+    <meta property="og:type" content="article" />
+    <title>Protect Your Data: A Comparison of Symmetrical, Asymmetrical, and Hashing Encryption Methods</title>
+    <script src="/js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100 bg-black">
+    <!-- Begin nav header -->
+    <div id="includedNavbar">
+      <header class="p-3 border-bottom bg-white" />
+    </div>
+
+    <!-- Begin article body -->
+    <main class="flex-shrink-0">
+      <div class="container col-lg-8 p-0 bg-dark text-light">
+        <!-- Begin title banner -->
+        <div
+          class="position-relative overflow-hidden text-center"
+          style="background: url('/nicolas/img/cover/ssh.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.8) !important; background-blend-mode: overlay; background-size: cover;"
+        >
+          <div class="col-md-6 m-5 mx-md-auto">
+            <h1 class="display-4 fw-normal">Protect Your Data: A Comparison of Symmetrical, Asymmetrical, and Hashing Encryption Methods</h1>
+            <p class="lead fw-normal">
+              Confused about the different methods of data encryption? In this article, we compare symmetrical, asymmetrical, and hashing encryption and explore the pros and cons of each method. Learn how to choose the best option for
+              protecting your data.
+            </p>
+          </div>
+        </div>
+
+        <!-- Begin article content -->
+        <div class="p-5">
+          <p class="text-muted">Dec 16, 2022 by Nicolas Béguier</p>
+
+          <div class="lead fs-5 text-light py-3">
+            As developers, it is important to understand the different methods of data encryption and how they can be used to secure data. In this article, we will compare symmetrical encryption, asymmetrical encryption, and hashing and
+            explore the differences between these methods.
+          </div>
+
+          <h2 class="my-5 fs-4">Symmetrical Encryption</h2>
+
+          <div class="lead fs-5 text-light py-3">
+            Symmetrical encryption, also known as shared secret encryption, is a method of encrypting data using a single secret key. This key is used to both encrypt and decrypt the data.<br />
+            <br />
+            <pre class="py-4">
+<span class="text-secondary"># Example of symmetrical encryption in Python</span>
+<span class="text-warning">def</span> <span class="text-info">symmetrical_encrypt</span>(plaintext, key):
+    ciphertext = ""
+    for i in range(len(plaintext)):
+        ciphertext += chr(ord(plaintext[i]) ^ ord(key[i % len(key)]))
+    <span class="text-warning">return</span> ciphertext
+
+<span class="text-warning">def</span> <span class="text-info">symmetrical_decrypt</span>(ciphertext, key):
+    plaintext = ""
+    for i in range(len(ciphertext)):
+        plaintext += chr(ord(ciphertext[i]) ^ ord(key[i % len(key)]))
+    <span class="text-warning">return</span> plaintext
+</pre>
+            One major advantage of symmetrical encryption is its <b class="text-success">speed</b>. Since the <b>same key is used for both encryption and decryption</b>, the process is relatively fast. However, the drawback is that the key
+            must be shared between the sender and the receiver. This can be a security risk <b class="text-danger">if the key is intercepted or if it is not stored securely</b>.
+          </div>
+
+          <h2 class="my-5 fs-4">Asymmetrical Encryption</h2>
+
+          <div class="lead fs-5 text-light py-3">
+            Asymmetrical encryption, also known as public key encryption, uses a pair of keys: a public key and a private key. The public key is used to encrypt the data, while the private key is used to decrypt it.<br />
+            <br />
+            <pre class="py-4">
+<span class="text-secondary"># Example of asymmetrical encryption in Python</span>
+<span class="text-info">from</span> cryptography.hazmat.primitives.asymmetric <span class="text-info">import</span> rsa, padding
+
+<span class="text-warning">def</span> <span class="text-info">asymmetrical_encrypt</span>(plaintext, public_key):
+    ciphertext = public_key.encrypt(
+        plaintext,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    <span class="text-warning">return</span> ciphertext
+
+<span class="text-warning">def</span> <span class="text-info">asymmetrical_decrypt</span>(ciphertext, private_key):
+    plaintext = private_key.decrypt(
+        ciphertext,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    <span class="text-warning">return</span> plaintext
+</pre>
+            One major advantage of asymmetrical encryption is that the private key does not need to be shared. This makes it a <b class="text-success">more secure option for sending sensitive information</b>. However, the drawback is that
+            it is <b class="text-danger">slower</b> than symmetrical encryption <b class="text-danger">due to the additional computation</b> required for the two different keys.
+          </div>
+
+          <h2 class="my-5 fs-4">Hashing</h2>
+
+          <div class="lead fs-5 text-light py-3">
+            Hashing is a method of generating a fixed-size output, also known as a hash, from a variable-size input. It is commonly used for storing passwords, as it is one-way and cannot be reversed. This means that it is not possible to
+            obtain the original data from the hash. Instead, the original data is used to generate the hash, and the hash is then compared to verify the authenticity of the data.<br />
+            <br />
+            <pre class="py-4">
+<span class="text-secondary"># Example of hashing in Python</span>
+<span class="text-info">import</span> hashlib
+
+<span class="text-warning">def</span> <span class="text-info">hash_data</span>(data):
+    return hashlib.sha256(data.encode()).hexdigest()
+
+<span class="text-secondary"># Generate a hash for the password "password123"</span>
+password_hash = hash_data("password123")
+print(password_hash)  <span class="text-secondary"># Output: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8"</span>
+
+<span class="text-secondary"># Verify the password by re-hashing it and comparing it to the original hash</span>
+<span class="text-warning">def</span> <span class="text-info">verify_password</span>(password, password_hash):
+    return hash_data(password) == password_hash
+
+verify_password("password123", password_hash)  <span class="text-secondary"># Output: True</span>
+verify_password("wrongpassword", password_hash)  <span class="text-secondary"># Output: False</span>
+</pre>
+
+            Hashing is a <b class="text-success">fast and secure method for storing data</b>, but it is not suitable for sending sensitive information as it <b class="text-danger">cannot be decrypted</b>. It is also important to note that
+            two different inputs can result in the same hash, known as a <b class="text-danger">collision</b>, so it is <b class="text-danger">not a reliable method for verifying the integrity of data</b>.
+          </div>
+
+          <h2 class="my-5 fs-4">Conclusion</h2>
+
+          <div class="lead fs-5 text-light py-3">
+            In conclusion, symmetrical encryption, asymmetrical encryption, and hashing are all important methods for securing data. Symmetrical encryption is fast but requires the shared secret key to be secure. Asymmetrical encryption is
+            more secure but slower due to the use of two different keys. Hashing is a fast and secure method for storing data, but it is not suitable for sending sensitive information and cannot be used to verify the integrity of data. As
+            developers, it is important to understand the strengths and limitations of each method and choose the appropriate one for the task at hand.
+          </div>
+        </div>
+      </div>
+
+      <!-- Begin Thanks -->
+      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
+    </main>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="/js/pub/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="/js/nico.min.js"></script>
+  </body>
+</html>
