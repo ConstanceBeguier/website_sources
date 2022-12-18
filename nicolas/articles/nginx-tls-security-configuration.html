@@ -4,17 +4,23 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="In this short security post-it, I explain how to secure your Golang code using open-source tools: SAST and SCA." />
+    <meta
+      name="description"
+      content="Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year."
+    />
     <meta name="author" content="Nicolas Béguier" />
     <meta name="keywords" content="nginx tls security configuration ssllabs cipher suites" />
-    <meta property="og:title" content="Nginx – TLS Security Configuration" />
+    <meta property="og:title" content="Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/nginx.jpg" />
-    <meta property="og:description" content="In this short security post-it, I explain how to secure your Golang code using open-source tools: SAST and SCA." />
+    <meta
+      property="og:description"
+      content="Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year."
+    />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/ngi=nx-tls-security-configuration.html" />
     <meta property="og:type" content="article" />
-    <title>Nginx – TLS Security Configuration</title>
+    <title>Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs</title>
     <script src="/js/redirect.min.js" type="text/javascript" async></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/beguier.min.css" rel="stylesheet" />
     <link href="/css/gist.min.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.png" />
@@ -35,8 +41,11 @@
           style="background: url('/nicolas/img/cover/nginx.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
         >
           <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Nginx – TLS Security Configuration</h1>
-            <p class="lead fw-normal">Getting a Qualys SSL Labs A+ rating with Nginx</p>
+            <h1 class="display-4 fw-normal">Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs</h1>
+            <p class="lead fw-normal">
+              Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in
+              the coming year.
+            </p>
           </div>
         </div>
         <!-- Begin article content -->
@@ -44,38 +53,42 @@
           <p class="text-muted">Jan 1st, 2023 by Nicolas Béguier</p>
 
           <div class="lead fs-5 text-light">
-This article is going to give you some advices to improve the security of you web server Nginx. Several criteria are taken into account: system security, SSL/TLS security and data security.<br />
-<br />
-One objective can be to have a grade of A+ on <a href="https://www.ssllabs.com/ssltest/" class="link-success"><b>Qualys SSL Labs</b></a>.
-</div>
+            In this article, we will provide expert tips on how to enhance the security of your Nginx web server. We will cover key areas such as system security, SSL/TLS security, and data security. By following these best practices, you
+            can aim for an A+ rating on Qualys SSL Labs and protect your server from potential threats.<br />
+            <br />
+            One objective can be to have a grade of A+ on <a href="https://www.ssllabs.com/ssltest/" class="link-success"><b>Qualys SSL Labs</b></a>.
+          </div>
 
-            <div class="col-md-8 col-lg-6 mx-auto">
-              <div class="card rounded shadow-sm bg-dark card-zoom my-3">
-                <img src="../img/article/nginx-ssllabs-a-plus.jpg" class="card-img" alt="SSL Labs A+ rating" />
-              </div>
+          <div class="col-md-8 col-lg-6 mx-auto">
+            <div class="card rounded shadow-sm bg-dark card-zoom my-3">
+              <img src="../img/article/nginx-ssllabs-a-plus.jpg" class="card-img" alt="SSL Labs A+ rating" />
             </div>
+          </div>
 
           <h1 class="my-5 fs-3">1. Basic security</h1>
 
           <div class="lead fs-6 text-light">
-            The best way to protect your web server is to leak the minimum data possible to the attacker : version number of Nginx, PHP, OS, etc..<br />
-            Generally, this kind of information is hidden in HTTP headers. To avoid it:<br />
+            Minimizing the amount of data that is revealed to potential attackers is a key way to safeguard your web server. This can include details such as the version number of Nginx, PHP, and the operating system. This type of
+            information is often included in HTTP headers, but it can be hidden to better protect your server. To achieve this:<br />
             <br />
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Only return Nginx in server header</span><br />
-              <span class="text-danger">server_tokens</span> off;</span>
+              <span class="text-danger">server_tokens</span> off;
+            </span>
           </div>
 
           <h1 class="my-5 fs-3">2. Security headers</h1>
 
           <div class="lead fs-6 text-light">
-
-The <b class="text-code">X-Content-Type-Options</b> response HTTP header is a marker used by the server to indicate that the MIME types advertised in the <span class="text-code">Content-Type</span> headers should be followed and not be changed. The header allows you to <b>avoid MIME type sniffing</b> by saying that the MIME types are deliberately configured.<br />
-<br />
-<b>Content Security Policy (CSP)</b> is an added layer of security that helps to detect and <b>mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks</b>. These attacks are used for everything from data theft, to site defacement, to malware distribution.<br />
-<br />
-The <b>HTTP Strict-Transport-Security</b> response header (often abbreviated as <b>HSTS</b>) informs browsers that the site should only be accessed using HTTPS, and that any future attempts to access it using HTTP should automatically be converted to HTTPS.<br />
-<br />
+            The <b class="text-code">X-Content-Type-Options</b> response HTTP header is a marker used by the server to indicate that the MIME types advertised in the <span class="text-code">Content-Type</span> headers should be followed and
+            not be changed. The header allows you to <b>avoid MIME type sniffing</b> by saying that the MIME types are deliberately configured.<br />
+            <br />
+            <b>Content Security Policy (CSP)</b> is an added layer of security that helps to detect and <b>mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks</b>. These attacks are used for
+            everything from data theft, to site defacement, to malware distribution.<br />
+            <br />
+            The <b>HTTP Strict-Transport-Security</b> response header (often abbreviated as <b>HSTS</b>) informs browsers that the site should only be accessed using HTTPS, and that any future attempts to access it using HTTP should
+            automatically be converted to HTTPS.<br />
+            <br />
             <span class="text-code text-light">
               <span class="text-secondary"># Security headers</span><br />
               <span class="text-secondary">## X-Content-Type-Options: avoid MIME type sniffing</span><br />
@@ -85,33 +98,40 @@ The <b>HTTP Strict-Transport-Security</b> response header (often abbreviated as 
               <span class="text-danger">add_header</span> Content-Security-Policy <span class="text-info">"object-src 'none'; base-uri 'none'; require-trusted-types-for 'script'; frame-ancestors 'self';"</span>;<br />
               <span class="text-secondary">## Strict Transport Security (HSTS): Yes</span><br />
               <span class="text-danger">add_header</span> Strict-Transport-Security <span class="text-info">"max-age=15552001; includeSubdomains; preload"</span>;<br />
+            </span>
           </div>
 
           <h1 class="my-5 fs-3">3. Cipher Suite</h1>
-The encryption algorithms break down into 4 types:<br />
-<ul>
-<li>Key exchange</li>
-<li>Authentication</li>
-<li>Block encryption</li>
-<li>Message Authentication</li>
-</ul>
-<br />
-Some algorithms are to be avoided (RC4, DH, 3DES, EXP, etc.) and others are to be prioritized. This gives us a configuration a little long but normally with the best ratio security / accessibility for customers.<br />
-<br />
-This link give information about each cipher suite and how secure they are: <a href="https://ciphersuite.info/cs/?security=secure" class="link-success">https://ciphersuite.info/</a><br />
-<br />
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Compilation of the top cipher suites 2023</span><br />
-              <span class="text-danger">ssl_ciphers</span> ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-CCM:DHE-RSA-AES256-CCM8:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-CCM:DHE-RSA-AES128-CCM8:DHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256;</span>
+          There are four main types of encryption algorithms:<br />
+          <ul>
+            <li>Key exchange</li>
+            <li>Authentication</li>
+            <li>Block encryption</li>
+            <li>Message Authentication</li>
+          </ul>
+          <br />
+          Some of these algorithms, such as RC4, DH, 3DES, and EXP, should be avoided due to their lower levels of security. It is important to prioritize the use of more secure algorithms in order to balance security with accessibility for
+          customers.<br />
+          <br />
+          For more information on the security of different cipher suites, you can refer to the following link: <a href="https://ciphersuite.info/cs/?security=secure" class="link-success">https://ciphersuite.info/</a><br />
+          <br />
+          <span class="text-code text-light copy-code">
+            <span class="text-secondary"># Compilation of the top cipher suites 2023</span><br />
+            <span class="text-danger">ssl_ciphers</span>
+            ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-CCM:DHE-RSA-AES256-CCM8:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-CCM:DHE-RSA-AES128-CCM8:DHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256;
+          </span>
 
           <h2 class="my-5 fs-4">Complete configuration</h2>
-<script src="https://gist.github.com/nbeguier/4a11a38ea55f6ab5562a537d8584da41.js"></script>
+          <script src="https://gist.github.com/nbeguier/4a11a38ea55f6ab5562a537d8584da41.js"></script>
 
           <h1 class="my-5 fs-3">Conclusion</h1>
 
-          <div class="lead fs-6 text-light">
-
-            test your configuration: https://www.ssllabs.com/ssltest/analyze.html
+          <div class="lead fs-5 text-light">
+            In conclusion, it is vital to prioritize the security of your Nginx web server in order to protect your website and its users from potential threats. By following best practices such as minimizing the amount of data revealed to
+            attackers, using secure encryption algorithms, and implementing security headers and cipher suites, you can significantly enhance the security of your server. It is important to regularly review and update your security measures
+            to stay ahead of evolving threats and to maintain the trust of your users. By taking these steps, you can help to ensure the safety and integrity of your web server and the sensitive data it handles.<br />
+            <br />
+            Evaluate your configuration using the following link: <a href="https://www.ssllabs.com/ssltest/analyze.html" class="link-success">https://www.ssllabs.com/ssltest/analyze.html</a>
           </div>
         </div>
       </div>
@@ -124,7 +144,7 @@ This link give information about each cipher suite and how secure they are: <a h
     <div id="includedFooter" class="mt-auto"></div>
 
     <script src="/js/pub/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script src="/js/nico.min.js"></script>
   </body>
