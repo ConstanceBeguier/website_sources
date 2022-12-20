@@ -75,6 +75,24 @@
               <span class="text-secondary"># Only return Nginx in server header</span><br />
               <span class="text-danger">server_tokens</span> off;
             </span>
+            <br />
+
+            <p>
+              Using TLS 1.2 and TLS 1.3 on an nginx server is important because these versions of the TLS protocol provide stronger security features and improved performance compared to older versions. Some of the key benefits of using TLS
+              1.2 and TLS 1.3 include:
+            </p>
+
+            <ul>
+              <li>Stronger encryption: TLS 1.2 and TLS 1.3 use stronger encryption algorithms and key lengths to protect data transmitted over the internet.</li>
+              <li>Improved performance: TLS 1.2 and TLS 1.3 are designed to be more efficient than older versions of the TLS protocol, which can result in faster connection times and improved overall performance.</li>
+              <li>Improved security: TLS 1.2 and TLS 1.3 include additional security features, such as Perfect Forward Secrecy, which helps to prevent an attacker from using previously recorded traffic to decrypt current traffic.</li>
+            </ul>
+
+            <p>
+              Overall, using TLS 1.2 and TLS 1.3 helps to protect the confidentiality, integrity, and availability of data transmitted over the internet, and it is an important security measure for any server that handles sensitive
+              information.
+            </p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">ssl_protocols</span> TLSv1.2 TLSv1.3; </span>
           </div>
 
           <h1 class="my-5 fs-3">2. Security headers</h1>
