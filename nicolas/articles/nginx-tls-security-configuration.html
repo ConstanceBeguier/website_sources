@@ -16,7 +16,7 @@
       property="og:description"
       content="Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year."
     />
-    <meta property="og:url" content="https://beguier.eu/nicolas/articles/ngi=nx-tls-security-configuration.html" />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/nginx-tls-security-configuration.html" />
     <meta property="og:type" content="article" />
     <title>Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs</title>
     <script src="/js/redirect.min.js" type="text/javascript" async></script>
@@ -83,9 +83,11 @@
             </p>
 
             <ul>
-              <li>Stronger encryption: TLS 1.2 and TLS 1.3 use stronger encryption algorithms and key lengths to protect data transmitted over the internet.</li>
-              <li>Improved performance: TLS 1.2 and TLS 1.3 are designed to be more efficient than older versions of the TLS protocol, which can result in faster connection times and improved overall performance.</li>
-              <li>Improved security: TLS 1.2 and TLS 1.3 include additional security features, such as Perfect Forward Secrecy, which helps to prevent an attacker from using previously recorded traffic to decrypt current traffic.</li>
+              <li><b>Stronger encryption</b>: TLS 1.2 and TLS 1.3 use stronger encryption algorithms and key lengths to protect data transmitted over the internet.</li>
+              <li><b>Improved performance</b>: TLS 1.2 and TLS 1.3 are designed to be more efficient than older versions of the TLS protocol, which can result in faster connection times and improved overall performance.</li>
+              <li>
+                <b>Improved security</b>: TLS 1.2 and TLS 1.3 include additional security features, such as Perfect Forward Secrecy, which helps to prevent an attacker from using previously recorded traffic to decrypt current traffic.
+              </li>
             </ul>
 
             <p>
@@ -95,31 +97,7 @@
             <span class="text-code text-light copy-code"> <span class="text-danger">ssl_protocols</span> TLSv1.2 TLSv1.3; </span>
           </div>
 
-          <h1 class="my-5 fs-3">2. Security headers</h1>
-
-          <div class="lead fs-6 text-light">
-            The <b class="text-code">X-Content-Type-Options</b> response HTTP header is a marker used by the server to indicate that the MIME types advertised in the <span class="text-code">Content-Type</span> headers should be followed and
-            not be changed. The header allows you to <b>avoid MIME type sniffing</b> by saying that the MIME types are deliberately configured.<br />
-            <br />
-            <b>Content Security Policy (CSP)</b> is an added layer of security that helps to detect and <b>mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks</b>. These attacks are used for
-            everything from data theft, to site defacement, to malware distribution.<br />
-            <br />
-            The <b>HTTP Strict-Transport-Security</b> response header (often abbreviated as <b>HSTS</b>) informs browsers that the site should only be accessed using HTTPS, and that any future attempts to access it using HTTP should
-            automatically be converted to HTTPS.<br />
-            <br />
-            <span class="text-code text-light">
-              <span class="text-secondary"># Security headers</span><br />
-              <span class="text-secondary">## X-Content-Type-Options: avoid MIME type sniffing</span><br />
-              <span class="text-danger">add_header</span> X-Content-Type-Options <span class="text-info">nosniff</span>;<br />
-              <span class="text-secondary">## Content-Security-Policy (CSP): Yes</span><br />
-              <span class="text-secondary">## No 'script-src' directive, you need to test it yourself</span><br />
-              <span class="text-danger">add_header</span> Content-Security-Policy <span class="text-info">"object-src 'none'; base-uri 'none'; require-trusted-types-for 'script'; frame-ancestors 'self';"</span>;<br />
-              <span class="text-secondary">## Strict Transport Security (HSTS): Yes</span><br />
-              <span class="text-danger">add_header</span> Strict-Transport-Security <span class="text-info">"max-age=15552001; includeSubdomains; preload"</span>;<br />
-            </span>
-          </div>
-
-          <h1 class="my-5 fs-3">3. Cipher Suite</h1>
+          <h1 class="my-5 fs-3">2. Cipher Suite</h1>
           There are four main types of encryption algorithms:<br />
           <ul>
             <li>Key exchange</li>
@@ -138,6 +116,73 @@
             <span class="text-danger">ssl_ciphers</span>
             ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-CCM:DHE-RSA-AES256-CCM8:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-CCM:DHE-RSA-AES128-CCM8:DHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256;
           </span>
+
+          <h1 class="my-5 fs-3">3. Optimization</h1>
+
+          <div class="lead fs-6 text-light">
+            <p>The "<span class="text-code">ssl_prefer_server_ciphers</span>" directive tells the server to use its own list of preferred ciphers, rather than relying on the client to specify them.</p>
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Perfect Forward Secrecy(PFS) is frequently compromised without this</span><br />
+              <span class="text-danger">ssl_prefer_server_ciphers</span> on;
+            </span>
+
+            <p>The "<span class="text-code">ssl_session_tickets</span>" directive is used to disable the use of SSL session tickets, which are used to resume SSL sessions and improve performance.</p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">ssl_session_tickets</span> off; </span>
+
+            <p>
+              The "<span class="text-code">ssl_session_timeout</span>" and "<span class="text-code">ssl_session_cache</span>" directives enable SSL session caching, which helps to improve performance by allowing the server to reuse
+              previously established SSL sessions.
+            </p>
+
+            <span class="text-code text-light">
+              <span class="text-secondary"># Enable SSL session caching for improved performance</span><br />
+              <span class="text-danger">ssl_session_timeout</span> 1d;<br />
+              <span class="text-danger">ssl_session_cache</span> shared:SSL:10m;<br />
+            </span>
+            <br />
+            <p>The "<span class="text-code">ssl_buffer_size</span>" directive sets the size of the buffer used for sending data over SSL.</p>
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># By default, the buffer size is 16k, which corresponds to minimal overhead when sending big responses.</span><br />
+              <span class="text-secondary"># To minimize Time To First Byte it may be beneficial to use smaller values</span><br />
+              <span class="text-danger">ssl_buffer_size</span> 8k;
+            </span>
+
+            <p>
+              The "<span class="text-code">ssl_stapling</span>" and "<span class="text-code">ssl_stapling_verify</span>" directives enable OCSP (Online Certificate Status Protocol) stapling, which is a method of checking the revocation
+              status of SSL certificates without the need for a separate request to the certificate authority. This helps to improve performance by reducing the number of requests that need to be made.
+            </p>
+
+            <span class="text-code text-light">
+              <span class="text-secondary"># OCSP stapling</span><br />
+              <span class="text-danger">ssl_stapling</span> on;<br />
+              <span class="text-danger">ssl_stapling_verify</span> on;<br />
+            </span>
+          </div>
+
+          <h1 class="my-5 fs-3">4. Security headers</h1>
+
+          <div class="lead fs-6 text-light">
+            The <b class="text-code">X-Content-Type-Options</b> response HTTP header is a marker used by the server to indicate that the MIME types advertised in the <span class="text-code">Content-Type</span> headers should be followed and
+            not be changed. The header allows you to <b>avoid MIME type sniffing</b> by saying that the MIME types are deliberately configured.<br />
+            <br />
+            <b>Content Security Policy (CSP)</b> is an added layer of security that helps to detect and <b>mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks</b>. These attacks are used for
+            everything from data theft, to site defacement, to malware distribution. This CSP configuration is highly secure, but it is recommended to test it first to ensure that it does not block third party scripts.
+            <a class="link-success" href="https://csp-evaluator.withgoogle.com/">CSP Evaluator</a> is an excellent tool for testing your CSP configuration.<br />
+            <br />
+            The <b>HTTP Strict-Transport-Security</b> response header (often abbreviated as <b>HSTS</b>) informs browsers that the site should only be accessed using HTTPS, and that any future attempts to access it using HTTP should
+            automatically be converted to HTTPS.<br />
+            <br />
+            <span class="text-code text-light">
+              <span class="text-secondary"># Security headers</span><br />
+              <span class="text-secondary">## X-Content-Type-Options: avoid MIME type sniffing</span><br />
+              <span class="text-danger">add_header</span> X-Content-Type-Options <span class="text-info">nosniff</span>;<br />
+              <span class="text-secondary">## Content-Security-Policy (CSP): Yes</span><br />
+              <span class="text-secondary">## No 'script-src' directive, you need to test it yourself</span><br />
+              <span class="text-danger">add_header</span> Content-Security-Policy <span class="text-info">"object-src 'none'; base-uri 'none'; require-trusted-types-for 'script'; frame-ancestors 'self';"</span>;<br />
+              <span class="text-secondary">## Strict Transport Security (HSTS): Yes</span><br />
+              <span class="text-danger">add_header</span> Strict-Transport-Security <span class="text-info">"max-age=15552001; includeSubdomains; preload"</span>;<br />
+            </span>
+          </div>
 
           <h2 class="my-5 fs-4">Complete configuration</h2>
           <script src="https://gist.github.com/nbeguier/4a11a38ea55f6ab5562a537d8584da41.js"></script>
