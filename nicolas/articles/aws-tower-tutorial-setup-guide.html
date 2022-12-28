@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="TODO" />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="aws tower security audit opensource" />
+    <meta property="og:title" content="AWS Tower Tutorial: Setup guide" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/nginx-2023.jpg" />
+    <meta property="og:description" content="TODO" />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/aws-tower-tutorial-setup-guide.html" />
+    <meta property="og:type" content="article" />
+    <title>AWS Tower Tutorial: Setup guide</title>
+    <script src="/js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link href="/css/gist.min.css" rel="stylesheet" />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100 bg-black">
+    <!-- Begin nav header -->
+    <div id="includedNavbar">
+      <header class="p-3 border-bottom bg-white" />
+    </div>
+
+    <!-- Begin article body -->
+    <main class="flex-shrink-0">
+      <div class="container col-lg-8 p-0 bg-dark text-light">
+        <!-- Begin title banner -->
+        <div
+          class="position-relative overflow-hidden text-center"
+          style="background: url('/nicolas/img/cover/nginx-2023.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
+        >
+          <div class="col-md-6 m-5 mx-md-auto">
+            <h1 class="display-4 fw-normal">AWS Tower Tutorial</h1>
+            <p class="lead fw-normal">
+              Setup guide
+            </p>
+          </div>
+        </div>
+        <!-- Begin article content -->
+        <div class="p-5">
+          <p class="text-muted">Jan 1st, 2023 by Nicolas Béguier</p>
+
+          <div id="includedAWSTowerSummary"></div>
+
+          <h1 class="my-5 fs-3">Introduction</h1>
+
+          <div class="lead fs-6 text-light">
+            AWS Tower give the ability to discover and monitor AWS account to find vulnerabilities or misconfigurations. Give also a brief overview for non-AWS expert. Not related at all of the AWS Trusted Advisor.
+          </div>
+
+          <h1 class="my-5 fs-3">Installation</h1>
+
+          <div class="lead fs-6 text-light">
+            <span class="text-code text-light">
+              <span class="text-secondary"># Git clone leboncoin/aws-tower</span><br />
+              <span class="text-info">git</span> clone https://github.com/leboncoin/aws-tower<br />
+              <span class="text-info">cd</span> aws-tower<br />
+              <span class="text-secondary"># Install python prerequisites</span><br />
+              <span class="text-info">pip</span> install -r requirements.txt<br />
+              <br />
+            </span>
+
+            <p>You also need an AWS account and the AWS CLI properly configured. If not, download the AWS CLI installation package from the <a href="https://aws.amazon.com/cli/" class="link-info">AWS CLI page</a>.</p>
+          </div>
+
+          <h1 class="my-5 fs-3">Configuration</h1>
+
+          <div class="lead fs-6 text-light">
+            You can run AWS Tower without specific configuration. For better results, it's highly recomended to duplicate the sample files and edit them.<br />
+            <br />
+            <span class="text-code text-light">
+              <span class="text-info">cp</span> config/rules.yaml.sample config/rules.yaml<br />
+              <span class="text-info">cp</span> config/subnet_allow_list.txt.sample config/subnet_allow_list.txt<br />
+              <span class="text-info">cp</span> config/trusted_accounts_list.txt.sample config/trusted_accounts_list.txt<br />
+            </span>
+            <br />
+            <ul>
+              <li><span class="text-code">config/rules.yaml</span>: This is a rules file. Mandatory for "audit" functionality. You can add your own rules or use the default ones. They are updated regularly.</li>
+              <li><span class="text-code">config/subnet_allow_list.txt</span>: Contains the allow list of subnets. You can add it everything that should be interpreted as "local network".</li>
+              <li><span class="text-code">config/trusted_accounts_list.txt</span>: This file permits to trust some AWS account. It's handy to whitelist VPN peering.</li>
+            </ul>
+          </div>
+
+          <h1 class="my-5 fs-3">Step-by-step first try</h1>
+
+          <div class="lead fs-6 text-light">
+            First of all, use an alias to simplify the command line:
+
+            <span class="text-code text-light copy-code"> <span class="text-info">alias</span> aws-tower="${PWD}/aws_tower_cli.py"<br /> </span>
+
+            Then, list all available profiles
+
+            <span class="text-code text-light copy-code"> <span class="text-info">aws-tower</span> --list-profiles<br /> </span>
+
+            Let's suppose you have the profile <span class="text-warning">demo-account</span> listed.
+
+            <span class="text-code text-light copy-code"> <span class="text-info">aws-tower</span> discover <span class="text-warning">demo-account</span><br /> </span>
+          </div>
+
+          <h1 class="my-5 fs-3">Troubleshooting</h1>
+
+          <div class="lead fs-6 text-light">
+            Be sure you AWS CLI is properly configured:<br />
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># If you have the correct permission, you should be able to display all s3 buckets of your account</span><br />
+              <span class="text-info">aws</span> --profile <span class="text-warning">demo-account</span> s3 ls<br />
+            </span>
+
+            If you successfully observe the list of all your s3 buckets, then you should be able to discover it with AWS Tower. We specify the asset type s3 in this example:
+            <span class="text-code text-light copy-code"> <span class="text-info">aws-tower</span> discover <span class="text-warning">demo-account</span> -t S3<br /> </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Begin Thanks -->
+      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
+    </main>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="/js/pub/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="/js/nico.min.js"></script>
+    <script>
+      $("#includedAWSTowerSummary").load("aws-tower-summary.html");
+    </script>
+  </body>
+</html>

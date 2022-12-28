@@ -176,9 +176,13 @@
               <span class="text-secondary"># Security headers</span><br />
               <span class="text-secondary">## X-Content-Type-Options: avoid MIME type sniffing</span><br />
               <span class="text-danger">add_header</span> X-Content-Type-Options <span class="text-info">nosniff</span>;<br />
+              <br />
               <span class="text-secondary">## Content-Security-Policy (CSP): Yes</span><br />
               <span class="text-secondary">## No 'script-src' directive, you need to test it yourself</span><br />
               <span class="text-danger">add_header</span> Content-Security-Policy <span class="text-info">"object-src 'none'; base-uri 'none'; require-trusted-types-for 'script'; frame-ancestors 'self';"</span>;<br />
+              <span class="text-secondary">## The safest CSP, only block your website to be inside an inframe</span><br />
+              <span class="text-danger">add_header</span> Content-Security-Policy <span class="text-info">"frame-ancestors 'self';"</span>;<br />
+              <br />
               <span class="text-secondary">## Strict Transport Security (HSTS): Yes</span><br />
               <span class="text-danger">add_header</span> Strict-Transport-Security <span class="text-info">"max-age=15552001; includeSubdomains; preload"</span>;<br />
             </span>
@@ -186,6 +190,7 @@
 
           <h2 class="my-5 fs-4">Complete configuration</h2>
           <script src="https://gist.github.com/nbeguier/4a11a38ea55f6ab5562a537d8584da41.js"></script>
+          <a href="https://gist.github.com/nbeguier/4a11a38ea55f6ab5562a537d8584da41" class="link-secondary">GitHub GIST Link</a>
 
           <h1 class="my-5 fs-3">Conclusion</h1>
 
