@@ -75,6 +75,11 @@
               Partager <ion-icon name="share"></ion-icon>
             </button>
             <span id="pasted" hidden><br>Copié dans le presse-papier !<br><b id="sharedCode"></b></span>
+            <a class="btn btn-outline-secondary m-2" href="" id="directLink">DirectLink</a>
+            <script type="text/javascript">
+              document.getElementById("directLink").href = window.location.href.split("?")[0] + "?shopping=" + encodeURIComponent(
+    btoa(window.localStorage.getItem("shopping")));
+            </script>
         </div>
       </div>
     </div>
