@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Patching APK with Objection vs. Manual Recompilation" />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="Android APK patching, Objection, Burp, network_security_config.xml, Android emulator, MITM proxy, APK recompilation, traffic analysis, OpenSSL, APKtool, apk signer" />
+    <meta property="og:title" content="Two Effective Ways to Intercept Android App Traffic" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/mitm.jpg" />
+    <meta
+      property="og:description"
+      content="Explore two comprehensive methods to extract Android app traffic: patching an APK using Objection and manual APK recompilation. This guide offers step-by-step instructions, including necessary commands and tools, to successfully set up a MITM proxy and analyze app traffic."
+    />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/android-mitm-intercept-trafic.html" />
+    <meta property="og:type" content="article" />
+    <title>Two Effective Ways to Intercept Android App Traffic</title>
+    <script src="/js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link href="/css/gist.min.css" rel="stylesheet" />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100 bg-black">
+    <!-- Begin nav header -->
+    <div id="includedNavbar">
+      <header class="p-3 border-bottom bg-white" />
+    </div>
+
+    <!-- Begin article body -->
+    <main class="flex-shrink-0">
+      <div class="container col-lg-8 p-0 bg-dark text-light">
+        <!-- Begin title banner -->
+        <div
+          class="position-relative overflow-hidden text-center"
+          style="background: url('/nicolas/img/cover/mitm.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
+        >
+          <div class="col-md-6 m-5 mx-md-auto">
+            <h1 class="display-4 fw-normal">Two Effective Ways to Intercept Android App Traffic</h1>
+            <p class="lead fw-normal">Patching APK with Objection vs. Manual Recompilation</p>
+          </div>
+        </div>
+        <!-- Begin article content -->
+        <div class="p-5">
+          <p class="text-muted">May 5, 2023 by Nicolas Béguier</p>
+
+          <div class="lead fs-6 text-light text-justify">
+            As Android applications become increasingly sophisticated, so too does the need for effective methods to analyze their behavior, specifically in terms of network traffic. Extracting an app's traffic can provide valuable insights
+            into its operations, potentially revealing vulnerabilities or undesired actions. This article will guide you through two of the most effective ways to achieve this: patching an APK using Objection and manually recompiling the
+            APK. Both methods are detailed, step-by-step, providing you with the necessary commands and tools to successfully set up a Man-In-The-Middle (MITM) proxy and start analyzing app traffic.
+          </div>
+          <h1 class="my-5 fs-3">Prerequisites</h1>
+
+          <div class="lead fs-6 text-light text-justify">
+            Before you can begin, there are certain tools you'll need to have installed on your system.
+
+            <ul>
+              <li>
+                <b>Android Studio</b>: This is the primary tool for creating an Android emulator. For the best experience, be sure to use the latest version. After installation, go to "Tools" > "Device Manager" and click "Create device" in
+                the "Virtual" panel to launch the device creation wizard.
+              </li>
+
+              <li>
+                <b>Android Tooling</b>: Make sure you have the necessary Android tools installed in <a class="link-info" href="https://developer.android.com/studio">Android Studio</a>. They're typically found in
+                <span class="text-code">~/Android/Sdk/build-tools/&lt;version&gt;/</span>.<br />
+                To see a list of available devices, use this command:
+                <span class="text-code text-light copy-code"> <span class="text-danger">$</span> ~/Android/Sdk/emulator/emulator -list-avds </span>
+              </li>
+
+              <li>
+                <b>Objection</b>: Install Objection with the following command:
+                <span class="text-code text-light copy-code"> <span class="text-danger">$</span> pip install objection </span>
+              </li>
+
+              <li><b>Burp</b>: Finally, download and install Burp from the official website: <a class="link-info" href="https://portswigger.net/burp/releases/">https://portswigger.net/burp/releases/</a>.</li>
+            </ul>
+          </div>
+
+          <h1 class="my-5 fs-3">Option 1 : Patch the APK with Objection</h1>
+
+          <div class="lead fs-6 text-light text-justify">
+            <p>To kickstart the process, start the Android emulator. This will establish a direct connection with the proxy, eliminating the need for modifying the Wi-Fi settings of your phone. Here's the command you need to execute:</p>
+
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Emulator can be found at ~/Android/Sdk/emulator/emulator, my virtual device is named Pixel_5_API_25</span><br />
+              <span class="text-danger">$</span> ~/Android/Sdk/emulator/emulator -avd Pixel_5_API_25 -writable-system -no-snapshot -http-proxy &lt;your local ip&gt;:8080
+            </span>
+
+            <p>Next, run Burp and set it to listen on all proxy interfaces. Then, extract the CA in DER format and name it <span class="text-code">ca_burp.der</span>.</p>
+
+            <p>The CA needs to be converted to PEM format if you're using Objection. You can do this using the command:</p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> openssl x509 -inform DER -in ca_burp.der -out ca_burp.pem </span>
+
+            <p>Once converted, push the certificate to the device with these commands:</p>
+
+            <span class="text-code text-light">
+              <span class="text-danger">$</span> adb root<br />
+              <span class="text-danger">$</span> adb remount<br />
+              <span class="text-danger">$</span> adb push ca_burp.pem /sdcard/<br />
+            </span>
+
+            <p>In the Android app, navigate to the files and <b class="text-success">manually add the CA from the sdcard</b>. This step is essential, though not sufficient on its own.</p>
+
+            <p>Now it's time to patch the APK you want to analyze. The use of <span class="text-code">--use-aapt2</span> is optional but can be handy. Use this command:</p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> objection -d patchapk --use-aapt2 --source base.apk </span>
+
+            .
+            <p>Install the app using the command:</p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> adb install base.objection.apk </span>
+
+            <p>Launch the app and unfreeze it with this command:</p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> objection explore -s 'android sslpinning disable' </span>
+
+            <p>With these steps, you should be able to successfully set up a MITM proxy for an Android app and start analyzing its traffic.</p>
+          </div>
+
+          <h1 class="my-5 fs-4">Option 2 : Patch the APK manually</h1>
+          <div class="lead fs-6 text-light">
+            <p>Another option you can try to extract an app's traffic is by recompiling the APK and adding a specific <span class="text-code">network_security_config.xml</span> file:</p>
+            <p>Use the following command to decompile the APK and keep only the resources (-s):</p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> apktool d base.apk -s -o base_app </span>
+
+            <p>Replace or create a <span class="text-code">network_security_config.xml</span> file:</p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> vim base_app/res/xml/network_security_config.xml </span>
+
+            <pre><code>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;network-security-config&gt;
+    &lt;base-config&gt;
+        &lt;trust-anchors&gt;
+            &lt;certificates src="@raw/ca_burp"/&gt;
+        &lt;/trust-anchors&gt;
+    &lt;/base-config&gt;
+&lt;/network-security-config&gt;</code></pre>
+
+            <p>Launch Burp and make it listen on all proxy interfaces. Extract the CA in DER format and name it <span class="text-code">ca_burp.der</span>.</p>
+
+            <p>Put the <span class="text-code">ca_burp.der</span> certificate in the <span class="text-code">res/raw/</span> folder:</p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> ls base_app/res/raw/ca_burp.der </span>
+
+            <p>
+              Enable the <span class="text-code">network_security_config</span> file by adding it to the <span class="text-code">AndroidManifest.xml</span> file. Ideally, add it as close as possible to the
+              <span class="text-code">application</span> tag:
+            </p>
+
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> vim base_app/AndroidManifest.xml </span>
+
+            <p>And add the following line inside the <span class="text-code">application</span> tag:</p>
+            <pre><code>&lt;application android:networkSecurityConfig="@xml/network_security_config" ...&gt;
+    ...
+&lt;/application&gt;</code></pre>
+
+            <p>Recompile the APK:</p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> apktool b base_app/ -o base_new.apk </span>
+
+            <p>Optimize the APK:</p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> zipalign -v 4 base_new.apk base_aligned.apk </span>
+
+            <p>Sign the APK. You can use your own key or the one provided by Objection (<span class="text-code">~/.local/lib/python3.10/site-packages/objection/utils/assets/objection.jks</span>):</p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> apksigner sign --ks &lt;path&gt;/KeyStore.jks --ks-pass pass:basil-joule-bug base_aligned.apk </span>
+
+            <p>Install the signed APK:</p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> adb install base_aligned.apk </span>
+
+            <p>By following these steps, you should be able to recompile and install the APK with the required <span class="text-code">network_security_config.xml</span> file and extract its traffic through Burp.</p>
+          </div>
+
+          <h1 class="my-5 fs-3">Conclusion</h1>
+
+          <div class="lead fs-6 text-light">
+            Both patching an APK with Objection and manually recompiling it provide effective means of extracting Android app traffic for analysis. While Objection offers an easier, more automated process, manual recompilation allows for
+            more granular control and customization. By understanding and applying these methods, you can gain a deeper understanding of your Android applications' network operations, potentially identifying vulnerabilities or
+            inefficiencies. As always, remember to use these tools responsibly and ethically.
+          </div>
+        </div>
+      </div>
+
+      <!-- Begin Thanks -->
+      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
+    </main>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="/js/pub/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="/js/nico.min.js"></script>
+  </body>
+</html>

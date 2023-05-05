@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Open-source tools for code scanning and dependency checking: Keep your Android and iOS code safe!" />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="sast sca android iOS mobsf depscan mosfscan software security testing cicd circleci github sdlc splc" />
+    <meta property="og:title" content="Security Post-it #8 – Software Security Testing for Android and iOS" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/logo_secu-postit8.jpg" />
+    <meta property="og:description" content="Open-source tools for code scanning and dependency checking: Keep your Android and iOS code safe!" />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/security-postit-8-software-security-testing-mobile.html" />
+    <meta property="og:type" content="article" />
+    <title>Maximizing Security with Software Testing on Android and iOS</title>
+    <script src="/js/redirect.min.js" type="text/javascript" async></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link href="/css/gist.min.css" rel="stylesheet" />
+    <link rel="icon" href="/favicon.png" />
+  </head>
+
+  <body class="d-flex flex-column h-100 bg-black">
+    <!-- Begin nav header -->
+    <div id="includedNavbar">
+      <header class="p-3 border-bottom bg-white" />
+    </div>
+
+    <!-- Begin article body -->
+    <main class="flex-shrink-0">
+      <div class="container col-lg-8 p-0 bg-dark text-light">
+        <!-- Begin title banner -->
+        <div
+          class="position-relative overflow-hidden text-center"
+          style="background: url('/nicolas/img/cover/logo_secu-postit7.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
+        >
+          <div class="col-md-6 m-5 mx-md-auto">
+            <h1 class="display-4 fw-normal">Maximizing Security with Software Testing on Android and iOS</h1>
+            <p class="lead fw-normal">Open-source tools for code scanning and dependency checking: Keep your Android and iOS code safe!</p>
+          </div>
+        </div>
+        <!-- Begin article content -->
+        <div class="p-5">
+          <p class="text-muted">Dec 3, 2022 by Nicolas Béguier</p>
+
+          <div class="lead fs-6 text-light text-justify">
+            In order to secure your code, it is important to implement SAST and SCA on your mobile repositories for Android and iOS. However, it can be challenging to know where to begin and what methods are effective. In this article, we will discuss the implementation of SAST and SCA on <span class="text-warning">Android</span> repositories using Java and Kotlin, as well as on <span class="text-warning">iOS</span> repositories using Objective-C and Swift.<br />
+            <br />
+            I forgot to mention that you can use open-source tools to build this yourself on your continuous integration/continuous delivery (CI/CD) system or as part of your pre-commit hooks.<br />
+            <br />
+            Want to keep your <a class="link-success" href="https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html"><b>Javascript and Typescript</b></a> or <a class="link-success" href="https://beguier.eu/nicolas/articles/security-postit-7-software-security-testing-golang.html"><b>Golang</b></a> repos safe? Check out my other article for tips and tricks!
+                      </div>
+          <h1 class="my-5 fs-3">What are SAST and SCA ?</h1>
+
+          <div class="lead fs-6 text-light text-justify">
+
+<b>Static Application Security Testing</b> (SAST) and <b>Software Composition Analysis</b> (SCA) are two types of tools used to improve the security of software applications.<br />
+<br />
+SAST tools are used to identify vulnerabilities in the source code of an application, before it is deployed. These tools work by analyzing the application's source code and looking for potential security issues, such as hard-coded passwords, unvalidated input, or SQL injection vulnerabilities. By identifying and addressing these issues early in the development process, SAST tools can help organizations reduce the risk of security breaches and improve the overall security of their applications.<br />
+<br />
+SCA tools, on the other hand, are used to analyze the third-party libraries and dependencies that are included in an application. These tools work by scanning the application's codebase and identifying any external libraries or dependencies that are being used. They then compare this list to a database of known vulnerabilities and security issues, to determine if any of the libraries or dependencies being used are potentially insecure. By using SCA tools, organizations can ensure that the third-party libraries and dependencies included in their applications are secure and free of known vulnerabilities.<br />
+<br />
+Overall, SAST and SCA tools are important tools for improving the security of software applications. By identifying and addressing potential security issues <b class="text-warning">early in the development process</b>, organizations can reduce the risk of security breaches and protect their applications from potential threats.<br />
+<br />
+            In my opinion, SAST should be both asynchronous and synchronous. Blocking CI/CD pipelines to prevent unsecured code is great, but you need to specify exceptions and false-positive management. Running it asynchronously permits
+            your security team to read reports and be alerted in real-time for potential vulnerabilities.<br />
+            SCA must be asynchronous only, otherwise you will only be alerted when new code is pushed. <b>Dead repositories are full of vulnerable dependencies</b>. Run it somewhere else but continuously, and why not use a tool to create
+            Pull Requests automatically, like Renovabot.<br />
+          </div>
+
+          <h2 class="my-5 fs-4">Static Application Security Testing (SAST)</h2>
+          <div class="lead fs-6 text-light">
+            If you want to audit your Android (Java, Kotlin) and iOS (Objective-C, Swift) repositories, the best SAST tool to use is <a class="link-info" href="https://github.com/MobSF/Mobile-Security-Framework-MobSF"><b>MobSF</b></a>. It offers two options - you can use the web interface to scan the compiled app for code analysis, manifest analysis (Android) and ATS analysis (iOS), or you can use the light version, <a class="link-info" href="https://github.com/MobSF/mobsfscan"><b>mobsfscan</b></a>, for code analysis only.
+          </div>
+
+          <h3 class="my-3 fs-5 text-success pt-3">Install</h3>
+          <div class="lead fs-6 text-light">
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Run this command to start the MobSF Web user interface</span><br />
+              <span class="text-danger">$</span> docker run --rm -it -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+            </span>
+
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># To install mobsfscan run the following command</span><br />
+              <span class="text-danger">$</span> pip install mobsfscan
+            </span>
+          </div>
+
+          <h3 class="my-3 fs-5 text-success pt-3">Audit with MobSF</h3>
+
+          <div class="lead fs-6 text-light">
+
+To use the MobSF Web user interface, go to this URL: <a href="http://localhost:8080/" class="link-secondary" onclick="window.open(this.href); return false;">http://localhost:8080/</a>. Once there, you can upload your code or compiled application for scanning. The web interface will perform code analysis, manifest analysis (for Android apps), and ATS analysis (for iOS apps) to identify potential vulnerabilities in your code. This will help you ensure that your app is secure and ready for deployment.
+          </div>
+          <h3 class="my-3 fs-5 text-success pt-3">Audit with mobsfscan</h3>
+
+          <div class="lead fs-6 text-light">
+            <b>Human readable output</b><br />
+            <br />
+            <span class="text-secondary text-code pt-3"># /tmp/mobsfscan.yml</span><br />
+            <script src="https://gist.github.com/nbeguier/199d55fcc1a33cb50954fc36ffc294f9.js"></script>
+
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Run mobsfscan on your local repository</span><br />
+              <span class="text-danger">$</span> mobsfscan __CODE_DIRECTORY__ -c /tmp/mobsfscan.yml
+            </span>
+
+            <br />
+            <b>Work with a JSON output</b>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> mobsfscan __CODE_DIRECTORY__ -c /tmp/mobsfscan.yml --json -o /tmp/mobsfscan.json </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/mobsfscan.json <span class="text-danger">|</span> jq .results </span>
+          </div>
+          <h3 class="my-3 fs-5 text-success pt-3">Example</h3>
+
+          <div class="lead fs-6 text-light">
+            In order to give an example of mobsfscan, you used a <a class="link-secondary" href="https://github.com/wordpress-mobile/WordPress-Android.git">randomly selected Android repository</a> and <a class="link-secondary" href="https://github.com/wordpress-mobile/WordPress-iOS.git">iOS repository</a>. This repository was chosen randomly and is not specifically related to mobsfscan. It was simply used as an example to illustrate a point.
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Clone the Android & iOS repo in /tmp</span><br />
+              <span class="text-danger">$</span> git clone https://github.com/wordpress-mobile/WordPress-Android.git /tmp/WordPress-Android <span class="text-danger">;</span> git clone https://github.com/wordpress-mobile/WordPress-iOS.git /tmp/WordPress-iOS
+            </span>
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Scan the Android repo with mobsfscan</span><br />
+              <span class="text-danger">$</span> mobsfscan /tmp/WordPress-Android -c /tmp/mobsfscan.yml
+            </span>
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Scan the iOS repo with mobsfscan</span><br />
+              <span class="text-danger">$</span> mobsfscan /tmp/WordPress-iOS -c /tmp/mobsfscan.yml
+            </span>
+          </div>
+          <h3 class="my-3 fs-5 text-success py-3">Does it work on my CI ?</h3>
+
+          <div class="lead fs-6 text-light">
+            There is documentation for:
+            <ul>
+              <li><a href="https://github.com/MobSF/mobsfscan#github-action" class="link-secondary">GitHub Actions</a></li>
+              <li><a href="https://github.com/MobSF/mobsfscan#gitlab-cicd" class="link-secondary">Gitlab CI/CD</a></li>
+              <li><a href="https://github.com/MobSF/mobsfscan#travis-ci" class="link-secondary">Travis CI</a></li>
+              <li><a href="https://github.com/MobSF/mobsfscan#circle-ci" class="link-secondary">Circle CI</a></li>
+            </ul>
+          </div>
+          <h2 class="my-5 fs-4">Software Composition Analysis (SCA)</h2>
+          <div class="lead fs-6 text-light">
+            <a class="link-info" href="https://github.com/AppThreat/dep-scan">Depscan by AppThreat</a> is an open-source security tool that audits project dependencies for <b class="text-success">known vulnerabilities and advisories</b>. It works well for Android projects, <b class="text-danger">it doesn't work yet on iOS</b>.
+          </div>
+
+          <h3 class="my-3 fs-5 text-success pt-3">Install</h3>
+          <div class="lead fs-6 text-light">
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Install cdxgen</span><br />
+              <span class="text-danger">$</span> npm install -g @appthreat/cdxgen
+            </span>
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># ... or install cdxgen in /tmp/, use -g for a global install instead of --prefix /tmp/</span><br />
+              <span class="text-danger">$</span> npm install --prefix /tmp/ @appthreat/cdxgen <span class="text-danger">&&</span> PATH=$PATH:/tmp/node_modules/.bin
+            </span>
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Install depscan</span><br />
+
+              <span class="text-danger">$</span> pip install appthreat-depscan
+            </span>
+          </div>
+
+          <h3 class="my-3 fs-5 text-success pt-3">Audit</h3>
+
+          <div class="lead fs-6 text-light">
+            <b>Human readable output</b>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --src __CODE_DIRECTORY__</span>
+            <br />
+            <b>Work with a JSON output</b>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --src __CODE_DIRECTORY__ -o /tmp/depscan.json</span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/depscan-kotlin.json | jq . </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/depscan-java.json | jq . </span>
+          </div>
+          <h3 class="my-3 fs-5 text-success pt-3">Example</h3>
+
+          <div class="lead fs-6 text-light">
+            In this example, I'm still using my previously cloned repositories.
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --src /tmp/WordPress-Android</span>
+            <span class="text-code text-secondary">
+              <div class="fs-6">
+                Dependency Scan Results (nodejs)<br />
+                ╔════════════════╤═══════════╤═══════════════════════╤═════════╤═════════════╤══════════╤═══════╗<br />
+                ║&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;Package&nbsp;&nbsp;&nbsp;│&nbsp;Insights&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;Version&nbsp;│&nbsp;Fix&nbsp;Version&nbsp;│&nbsp;Severity&nbsp;│&nbsp;Score&nbsp;║
+                <br />
+                ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
+                ║&nbsp;CVE-2021-3803&nbsp;&nbsp;│&nbsp;nth-check&nbsp;│&nbsp;ℹ&nbsp;Indirect&nbsp;dependency&nbsp;│&nbsp;<2.0.1&nbsp;&nbsp;│&nbsp;2.0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;HIGH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;7.5&nbsp;║
+                <br />
+                ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
+                ║&nbsp;<b>CVE-2022-40215</b>&nbsp;│&nbsp;<b>tabs</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;🎯&nbsp;Direct&nbsp;usage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;<=3.7.1&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;MEDIUM&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;5.4&nbsp;║
+                <br />
+                ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
+                ║&nbsp;CVE-2022-33154&nbsp;│&nbsp;schema&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;ℹ&nbsp;Indirect&nbsp;dependency&nbsp;│&nbsp;<1.13.1&nbsp;│&nbsp;1.13.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;MEDIUM&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;5.4&nbsp;║
+                <br />
+                ╚════════════════╧═══════════╧═══════════════════════╧═════════╧═════════════╧══════════╧═══════╝<br />
+              </div>
+            </span>
+          </div>
+          <h3 class="my-3 fs-5 text-success pt-3">Does it work on my CI ?</h3>
+
+          <div class="lead fs-6 text-light">
+            <a class="link-info" href="https://github.com/appthreat/dep-scan#integration-with-ci-environments">https://github.com/appthreat/dep-scan#integration-with-ci-environments</a><br />
+            <br />
+            There is documentation for:
+            <ul>
+              <li>GitHub Actions</li>
+            </ul>
+            But more with the <a class="link-info" href="https://slscan.io/en/latest/integrations/">shiftleft project</a>.
+          </div>
+
+          <h1 class="my-5 fs-3">Conclusion</h1>
+
+          <div class="lead fs-6 text-light">
+You can build your own code scanner without the need for expensive tools like Snyk or CherckMarx. By implementing <b>pre-commit hooks</b>, <b>CI/CD</b>, and <b>asynchronous</b> processes, you can gain a comprehensive view of your application's security risks and educate your developers on security best practices. At <a class="text-success" href="https://beguier.eu/tandem-technology/"><b>Tandem Technology</b></a>, we offer <b>workshops</b> to help improve your development practices and secure your code repository.
+          </div>
+        </div>
+      </div>
+
+      <!-- Begin Thanks -->
+      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
+    </main>
+
+    <!-- Begin footer -->
+    <div id="includedFooter" class="mt-auto"></div>
+
+    <script src="/js/pub/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="/js/nico.min.js"></script>
+  </body>
+</html>
