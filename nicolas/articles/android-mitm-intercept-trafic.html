@@ -47,24 +47,23 @@
           <p class="text-muted">May 5, 2023 by Nicolas Béguier</p>
 
           <div class="lead fs-6 text-light text-justify">
-            As Android applications become increasingly sophisticated, so too does the need for effective methods to analyze their behavior, specifically in terms of network traffic. Extracting an app's traffic can provide valuable insights
-            into its operations, potentially revealing vulnerabilities or undesired actions. This article will guide you through two of the most effective ways to achieve this: patching an APK using Objection and manually recompiling the
-            APK. Both methods are detailed, step-by-step, providing you with the necessary commands and tools to successfully set up a Man-In-The-Middle (MITM) proxy and start analyzing app traffic.
-          </div>
+Are you finding it <b class="text-danger">challenging to intercept Android app traffic?</b> Since Android N, letting an APK through a proxy has become a herculean task - <b class="text-warning">even rooting doesn't help</b>.<br/>
+<br/>
+We provide a detailed, step-by-step guide on patching an APK using Objection or manually recompiling the APK, allowing you to start analyzing app traffic effectively.<br/>
+<br/>
+Gaining insights into an app's operations can reveal vulnerabilities and undesired actions. With the right approach, you can bypass the stringent security measures of the APK, making this an essential read for <b class="text-success">pentesters and bug bounty researchers focusing on mobile applications</b>.</div>
           <h1 class="my-5 fs-3">Prerequisites</h1>
 
           <div class="lead fs-6 text-light text-justify">
-            Before you can begin, there are certain tools you'll need to have installed on your system.
+            Before starting, there are certain tools you'll need to install on your system:
 
             <ul>
               <li>
-                <b>Android Studio</b>: This is the primary tool for creating an Android emulator. For the best experience, be sure to use the latest version. After installation, go to "Tools" > "Device Manager" and click "Create device" in
-                the "Virtual" panel to launch the device creation wizard.
+                <b>Android Studio</b>: You need it to use the Android emulator. Launch it and go to "Tools" > "Device Manager" and click "Create device" in the "Virtual" panel to launch the device creation wizard.
               </li>
 
               <li>
-                <b>Android Tooling</b>: Make sure you have the necessary Android tools installed in <a class="link-info" href="https://developer.android.com/studio">Android Studio</a>. They're typically found in
-                <span class="text-code">~/Android/Sdk/build-tools/&lt;version&gt;/</span>.<br />
+                <b>Android Tooling</b>: Add <span class="text-code">~/Android/Sdk/build-tools/&lt;version&gt;/</span> to your PATH.<br />
                 To see a list of available devices, use this command:
                 <span class="text-code text-light copy-code"> <span class="text-danger">$</span> ~/Android/Sdk/emulator/emulator -list-avds </span>
               </li>
@@ -81,34 +80,33 @@
           <h1 class="my-5 fs-3">Option 1 : Patch the APK with Objection</h1>
 
           <div class="lead fs-6 text-light text-justify">
-            <p>To kickstart the process, start the Android emulator. This will establish a direct connection with the proxy, eliminating the need for modifying the Wi-Fi settings of your phone. Here's the command you need to execute:</p>
+            <p>To kickstart the process, start the Android emulator. This will establish a direct connection through the proxy, avoiding the modification the Wi-Fi settings of your phone. Here's the command you need to execute:</p>
 
             <span class="text-code text-light copy-code">
               <span class="text-secondary"># Emulator can be found at ~/Android/Sdk/emulator/emulator, my virtual device is named Pixel_5_API_25</span><br />
               <span class="text-danger">$</span> ~/Android/Sdk/emulator/emulator -avd Pixel_5_API_25 -writable-system -no-snapshot -http-proxy &lt;your local ip&gt;:8080
             </span>
 
+            <p class="text-info">💡 If you are using a physical mobile phone, you need to configure the Proxy setting of your Wifi connection.</p><br/>
+
             <p>Next, run Burp and set it to listen on all proxy interfaces. Then, extract the CA in DER format and name it <span class="text-code">ca_burp.der</span>.</p>
 
             <p>The CA needs to be converted to PEM format if you're using Objection. You can do this using the command:</p>
 
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> openssl x509 -inform DER -in ca_burp.der -out ca_burp.pem </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> openssl x509 -inform DER -in ca_burp.der -out ca_burp.pem </span><br/>
 
             <p>Once converted, push the certificate to the device with these commands:</p>
 
             <span class="text-code text-light">
-              <span class="text-danger">$</span> adb root<br />
-              <span class="text-danger">$</span> adb remount<br />
               <span class="text-danger">$</span> adb push ca_burp.pem /sdcard/<br />
             </span>
 
-            <p>In the Android app, navigate to the files and <b class="text-success">manually add the CA from the sdcard</b>. This step is essential, though not sufficient on its own.</p>
+            <p>In the Android app, navigate to the files and <b class="text-success">manually add the CA from the sdcard</b>. This step is essential, though not sufficient on its own.</p><br/>
 
             <p>Now it's time to patch the APK you want to analyze. The use of <span class="text-code">--use-aapt2</span> is optional but can be handy. Use this command:</p>
 
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> objection -d patchapk --use-aapt2 --source base.apk </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> objection -d patchapk --use-aapt2 --source base.apk </span><br/>
 
-            .
             <p>Install the app using the command:</p>
 
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> adb install base.objection.apk </span>
@@ -156,7 +154,7 @@
             <p>And add the following line inside the <span class="text-code">application</span> tag:</p>
             <pre><code>&lt;application android:networkSecurityConfig="@xml/network_security_config" ...&gt;
     ...
-&lt;/application&gt;</code></pre>
+&lt;/application&gt;</code></pre><br/>
 
             <p>Recompile the APK:</p>
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> apktool b base_app/ -o base_new.apk </span>
@@ -165,7 +163,7 @@
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> zipalign -v 4 base_new.apk base_aligned.apk </span>
 
             <p>Sign the APK. You can use your own key or the one provided by Objection (<span class="text-code">~/.local/lib/python3.10/site-packages/objection/utils/assets/objection.jks</span>):</p>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> apksigner sign --ks &lt;path&gt;/KeyStore.jks --ks-pass pass:basil-joule-bug base_aligned.apk </span>
+            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> apksigner sign --ks &lt;path&gt;/KeyStore.jks --ks-pass pass:basil-joule-bug base_aligned.apk </span><br/>
 
             <p>Install the signed APK:</p>
             <span class="text-code text-light copy-code"> <span class="text-danger">$</span> adb install base_aligned.apk </span>
