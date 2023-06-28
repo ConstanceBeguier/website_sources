@@ -305,6 +305,33 @@ function ListDinner() {
       },
       formula: ["todo"],
     },
+    "pate-pizza": {
+      name: "Pâte à pizza",
+      nb_person: 4,
+      recipe: {
+        Eau: "360mL",
+        Huile: "1.5cs",
+        Sel: "1.5cc",
+        Farine: "480g",
+        Levure: "1.5cc",
+      },
+      formula: ["Machine à pain, programme 13.", "Four à 200°C, pendant 15-20 minutes"],
+    },
+    "pate-brisee": {
+      name: "Pâte brisée",
+      nb_person: 4,
+      recipe: {
+        Farine: "300g",
+        Beurre: "150g",
+        Eau: "8cL",
+      },
+      formula: [
+        "Mélanger la farine avec une pincée de sel.",
+        "Ajouter le beurre et mélanger.",
+        "Ajouter l'eau et mélanger.",
+        "Four à 200°C, pendant 35 minutes."
+      ],
+    },
     pizza: {
       name: "Pizza",
       nb_person: 4,
@@ -325,7 +352,7 @@ function ListDinner() {
         Tomate: 6,
         Gruyère: "50g",
       },
-      formula: ["todo"],
+      formula: ["Four à 200°C, pendant 35 minutes"],
     },
     quiche: {
       name: "Quiche",
@@ -607,7 +634,7 @@ function ListDessert() {
         Beurre: "170g",
         "Pépites de chocolat": "200g",
       },
-      formula: ["Préchauffer le four à 190°C.", "Mélanger la farine, la levure et les oeufs.", "Ajouter le sucre et la cassonade.", "Ajouter le beurre et bien mélanger à la main.", "Ajouter les pépites de chocolat.", "Cuire 10 minutes."],
+      formula: ["Préchauffer le four à 200°C.", "Mélanger la farine, la levure et les oeufs.", "Ajouter le sucre et la cassonade.", "Ajouter le beurre et bien mélanger à la main.", "Ajouter les pépites de chocolat.", "Cuire 5-7 minutes.", "Pour les cookies congelés, 10 minutes à 210°C."],
     },
     confiture_banane_kiwi: {
       name: "Confiture banane kiwi",
@@ -625,10 +652,10 @@ function ListDessert() {
       name: "Crumble",
       nb_person: 4,
       recipe: {
-        Farine: "75g",
+        Farine: "150g",
         Beurre: "75g",
-        Sucre: "75g",
-        Pomme: 3,
+        Sucre: "150g",
+        Pomme: 5,
       },
       formula: ["Préchauffer le four à 180°C.", "Couper les pommes et les mettre au fond du plat.", "Mélanger à la main le beurre, la farine et le sucre.", "Saupoudrer la pate sur les pommes.", "Cuire 30 minutes."],
     },
