@@ -184,8 +184,35 @@
               <span class="text-danger">add_header</span> Content-Security-Policy <span class="text-info">"frame-ancestors 'self';"</span>;<br />
               <br />
               <span class="text-secondary">## Strict Transport Security (HSTS): Yes</span><br />
-              <span class="text-danger">add_header</span> Strict-Transport-Security <span class="text-info">"max-age=15552001; includeSubdomains; preload"</span>;<br />
+              <span class="text-danger">add_header</span> Strict-Transport-Security <span class="text-info">"max-age=31536000; includeSubdomains; preload"</span>;<br />
             </span>
+          </div>
+
+          <h1 class="my-5 fs-3">5. DH Param</h1>
+          <div class="lead fs-6 text-light">
+            <p>
+              Diffie-Hellman (DH) is a cryptographic algorithm used to establish a shared secret between two parties. It's commonly used in various cryptographic protocols to ensure secure communications over an untrusted network, such as
+              the internet. DH parameters, often simply termed "DH params", play an essential role in this process.
+            </p>
+            <p>
+              It's crucial for security reasons that these parameters are generated in a strong and robust manner. Specifically, the size of the DH group (measured in bits) directly influences the strength of the cryptographic operation.
+              Modern best practices recommend using a 4096-bit DH group for most applications.
+            </p>
+            <p>To generate a 4096-bits DH group using the OpenSSL toolkit, you can use the following command:</p>
+
+            <span class="text-code text-light copy-code">
+              <span class="text-secondary"># Generate 4096-bits DH group</span><br />
+              <span class="text-danger">openssl</span> dhparam -out /etc/ssl/certs/dhparam.pem <span class="text-info">4096</span><br />
+              <br />
+            </span>
+            <p>After generating the DH parameters, you might want to inspect or verify them. To check the content and details of the generated DH group, use</p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">openssl</span> dh -in /etc/ssl/certs/dhparam.pem -text<br /> </span>
+            <br />
+            <p>
+              Once you've generated the DH params, you need to integrate them into your server configuration to use them. For servers running Nginx, the directive is `ssl_dhparam`. Here's how you can specify the path to the DH params in the
+              server configuration:
+            </p>
+            <span class="text-code text-light copy-code"> <span class="text-danger">ssl_dhparam</span> /etc/ssl/certs/dhparam.pem; </span>
           </div>
 
           <h2 class="my-5 fs-4">Complete configuration</h2>
