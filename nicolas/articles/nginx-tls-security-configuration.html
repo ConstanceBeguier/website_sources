@@ -10,15 +10,15 @@
     />
     <meta name="author" content="Nicolas Béguier" />
     <meta name="keywords" content="nginx tls security configuration ssllabs cipher suites oscp hsts" />
-    <meta property="og:title" content="Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs" />
-    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/nginx-2023.jpg" />
+    <meta property="og:title" content="Secure Your Nginx Server in 2024: Achieving an A+ Rating on Qualys SSL Labs" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/nginx.jpg" />
     <meta
       property="og:description"
       content="Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year."
     />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/nginx-tls-security-configuration.html" />
     <meta property="og:type" content="article" />
-    <title>Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs</title>
+    <title>Secure Your Nginx Server in 2024: Achieving an A+ Rating on Qualys SSL Labs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="/css/beguier.min.css" rel="stylesheet" />
     <link href="/css/gist.min.css" rel="stylesheet" />
@@ -37,10 +37,10 @@
         <!-- Begin title banner -->
         <div
           class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/cover/nginx-2023.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
+          style="background: url('/nicolas/img/cover/nginx.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
         >
           <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs</h1>
+            <h1 class="display-4 fw-normal">Secure Your Nginx Server in 2024: Achieving an A+ Rating on Qualys SSL Labs</h1>
             <p class="lead fw-normal">
               Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in
               the coming year.
@@ -49,7 +49,7 @@
         </div>
         <!-- Begin article content -->
         <div class="p-5">
-          <p class="text-muted">Jan 1st, 2023 by Nicolas Béguier</p>
+          <p class="text-muted">Jan 2nd, 2024 by Nicolas Béguier</p>
 
           <div class="lead fs-5 text-light">
             In this article, we will provide expert tips on how to enhance the security of your Nginx web server. We will cover key areas such as system security, SSL/TLS security, and data security. By following these best practices, you
@@ -70,7 +70,7 @@
             Minimizing the amount of data that is revealed to potential attackers is a key way to safeguard your web server. This can include details such as the version number of Nginx, PHP, and the operating system. This type of
             information is often included in HTTP headers, but it can be hidden to better protect your server. To achieve this:<br />
             <br />
-            <span class="text-code text-light copy-code">
+            <span class="text-code text-light">
               <span class="text-secondary"># Only return Nginx in server header</span><br />
               <span class="text-danger">server_tokens</span> off;
             </span>
@@ -93,7 +93,7 @@
               Overall, using TLS 1.2 and TLS 1.3 helps to protect the confidentiality, integrity, and availability of data transmitted over the internet, and it is an important security measure for any server that handles sensitive
               information.
             </p>
-            <span class="text-code text-light copy-code"> <span class="text-danger">ssl_protocols</span> TLSv1.2 TLSv1.3; </span>
+            <span class="text-code text-light"> <span class="text-danger">ssl_protocols</span> TLSv1.2 TLSv1.3; </span>
           </div>
 
           <h1 class="my-5 fs-3">2. Cipher Suite</h1>
@@ -110,23 +110,24 @@
           <br />
           For more information on the security of different cipher suites, you can refer to the following link: <a href="https://ciphersuite.info/cs/?security=secure" class="link-success">https://ciphersuite.info/</a><br />
           <br />
-          <span class="text-code text-light copy-code">
-            <span class="text-secondary"># Compilation of the top cipher suites 2023</span><br />
+          <span class="text-code text-light">
+            <span class="text-secondary"># Compilation of the top cipher suites 2024</span><br />
+            <span class="text-secondary"># https://ssl-config.mozilla.org/#server=nginx</span><br />
             <span class="text-danger">ssl_ciphers</span>
-            ECDHE-RSA-CHACHA20-POLY1305:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-CCM:DHE-RSA-AES256-CCM8:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-CCM:DHE-RSA-AES128-CCM8:DHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256;
+            ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
           </span>
 
           <h1 class="my-5 fs-3">3. Optimization</h1>
 
           <div class="lead fs-6 text-light">
             <p>The "<span class="text-code">ssl_prefer_server_ciphers</span>" directive tells the server to use its own list of preferred ciphers, rather than relying on the client to specify them.</p>
-            <span class="text-code text-light copy-code">
+            <span class="text-code text-light">
               <span class="text-secondary"># Perfect Forward Secrecy(PFS) is frequently compromised without this</span><br />
               <span class="text-danger">ssl_prefer_server_ciphers</span> on;
             </span>
 
             <p>The "<span class="text-code">ssl_session_tickets</span>" directive is used to disable the use of SSL session tickets, which are used to resume SSL sessions and improve performance.</p>
-            <span class="text-code text-light copy-code"> <span class="text-danger">ssl_session_tickets</span> off; </span>
+            <span class="text-code text-light"> <span class="text-danger">ssl_session_tickets</span> off; </span>
 
             <p>
               The "<span class="text-code">ssl_session_timeout</span>" and "<span class="text-code">ssl_session_cache</span>" directives enable SSL session caching, which helps to improve performance by allowing the server to reuse
@@ -140,7 +141,7 @@
             </span>
             <br />
             <p>The "<span class="text-code">ssl_buffer_size</span>" directive sets the size of the buffer used for sending data over SSL.</p>
-            <span class="text-code text-light copy-code">
+            <span class="text-code text-light">
               <span class="text-secondary"># By default, the buffer size is 16k, which corresponds to minimal overhead when sending big responses.</span><br />
               <span class="text-secondary"># To minimize Time To First Byte it may be beneficial to use smaller values</span><br />
               <span class="text-danger">ssl_buffer_size</span> 8k;
@@ -199,19 +200,19 @@
             </p>
             <p>To generate a 4096-bits DH group using the OpenSSL toolkit, you can use the following command:</p>
 
-            <span class="text-code text-light copy-code">
+            <span class="text-code text-light">
               <span class="text-secondary"># Generate 4096-bits DH group</span><br />
               <span class="text-danger">openssl</span> dhparam -out /etc/ssl/certs/dhparam.pem <span class="text-info">4096</span><br />
               <br />
             </span>
             <p>After generating the DH parameters, you might want to inspect or verify them. To check the content and details of the generated DH group, use</p>
-            <span class="text-code text-light copy-code"> <span class="text-danger">openssl</span> dh -in /etc/ssl/certs/dhparam.pem -text<br /> </span>
+            <span class="text-code text-light"> <span class="text-danger">openssl</span> dh -in /etc/ssl/certs/dhparam.pem -text<br /> </span>
             <br />
             <p>
               Once you've generated the DH params, you need to integrate them into your server configuration to use them. For servers running Nginx, the directive is `ssl_dhparam`. Here's how you can specify the path to the DH params in the
               server configuration:
             </p>
-            <span class="text-code text-light copy-code"> <span class="text-danger">ssl_dhparam</span> /etc/ssl/certs/dhparam.pem; </span>
+            <span class="text-code text-light"> <span class="text-danger">ssl_dhparam</span> /etc/ssl/certs/dhparam.pem; </span>
           </div>
 
           <h2 class="my-5 fs-4">Complete configuration</h2>

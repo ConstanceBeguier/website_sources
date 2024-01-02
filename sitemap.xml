@@ -22,7 +22,7 @@
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/</loc>
-  <lastmod>2023-06-28T06:00:00+00:00</lastmod>
+  <lastmod>2024-01-02T16:00:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
@@ -102,7 +102,7 @@
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/articles/nginx-tls-security-configuration.html</loc>
-  <lastmod>2023-10-22T16:00:00+00:00</lastmod>
+  <lastmod>2024-01-02T16:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
@@ -113,6 +113,11 @@
 <url>
   <loc>https://beguier.eu/nicolas/articles/android-mitm-intercept-trafic.html</loc>
   <lastmod>2023-05-12T12:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/apache-tls-security-configuration.html</loc>
+  <lastmod>2024-01-02T16:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>
