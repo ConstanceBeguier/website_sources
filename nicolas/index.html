@@ -1,659 +1,574 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="UTF-8" />
-    <meta name="description" content="Nicolas Beguier website, providing articles about security." />
+    <meta name="description" content="CISO, Security Architect, and pentester. Cybersecurity articles from forensics to TLS hardening, with security architecture and Web3 audit work." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="beguier cyber security blog forensic tandem technology" />
-    <meta property="og:title" content="Nicolas Béguier website" />
-    <meta property="og:image" content="https://beguier.eu/favicon_vignette.png" />
-    <meta property="og:description" content="Nicolas Beguier website, providing articles about security." />
+    <meta name="keywords" content="nicolas beguier CISO security architect cybersecurity pentest tandem technology" />
+    <meta property="og:title" content="Nicolas Béguier | CISO, Security Architect &amp; Pentester" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/nicolas.jpg" />
+    <meta property="og:image:width" content="858" />
+    <meta property="og:image:height" content="858" />
+    <meta property="og:image:alt" content="Nicolas Béguier portrait" />
+    <meta property="og:description" content="CISO, Security Architect, and pentester. Cybersecurity articles from forensics to TLS hardening, with security architecture and Web3 audit work." />
     <meta property="og:url" content="https://beguier.eu/nicolas/" />
-    <meta property="og:type" content="article" />
-    <title>Nicolas Béguier</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/css/beguier.min.css" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/" />
+    <meta property="og:type" content="profile" />
+    <title>Nicolas Béguier | CISO, Security Architect &amp; Pentester</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Nicolas Béguier",
+      "url": "https://beguier.eu/nicolas/",
+      "image": "https://beguier.eu/nicolas/img/nicolas.jpg",
+      "jobTitle": "CISO",
+      "worksFor": [
+        { "@type": "Organization", "name": "52 Entertainment" },
+        { "@type": "Organization", "name": "Tandem Technology" }
+      ],
+      "sameAs": [
+        "https://www.linkedin.com/in/nicolasbeguier/",
+        "https://github.com/nbeguier/"
+      ],
+      "knowsAbout": ["Cybersecurity", "Security Architecture", "Penetration Testing", "GRC", "Zero-Knowledge Proofs"]
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:           #f7f8fc;
+        --surface:      #ffffff;
+        --border:       #e8eaf0;
+        --border-strong:#d0d4e0;
+        --text-1:       #0f1117;
+        --text-2:       #5a6078;
+        --text-3:       #9ba3bb;
+        --accent:       #4f46e5;
+        --accent-soft:  #eef2ff;
+        --green:        #059669;
+        --green-soft:   #ecfdf5;
+        --tag-bg:       #f1f5f9;
+        --tag-color:    #475569;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); }
+
+      /* ── Navbar ── */
+      nav {
+        background: var(--surface);
+        padding: 0.6rem 2rem;
+        display: flex; align-items: center;
+      }
+      .nav-home {
+        font-size: 0.74rem; color: var(--text-3); font-weight: 400;
+        text-decoration: none; transition: color .15s;
+        display: inline-flex; align-items: center; gap: 0.3rem;
+      }
+      .nav-home:hover { color: var(--text-2); text-decoration: none; }
+
+      /* ── Page layout ── */
+      .page { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+      /* ── Hero banner ── */
+      .hero {
+        background: #09091a;
+        padding: 3.5rem 0 0;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Animated aurora blobs */
+      .hero::before {
+        content: '';
+        position: absolute; inset: -30%;
+        background:
+          radial-gradient(ellipse 55% 65% at 18% 55%, rgba(139, 92, 246, 0.75), transparent 65%),
+          radial-gradient(ellipse 45% 55% at 78% 32%, rgba(34, 211, 238, 0.65), transparent 65%),
+          radial-gradient(ellipse 40% 52% at 58% 82%, rgba(244, 114, 182, 0.6), transparent 65%);
+        filter: blur(30px);
+        animation: heroDrift 16s ease-in-out infinite alternate;
+        pointer-events: none;
+      }
+
+      @keyframes heroDrift {
+        0%   { transform: translate(0%,    0%)    scale(1);    }
+        25%  { transform: translate(2.5%,  -2%)   scale(1.04); }
+        50%  { transform: translate(-1.5%, 2.5%)  scale(0.97); }
+        75%  { transform: translate(1.5%,  1.5%)  scale(1.02); }
+        100% { transform: translate(-2.5%, -1%)   scale(1.01); }
+      }
+
+      /* Bottom fade to page bg */
+      .hero::after {
+        content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+        background: var(--bg); clip-path: ellipse(55% 100% at 50% 100%);
+        z-index: 1;
+      }
+
+      .hero-inner {
+        max-width: 1000px; margin: 0 auto; padding: 0 2rem 4rem;
+        display: flex; align-items: flex-end; gap: 2.5rem;
+        position: relative; z-index: 2;
+      }
+      .hero-photo {
+        width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
+        border: 3px solid rgba(255,255,255,0.5); flex-shrink: 0;
+        margin-bottom: -1.5rem; position: relative; z-index: 1;
+      }
+      .hero-text { padding-bottom: 1.5rem; }
+      .hero-name { font-size: 1.8rem; font-weight: 800; color: #fff; letter-spacing: -0.03em; margin-bottom: 0.2rem; }
+      .hero-role { font-size: 0.85rem; color: rgba(255,255,255,0.75); margin-bottom: 1rem; }
+      .hero-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+      .hero-pill {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        padding: 0.25rem 0.7rem; border-radius: 20px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+        font-size: 0.75rem; color: #fff; text-decoration: none;
+        transition: background .2s; backdrop-filter: blur(6px);
+      }
+      .hero-pill:hover { background: rgba(255,255,255,0.28); text-decoration: none; color: #fff; }
+
+      /* ── Bio strip ── */
+      .bio-strip {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 1.25rem 1.5rem;
+        font-size: 0.92rem; color: var(--text-2); line-height: 1.75;
+        margin-bottom: 2.5rem;
+      }
+
+      /* ── Sections ── */
+      .section { margin-bottom: 3rem; }
+      .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+      .section-title { font-size: 1rem; font-weight: 700; color: var(--text-1); letter-spacing: -0.01em; }
+
+      /* ── Article cards ── */
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1rem; }
+      @media (max-width: 700px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+      .art-card {
+        background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+        overflow: hidden; text-decoration: none; color: inherit;
+        display: flex; flex-direction: column;
+        transition: box-shadow .2s, transform .2s, border-color .2s;
+      }
+      .art-card:hover {
+        box-shadow: 0 8px 28px rgba(79,70,229,0.1);
+        transform: translateY(-3px);
+        border-color: rgba(79,70,229,0.25);
+        text-decoration: none; color: inherit;
+      }
+      .art-cover { overflow: hidden; flex-shrink: 0; }
+      .art-cover.tall    { height: 160px; }
+      .art-cover.regular { height: 120px; }
+      .art-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+      .art-card:hover .art-cover img { transform: scale(1.04); }
+      .art-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
+      .art-tag {
+        display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px;
+        font-size: 0.62rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+        background: var(--accent-soft); color: var(--accent);
+        margin-bottom: 0.5rem; align-self: flex-start;
+      }
+      .art-title { font-size: 0.86rem; font-weight: 600; line-height: 1.45; color: var(--text-1); flex: 1; }
+      .art-date  { font-size: 0.7rem; color: var(--text-3); margin-top: 0.6rem; }
+
+      /* ── See more ── */
+      .more-details { margin-top: 1rem; }
+      .more-details summary {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        font-size: 0.8rem; font-weight: 500; color: var(--text-3);
+        cursor: pointer; user-select: none; list-style: none; padding: 0.35rem 0;
+        transition: color .15s;
+      }
+      .more-details summary::-webkit-details-marker { display: none; }
+      .more-details summary:hover { color: var(--text-2); }
+      .more-details[open] summary { color: var(--text-2); margin-bottom: 1rem; }
+      .more-details summary::before { content: '▸'; font-size: 0.7rem; transition: transform .2s; display: inline-block; }
+      .more-details[open] summary::before { transform: rotate(90deg); }
+
+      .more-list { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem; }
+      @media(max-width:700px) { .more-list { grid-template-columns: 1fr; } }
+
+      .more-item {
+        background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+        padding: 0.7rem 0.85rem; text-decoration: none; color: inherit;
+        display: flex; flex-direction: column;
+        transition: border-color .15s, box-shadow .15s;
+      }
+      .more-item:hover { border-color: rgba(79,70,229,.25); box-shadow: 0 2px 10px rgba(79,70,229,.07); text-decoration: none; color: inherit; }
+      .more-item-title { font-size: 0.8rem; font-weight: 500; color: var(--text-1); line-height: 1.4; flex: 1; margin-top: 0.3rem; }
+      .more-item-date  { font-size: 0.65rem; color: var(--text-3); margin-top: 0.35rem; }
+
+      /* ── Career ── */
+      .career-grid { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; }
+      @media (max-width: 700px) { .career-grid { grid-template-columns: 1fr; } }
+
+      .tl-item { display: flex; gap: 1rem; padding-bottom: 1.5rem; position: relative; }
+      .tl-item:last-child { padding-bottom: 0; }
+      .tl-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 32px; }
+      .tl-dot {
+        width: 32px; height: 32px; border-radius: 50%;
+        background: var(--tag-bg); border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      .tl-dot img { width: 18px; height: 18px; object-fit: contain; border-radius: 2px; }
+      .tl-dot.now  { background: var(--green-soft); border-color: rgba(5,150,105,0.25); }
+      .tl-dot.dark { background: #1e2533; border-color: #2d3748; }
+      .tl-line { flex: 1; width: 1px; background: var(--border); margin-top: 4px; }
+      .tl-right { flex: 1; padding-top: 4px; }
+      .tl-role  { font-size: 0.9rem; font-weight: 600; color: var(--text-1); margin-bottom: 0.15rem; }
+      .tl-dates { font-size: 0.72rem; color: var(--text-3); margin-bottom: 0.4rem; }
+      .tl-desc  { font-size: 0.82rem; color: var(--text-2); line-height: 1.65; }
+      .now-badge {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+        color: var(--green); background: var(--green-soft);
+        border: 1px solid rgba(5,150,105,0.2);
+        padding: 0.1rem 0.45rem; border-radius: 4px;
+        margin-left: 0.5rem; vertical-align: middle;
+      }
+
+      /* ── Sidebar ── */
+      .sidebar-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; }
+      .sidebar-title { font-size: 0.78rem; font-weight: 700; color: var(--text-1); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.08em; }
+      .cert-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.82rem;
+      }
+      .cert-row:last-child { border-bottom: none; padding-bottom: 0; }
+      .cert-name  { color: var(--text-2); display: flex; align-items: center; gap: 0.4rem; }
+      .cert-check { color: var(--green); font-size: 0.8rem; }
+      .cert-year  { font-size: 0.68rem; color: var(--text-3); }
+
+      /* ── Projects ── */
+      .proj-card {
+        background: var(--surface); border: 1px solid var(--border);
+        border-radius: 12px; padding: 1.1rem 1.25rem;
+        display: flex; align-items: flex-start; gap: 1rem;
+        transition: box-shadow .2s, border-color .2s;
+        margin-bottom: 0.75rem;
+      }
+      .proj-card:last-child { margin-bottom: 0; }
+      .proj-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,.07); border-color: var(--border-strong); }
+      .proj-icon {
+        width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+        background: var(--accent-soft); border: 1px solid rgba(79,70,229,0.15);
+        display: flex; align-items: center; justify-content: center;
+      }
+      .proj-icon img { height: 24px; }
+      .proj-icon.gh { background: #f6f8fa; border-color: #d0d7de; }
+      .proj-title { font-size: 0.95rem; font-weight: 700; color: var(--text-1); margin-bottom: 0.3rem; }
+      .proj-desc  { font-size: 0.82rem; color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem; }
+      .proj-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .proj-link {
+        display: inline-flex; align-items: center; gap: 0.3rem;
+        font-size: 0.75rem; font-weight: 500; color: var(--accent); text-decoration: none;
+        padding: 0.25rem 0.6rem; border-radius: 6px;
+        background: var(--accent-soft); border: 1px solid rgba(79,70,229,0.18);
+        transition: background .15s;
+      }
+      .proj-link:hover { background: rgba(79,70,229,0.12); text-decoration: none; }
+
+      footer { text-align: center; padding: 2rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+
+    <nav>
+      <a href="/" class="nav-home">← beguier.eu</a>
+    </nav>
+
+    <!-- Hero banner -->
+    <div class="hero">
+      <div class="hero-inner">
+        <img src="./img/nicolas.jpg" class="hero-photo" alt="Nicolas Béguier" />
+        <div class="hero-text">
+          <h1 class="hero-name">Nicolas Béguier</h1>
+          <p class="hero-role">CISO @ 52 Entertainment &nbsp;·&nbsp; Security Architect &nbsp;·&nbsp; Co-Founder @ Tandem Technology</p>
+          <div class="hero-pills">
+            <a href="https://www.linkedin.com/in/nicolasbeguier/" class="hero-pill" target="_blank" rel="noopener">↗ LinkedIn</a>
+            <a href="https://github.com/nbeguier/" class="hero-pill" target="_blank" rel="noopener">↗ GitHub</a>
+            <a href="https://keyserver.ubuntu.com/pks/lookup?op=hget&search=0dec584b2096a83830b40afdf05c5e87" class="hero-pill" target="_blank" rel="noopener">⌘ GPG</a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Begin blog highlight -->
-    <main class="container my-3">
-      <div class="card mb-3 shadow-sm rounded bg-dark text-light card-zoom" onclick="window.location.href = './articles/apache-tls-security-configuration.html';">
-        <img src="./img/cover/apache.jpg" class="d-block mx-lg-auto img-fluid" alt="giant wall clouds" width="400" height="400" loading="lazy" />
-        <div class="card-body">
-          <h5 class="card-title">Secure Your Apache Server in 2024</h5>
-          <p class="card-text text-middark text-justify">Ensure the security of your Apache server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year.</p>
-          <p class="card-text"><small class="text-muted">Jan 2, 2024</small></p>
+    <div class="page">
+
+      <!-- Bio strip -->
+      <div class="bio-strip">
+        Security architect and pentester turned CISO. I run information security at 52 Entertainment, an international gaming group serving <strong>37M monthly active users</strong>, and co-founded Tandem Technology, an offensive security firm specializing in web application and Web3 audits.
+      </div>
+
+      <!-- Articles -->
+      <div class="section">
+        <div class="section-header">
+          <h2 class="section-title">Articles</h2>
+        </div>
+
+        <!-- Featured: 2 top articles -->
+        <div class="grid-2">
+          <a href="./articles/android-mitm-intercept-trafic.html" class="art-card">
+            <div class="art-cover tall"><img src="./img/cover/mitm.jpg" alt="Android MITM" /></div>
+            <div class="art-body">
+              <span class="art-tag">Pentest</span>
+              <p class="art-title">Two Effective Ways to Intercept Android App Traffic</p>
+              <p class="art-date">May 5, 2023</p>
+            </div>
+          </a>
+          <a href="https://rebirth.devoteam.com/2023/03/30/interview-securite-leboncoin/" class="art-card" target="_blank" rel="noopener">
+            <div class="art-cover tall"><img src="https://rebirth.devoteam.com/wp-content/uploads/2021/04/Devoteam_Revolve_Blog_Securite_Cloud_Bancaire.jpg" alt="Interview" /></div>
+            <div class="art-body">
+              <span class="art-tag">Interview</span>
+              <p class="art-title">L'interview sécurité : cybersécurité et sécurité Cloud chez leboncoin</p>
+              <p class="art-date">Mar 30, 2023</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Secondary: 3 articles -->
+        <div class="grid-3">
+          <a href="./articles/nginx-tls-security-configuration.html" class="art-card">
+            <div class="art-cover regular"><img src="./img/cover/nginx.jpg" alt="Nginx" /></div>
+            <div class="art-body">
+              <span class="art-tag">TLS Security</span>
+              <p class="art-title">Secure Your Nginx Server</p>
+              <p class="art-date">May 2, 2026</p>
+            </div>
+          </a>
+          <a href="./articles/apache-tls-security-configuration.html" class="art-card">
+            <div class="art-cover regular"><img src="./img/cover/apache.jpg" alt="Apache" /></div>
+            <div class="art-body">
+              <span class="art-tag">TLS Security</span>
+              <p class="art-title">Secure Your Apache Server</p>
+              <p class="art-date">May 2, 2026</p>
+            </div>
+          </a>
+          <a href="https://medium.com/leboncoin-engineering-blog/enhancing-vulnerability-prevention-through-human-based-security-measures-ca7e643e6460" class="art-card" target="_blank" rel="noopener">
+            <div class="art-cover regular"><img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*RGpi3gBK-MjLvdkn2c4qVQ.jpeg" alt="Security culture" /></div>
+            <div class="art-body">
+              <span class="art-tag">Security Culture</span>
+              <p class="art-title">Enhancing vulnerability prevention through human-based security measures</p>
+              <p class="art-date">Apr 28, 2023</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Third row: 2 articles -->
+        <div class="grid-2" style="margin-top:1rem;">
+          <a href="./articles/splc-vs-sdlc-differences-why-they-matter.html" class="art-card">
+            <div class="art-cover regular"><img src="./img/cover/cover3.jpg" alt="SPLC vs SDLC" /></div>
+            <div class="art-body">
+              <span class="art-tag">DevSecOps</span>
+              <p class="art-title">The SPLC vs. SDLC: Understanding the Differences and Why They Matter</p>
+              <p class="art-date">Dec 10, 2022</p>
+            </div>
+          </a>
+          <a href="./articles/security-tips-3-volatility-linux-profiles.html" class="art-card">
+            <div class="art-cover regular"><img src="./img/cover/logo_secu-postit3.jpg" alt="Volatility" /></div>
+            <div class="art-body">
+              <span class="art-tag">Forensics</span>
+              <p class="art-title">Security Post-it #3 – Volatility Linux Profiles</p>
+              <p class="art-date">Mar 15, 2021</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- See more expandable -->
+        <details class="more-details">
+          <summary>See more articles</summary>
+          <div class="more-list">
+            <a href="./articles/cybersecurity-salary-2023.html" class="more-item">
+              <span class="art-tag">Industry</span>
+              <p class="more-item-title">Salaires cybersécurité à Paris en 2026</p>
+              <p class="more-item-date">May 2, 2026</p>
+            </a>
+            <a href="./articles/differences-between-symmetrical-asymmetrical-hashing-encryption.html" class="more-item">
+              <span class="art-tag">Cryptography</span>
+              <p class="more-item-title">Symmetrical, Asymmetrical &amp; Hashing Encryption</p>
+              <p class="more-item-date">Dec 16, 2022</p>
+            </a>
+            <a href="./articles/comparing-shhgit-gitleaks-code-protection.html" class="more-item">
+              <span class="art-tag">DevSecOps</span>
+              <p class="more-item-title">Code Security Showdown: shhgit vs. gitleaks</p>
+              <p class="more-item-date">Dec 11, 2022</p>
+            </a>
+            <a href="./articles/zero-trust-approach-to-cybersecurity.html" class="more-item">
+              <span class="art-tag">Architecture</span>
+              <p class="more-item-title">Zero Trust Architecture: A Comprehensive Guide</p>
+              <p class="more-item-date">Dec 10, 2022</p>
+            </a>
+            <a href="./articles/security-postit-8-software-security-testing-mobile.html" class="more-item">
+              <span class="art-tag">DevSecOps</span>
+              <p class="more-item-title">Security Post-it #8 – Software Security Testing for Android and iOS</p>
+              <p class="more-item-date">Nov 22, 2022</p>
+            </a>
+            <a href="./articles/security-postit-7-software-security-testing-golang.html" class="more-item">
+              <span class="art-tag">DevSecOps</span>
+              <p class="more-item-title">Security Post-it #7 – Software Security Testing for Golang</p>
+              <p class="more-item-date">Nov 22, 2022</p>
+            </a>
+            <a href="./articles/security-postit-6-software-security-testing-js.html" class="more-item">
+              <span class="art-tag">DevSecOps</span>
+              <p class="more-item-title">Security Post-it #6 – Software Security Testing for JS &amp; TS</p>
+              <p class="more-item-date">Nov 3, 2022</p>
+            </a>
+            <a href="./articles/security-postit-5-secrets.html" class="more-item">
+              <span class="art-tag">DevSecOps</span>
+              <p class="more-item-title">Security Post-it #5 – Looking for secrets</p>
+              <p class="more-item-date">Oct 31, 2021</p>
+            </a>
+            <a href="./articles/security-tips-4-xss-with-style.html" class="more-item">
+              <span class="art-tag">Pentest</span>
+              <p class="more-item-title">Security Post-it #4 – XSS with &lt;style&gt;</p>
+              <p class="more-item-date">May 11, 2021</p>
+            </a>
+            <a href="./articles/security-tips-2-volatility-gimp.html" class="more-item">
+              <span class="art-tag">Forensics</span>
+              <p class="more-item-title">Security Post-it #2 – Volatility × Gimp</p>
+              <p class="more-item-date">Mar 8, 2021</p>
+            </a>
+            <a href="./articles/koa.html" class="more-item">
+              <span class="art-tag">Web Security</span>
+              <p class="more-item-title">KoaJS Security Tips</p>
+              <p class="more-item-date">Dec 30, 2019</p>
+            </a>
+            <a href="./articles/security-postit-1-sha1-broken-not-hmac.html" class="more-item">
+              <span class="art-tag">Cryptography</span>
+              <p class="more-item-title">Security Post-it #1 – SHA-1 is broken, not HMAC</p>
+              <p class="more-item-date">Dec 13, 2019</p>
+            </a>
+          </div>
+        </details>
+      </div>
+
+      <!-- Career -->
+      <div class="section">
+        <div class="section-header"><h2 class="section-title">Experience</h2></div>
+        <div class="career-grid">
+
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot dark"><img src="./img/logo/52.png" alt="52" /></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-right">
+                <p class="tl-role">CISO · 52 Entertainment <span class="now-badge">● Now</span></p>
+                <p class="tl-dates">Jul 2023 – Present</p>
+                <p class="tl-desc">Built security from scratch across 7 entities, 4 countries, 270 people and 37M MAU. EDR, governance, 15+ annual app audits, awareness programs.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot now"><img src="/tandem-technology/img/logo.png" alt="Tandem" /></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-right">
+                <p class="tl-role">Co-Founder · Tandem Technology <span class="now-badge">● Now</span></p>
+                <p class="tl-dates">Jul 2022 – Present</p>
+                <p class="tl-desc">Web app audits, smart contract and ZK protocol security reviews for Web3 clients.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot"><img src="./img/logo/leboncoin.ico" alt="lbc" /></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-right">
+                <p class="tl-role">Security Architect · leboncoin</p>
+                <p class="tl-dates">Apr 2022 – Jul 2023</p>
+                <p class="tl-desc">Security design, threat monitoring, forensics, incident response, developer training.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot"><img src="./img/logo/leboncoin.ico" alt="lbc" /></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-right">
+                <p class="tl-role">Offensive & Defensive Security Engineer · leboncoin</p>
+                <p class="tl-dates">Oct 2019 – Apr 2022</p>
+                <p class="tl-desc">Web/mobile pentesting, defensive tooling, forensics, incident response.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot"><img src="./img/logo/leboncoin.ico" alt="lbc" /></div>
+                <div class="tl-line"></div>
+              </div>
+              <div class="tl-right">
+                <p class="tl-role">Site Reliability Engineer · leboncoin</p>
+                <p class="tl-dates">Mar 2017 – Oct 2019</p>
+                <p class="tl-desc">Infrastructure (OpenNebula, Kubernetes), IAM, OAuth2 SSO, CASSH, NIDS.</p>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left">
+                <div class="tl-dot"><img src="./img/logo/mindef.jpg" alt="MinDef" /></div>
+              </div>
+              <div class="tl-right">
+                <p class="tl-role">System Engineer · Ministère de la Défense</p>
+                <p class="tl-dates">Apr 2013 – Mar 2017</p>
+                <p class="tl-desc">Multi-datacenter infrastructure, Puppet automation, monitoring.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div>
+            <div class="sidebar-box">
+              <p class="sidebar-title">Certifications</p>
+              <div class="cert-row"><span class="cert-name"><span class="cert-check">✓</span> GIAC GDSA · SEC530</span><span class="cert-year">2022</span></div>
+              <div class="cert-row"><span class="cert-name"><span class="cert-check">✓</span> GIAC GCPN · SEC588</span><span class="cert-year">2021</span></div>
+              <div class="cert-row"><span class="cert-name"><span class="cert-check">✓</span> GIAC GMOB · SEC575</span><span class="cert-year">2020</span></div>
+              <div class="cert-row"><span class="cert-name">SEC642 · SANS</span><span class="cert-year">2020</span></div>
+              <div class="cert-row"><span class="cert-name">CISSP</span><span class="cert-year">2019</span></div>
+              <div class="cert-row"><span class="cert-name"><span class="cert-check">✓</span> Master CSI · Bordeaux</span><span class="cert-year">2013</span></div>
+            </div>
+
+            <p class="sidebar-title">Open Source</p>
+            <div class="proj-card">
+              <div class="proj-icon"><img src="./img/logo/aws-tower-logo.svg" alt="AWS Tower" /></div>
+              <div>
+                <p class="proj-title">AWS Tower</p>
+                <p class="proj-desc">Discover & monitor AWS accounts to surface vulnerabilities and misconfigs.</p>
+                <div class="proj-links">
+                  <a href="https://medium.com/leboncoin-engineering-blog/aws-tower-b3242ca7ca1d" class="proj-link" target="_blank" rel="noopener">Article</a>
+                  <a href="https://github.com/leboncoin/aws-tower" class="proj-link" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </div>
+            </div>
+            <div class="proj-card">
+              <div class="proj-icon gh">
+                <img src="https://github.githubassets.com/favicons/favicon.svg" alt="GitHub" />
+              </div>
+              <div>
+                <p class="proj-title">Subdomain Analysis Toolkit</p>
+                <p class="proj-desc">Automate subdomain discovery, analysis, reporting and statistical insights.</p>
+                <div class="proj-links">
+                  <a href="https://github.com/nbeguier/SubdomainAnalysisToolkit" class="proj-link" target="_blank" rel="noopener">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <div class="row mb-2">
-        <div class="col-md-6">
-          <div class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark text-light card-zoom" onclick="window.location.href = './articles/security-tips-3-volatility-linux-profiles.html';">
-            <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-info"><ion-icon name="star"></ion-icon> Top Forensic article</strong>
-              <h3>Security Post-it #3 – Volatility Linux Profiles</h3>
-              <p class="card-text text-middark text-justify">
-                AWS In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.
-              </p>
-              <p class="card-text mb-auto"><small class="text-muted">Mar 15, 2021</small></p>
-            </div>
-          </div>
-        </div>
+    </div>
 
-        <div class="col-md-6">
-          <div
-            class="row g-0 rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative bg-dark text-light card-zoom"
-            onclick="window.location.href = './articles/nginx-tls-security-configuration.html';"
-          >
-            <div class="col p-4 d-flex flex-column position-static">
-              <strong class="d-inline-block mb-2 text-warning"><ion-icon name="star"></ion-icon> Top Security article</strong>
-              <h3>Secure Your Nginx Server in 2024</h3>
-              <p class="card-text text-middark text-justify">
-                Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. Achieving an A+ Rating on Qualys SSL Labs.
-              </p>
-              <p class="card-text mb-auto"><small class="text-muted">Jan 2, 2024</small></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- Begin blog articles -->
-    <main class="bg-dark">
-
-       <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/mitm.jpg" class="img-fluid" alt="Leboncoin office" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Two Effective Ways to Intercept Android App Traffic</h1>
-            <p class="mb-2"><small class="text-muted">May 5, 2023</small></p>
-            <p class="text-middark text-justify">
-              Explore two comprehensive methods to extract Android app traffic: patching an APK using Objection and manual APK recompilation. This guide offers step-by-step instructions, including necessary commands and tools, to successfully set up a MITM proxy and analyze app traffic.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/android-mitm-intercept-trafic.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-       <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*RGpi3gBK-MjLvdkn2c4qVQ.jpeg" class="img-fluid" alt="Leboncoin office" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Enhancing vulnerability prevention through human-based security measures</h1>
-            <p class="mb-2"><small class="text-muted">Apr 28, 2023</small></p>
-            <p class="text-middark text-justify">
-              Drawing from first-hand experience, this article details the evolution and enhancement of human-based security measures at Leboncoin, offering insightful lessons from their journey to preemptively address vulnerabilities before coding even begins.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://medium.com/leboncoin-engineering-blog/enhancing-vulnerability-prevention-through-human-based-security-measures-ca7e643e6460">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-       <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="https://blog.revolve.team/wp-content/uploads/2023/03/Devoteam_Revolve_Blog_Nicolas-Beguier.jpg" class="img-fluid" alt="Nicolas Beguier profile picture" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">L'interview sécurité : la cybersécurité et la sécurité Cloud chez leboncoin</h1>
-            <p class="mb-2"><small class="text-muted">Mar 30, 2023</small></p>
-            <p class="text-middark text-justify">
-              Notre invité aujourd’hui est Nicolas Béguier, architecte sécurité chez leboncoin depuis 6 ans. Au cours de cet entretien, Nicolas partage avec nous sa vision du métier : le périmètre de l’architecte sécurité, son évolution face aux menaces changeantes, les outils, mais également les aspects humains de la mise en oeuvre d’une politique de sécurité.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://blog.revolve.team/2023/03/30/interview-securite-leboncoin/">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-       <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/nginx-security.jpg" class="img-fluid" alt="nginx shield hacker cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Secure Your Nginx Server in 2023: Achieving an A+ Rating on Qualys SSL Labs</h1>
-            <p class="mb-2"><small class="text-muted">Jan 1st, 2023</small></p>
-            <p class="text-middark text-justify">
-              Ensure the security of your Nginx server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/nginx-tls-security-configuration.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-       <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/cyber-salaires-2023.jpg" class="img-fluid" alt="man staring us, cybersecurity engineer" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Les salaires en cybersecurité à Paris en 2023 : grille complète</h1>
-            <p class="mb-2"><small class="text-muted">Dec 29, 2022</small></p>
-            <p class="text-middark text-justify">
-              Retrouvez dans cette grille les fourchettes de salaire par poste en cybersecurité à Paris en 2023, ainsi que les années d'expérience et qualifications requises. Comparez les salaires selon votre niveau d'expérience et votre formation dans le domaine de la cybersecurité.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/cybersecurity-salary-2023.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-       <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/cover4.jpg" class="img-fluid" alt="hacker whith shield" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Protect Your Data: A Comparison of Symmetrical, Asymmetrical, and Hashing Encryption Methods</h1>
-            <p class="mb-2"><small class="text-muted">Dec 16, 2022</small></p>
-            <p class="text-middark text-justify">
-              Confused about the different methods of data encryption? In this article, we compare symmetrical, asymmetrical, and hashing encryption and explore the pros and cons of each method. Learn how to choose the best option for
-              protecting your data.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/differences-between-symmetrical-asymmetrical-hashing-encryption.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-       <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/cover1.jpg" class="img-fluid" alt="shhgit gitleaks article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Code Security Showdown: shhgit vs. gitleaks</h1>
-            <p class="mb-2"><small class="text-muted">Dec 11, 2022</small></p>
-            <p class="text-middark text-justify">
-              Discover the key features and differences between shhgit and gitleaks, two popular tools for detecting and preventing sensitive data leaks in your code. Learn which tool is best suited for your needs and how to effectively use it to secure your codebase.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/comparing-shhgit-gitleaks-code-protection.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-     <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/cover2.jpg" class="img-fluid" alt="zero trust architecture cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Zero Trust Architecture: A Comprehensive Guide to Improving Cybersecurity</h1>
-            <p class="mb-2"><small class="text-muted">Dec 10, 2022</small></p>
-            <p class="text-middark text-justify">
-              Discover the essential principles of zero trust architecture and how to implement it in your organization.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/zero-trust-approach-to-cybersecurity.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/cover3.jpg" class="img-fluid" alt="splc sdlc article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">The SPLC vs. SDLC: Understanding the Differences and Why They Matter</h1>
-            <p class="mb-2"><small class="text-muted">Dec 10, 2022</small></p>
-            <p class="text-middark text-justify">
-              Learn everything you need to know about the Secure Product LifeCycle (SPLC), including its phases, its differences with the Software Development LifeCycle (SDLC), and how to implement it in your own product development.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/splc-vs-sdlc-differences-why-they-matter.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_secu-postit7.jpg" class="img-fluid" alt="security golang article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #7 – Software Security Testing for Golang</h1>
-            <p class="mb-2"><small class="text-muted">Nov 22, 2022</small></p>
-            <p class="text-middark text-justify">
-              In this short security post-it, I explain how to secure your Golang code using open-source tools: SAST and SCA.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-postit-7-software-security-testing-golang.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_secu-postit6.jpg" class="img-fluid" alt="security javascript article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #6 – Software Security Testing for JavaScript and TypeScript</h1>
-            <p class="mb-2"><small class="text-muted">Nov 3, 2022</small></p>
-            <p class="text-middark text-justify">
-              In this short security post-it, I explain how to secure your JavaScript and TypeScript code using open-source tools: SAST and SCA.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-postit-6-software-security-testing-js.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_secu-postit5.jpg" class="img-fluid" alt="security secrets article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #5 – Looking for secrets</h1>
-            <p class="mb-2"><small class="text-muted">Oct 31, 2021</small></p>
-            <p class="text-middark text-justify">
-              In this short security post-it, I explain how to look for secrets in files or outputs.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-postit-5-secrets.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_secu-postit4.jpg" class="img-fluid" alt="xss in style article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #4 – XSS yes, but with &lt;style&gt; !</h1>
-            <p class="mb-2"><small class="text-muted">May 11, 2021</small></p>
-            <p class="text-middark text-justify">
-              In this short security post-it, I explain how exploit XSS with the inline style.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-tips-4-xss-with-style.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_secu-postit3.jpg" class="img-fluid" alt="volatility linux profiles article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #3 – Volatility Linux Profiles</h1>
-            <p class="mb-2"><small class="text-muted">Mar 15, 2021</small></p>
-            <p class="text-middark text-justify">
-              In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-tips-3-volatility-linux-profiles.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_secu-postit2.jpg" class="img-fluid" alt="volatility x gimp article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #2 – Volatility x Gimp</h1>
-            <p class="mb-2"><small class="text-muted">Mar 08, 2021</small></p>
-            <p class="text-middark text-justify">
-              Short Security Post-it about using Gimp to observe a process memory dump, with Volatility.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-tips-2-volatility-gimp.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/aws_tower.jpg" class="img-fluid" alt="aws-tower article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">AWS Tower</h1>
-            <p class="mb-2"><small class="text-muted">Jan 06, 2021</small></p>
-            <p class="text-middark text-justify">
-              AWS Tower has been developed by security engineers, for security engineers. Even without AWS knowledge you can still easily see the security issues or other information like DNS records, allowed IP addresses or opened ports.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://medium.com/leboncoin-engineering-blog/aws-tower-b3242ca7ca1d">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/nginx.jpg" class="img-fluid" alt="nginx security article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Nginx : Security configuration tips</h1>
-            <p class="mb-2"><small class="text-muted">Jan 04, 2021</small></p>
-            <p class="text-middark text-justify">
-              This article is going to give you some advices to improve the security of you web server Nginx. Several criteria are taken into account: system security, SSL/TLS security and data security.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://nbeguier.medium.com/nginx-security-configuration-tips-557c35e0d75b">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/sast.jpg" class="img-fluid" alt="SAST article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Static Application Security Testing</h1>
-            <p class="mb-2"><small class="text-muted">Jul 28, 2020</small></p>
-            <p class="text-middark text-justify">
-              How we scan our applications for vulnerabilities at leboncoin.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://medium.com/leboncoin-engineering-blog/static-application-security-testing-4df33330c02d">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_koa.jpg" class="img-fluid" alt="koajs security article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">KoaJS Security Tips</h1>
-            <p class="mb-2"><small class="text-muted">Dec 30, 2019</small></p>
-            <p class="text-middark text-justify">
-              In this article, I explain how to use KoaJS in a production environment, avoiding the vulnerabilities induced by the default configuration, and a tool to test your own website.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/koa.html">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_secu-postit1.jpg" class="img-fluid" alt="security post-it 1 article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Security Post-it #1 – SHA-1 is broken, not HMAC</h1>
-            <p class="mb-2"><small class="text-muted">Dec 13, 2019</small></p>
-            <p class="text-middark text-justify">
-              In this first Security Post-it, I explain how SHA-1 can be broken and why it has no impact on the robustness of HMAC.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="./articles/security-postit-1-sha1-broken-not-hmac.html">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/ssh.jpg" class="img-fluid" alt="ssh comparison article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Comparison of the SSH Key Algorithms</h1>
-            <p class="mb-2"><small class="text-muted">Sep 23, 2018</small></p>
-            <p class="text-middark text-justify">
-              This story is about comparing the main algorithms use to generate an SSH key, describe their weaknesses and place them on the Moore Law.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://nbeguier.medium.com/a-real-world-comparison-of-the-ssh-key-algorithms-b26b0b31bfd9">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/varnish.jpg" class="img-fluid" alt="varnish performance article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">3 Tips to Boost the Performance of your Varnish Cache</h1>
-            <p class="mb-2"><small class="text-muted">Sep 16, 2018</small></p>
-            <p class="text-middark text-justify">
-              This story presents three tips to increase the High availability and Scalability of your Varnish cluster, and increase Speed as well:
-            </p>
-
-            <ul>
-              <li class="text-middark">Sharded caching</li>
-              <li class="text-middark">Dynamic backend resolution</li>
-              <li class="text-middark">Browser optimization</li>
-            </ul>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://nbeguier.medium.com/3-tips-to-boost-the-performance-of-your-varnish-cache-3f4ce44be3c1">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/instacart.jpg" class="img-fluid" alt="instacart machine learning article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Instacart Market Basket Analysis</h1>
-            <p class="mb-2"><small class="text-muted">Sep 07, 2018</small></p>
-            <p class="text-middark text-justify">
-              In this competition organised by Kaggle and Instacart, Constance Beguier (Morel) and I had a dataset containing customer's orders over time. The goal was to predict which products will be in a user's next order. The dataset
-              was anonymized and contained a sample of over 3 million grocery orders from more than 200,000 Instacart users.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://nbeguier.medium.com/machine-learning-2d4150bfd690">Read this article</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/apache.jpg" class="img-fluid" alt="apache security article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Apache : Security configuration tips</h1>
-            <p class="mb-2"><small class="text-muted">Sep 05, 2018</small></p>
-            <p class="text-middark text-justify">
-              This article is going to give you some advices to improve the security of you web server Apache. Several criteria are taken into account: system security, SSL/TLS security and data security.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://nbeguier.medium.com/apache-security-configuration-tips-e78b59c805c8">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/axa.jpg" class="img-fluid" alt="kaggle axe machine learning article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Reconnaissance de type de conduite</h1>
-            <p class="mb-2"><small class="text-muted">Sep 05, 2018</small></p>
-            <p class="text-middark text-justify">
-              Par le biais de Kaggle, AXA nous a fourni un ensemble de données de plus de 50 000 voyages de pilotes anonymes. De nombreux paramètres furent à prendre en compte comme la durée des voyages, l’intensité des accélérations ou des
-              freinages. Ces caractéristiques se combinent pour former un profil global qui rend potentiellement chaque pilote unique.<br />
-              Pour cette compétition, nous devions trouver un classifieur capable de distinguer si un voyage a été conduit par un conducteur donné.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://nbeguier.medium.com/machine-learning-reconnaissance-de-type-de-conduite-21821f4027db">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/logo_postfix.jpg" class="img-fluid" alt="postfix exploit article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">Tentative d'exploit Postfix</h1>
-            <p class="mb-2"><small class="text-muted">Sep 05, 2018</small></p>
-            <p class="text-middark text-justify">
-              Postfix n’implémente pas SASL de lui-même, ce qui veut dire que les fichiers de configuration vont appartenir à Postfix et à un logiciel tiers (dans notre cas Cyrus SASL).<br />
-              Je vais vous montrer l’exploit que j’ai tenté au travers de cette partie, sur les versions ci-dessous :
-            </p>
-
-            <ul>
-              <li class="text-middark">OS : Ubuntu 10.04 (04/2010)</li>
-              <li class="text-middark">Postfix : 2.8.1 (22/02/2011)</li>
-              <li class="text-middark">Cyrus SASL: 2.1.23 (04/10/2014)</li>
-              <li class="text-middark">CVE: 2011–1720 (13/05/2011)</li>
-            </ul>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://nbeguier.medium.com/tentative-dexploit-postfix-22a68c4c0a3c">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-
-      <div class="container col-xxl-8 px-4 py-5">
-        <div class="row flex-lg-row-reverse align-items-center g-5">
-          <div class="col-12 col-lg-6 text-center">
-            <img src="./img/cover/cassh.jpg" class="img-fluid" alt="cassh article cover" width="400" height="500" loading="lazy" />
-          </div>
-          <div class="col-lg-6">
-            <h1 class="display-6 fw-bold lh-1 mb-auto-3 text-white">CASSH: SSH Key Signing Tool</h1>
-            <p class="mb-2"><small class="text-muted">Jan 09, 2018</small></p>
-            <p class="text-middark text-justify">
-              As SRE, one of our missions is to prevent intrusions in our infrastructure. How can authentication security be increased without penalising thousands of engineers working on the platform?<br />
-              A classic way to authenticate with SSH is to use a pair of keys. Then you can deploy each public key on every server and add your custom flavor.<br />
-              In fact there are quite a few unused functionalities in OpenSSH, such as signed certificates, which greatly increase both security and reliability.
-            </p>
-            <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-              <a type="button" class="btn btn-outline-info btn-lg px-4 me-md-2 fw-bold" href="https://medium.com/leboncoin-engineering-blog/cassh-ssh-key-signing-tool-39fd3b8e4de7">
-                Read this article
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="b-large-divider"></div>
-    </main>
-
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
-
-    <script src="/js/pub/jquery.min.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
+    <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
   </body>
 </html>

@@ -1,165 +1,269 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="fr" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Retrouvez dans cette grille les fourchettes de salaire par poste en cybersecurité à Paris en 2023, ainsi que les années d'expérience et qualifications requises. Comparez les salaires selon votre niveau d'expérience et votre formation dans le domaine de la cybersecurité."
-    />
+    <meta name="description" content="Grille 2026 des salaires en cybersécurité à Paris/IDF : SOC, pentest, DevSecOps, architecte, RSSI, facteurs de rémunération et sources." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="salaires cybersecurité 2023 grille fourchette paris qualification comparaison expérience" />
-    <meta property="og:title" content="Les salaires en cybersecurité à Paris en 2023 : grille complète" />
+    <meta name="keywords" content="salaires cybersécurité 2026 paris ile-de-france RSSI pentester analyste SOC DevSecOps architecte sécurité" />
+    <meta property="og:title" content="Salaires cybersécurité à Paris en 2026 : grille par métier" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/cyber-salaires-2023.jpg" />
-    <meta
-      property="og:description"
-      content="Retrouvez dans cette grille les fourchettes de salaire par poste en cybersecurité à Paris en 2023, ainsi que les années d'expérience et qualifications requises. Comparez les salaires selon votre niveau d'expérience et votre formation dans le domaine de la cybersecurité."
-    />
+    <meta property="og:description" content="Grille 2026 des salaires en cybersécurité à Paris/IDF : SOC, pentest, DevSecOps, architecte, RSSI, facteurs de rémunération et sources." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/cybersecurity-salary-2023.html" />
     <meta property="og:type" content="article" />
-    <title>Les salaires en cybersecurité à Paris en 2023 : grille complète</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/beguier.min.css" rel="stylesheet" />
-    <link href="/css/gist.min.css" rel="stylesheet" />
+    <meta property="article:published_time" content="2022-12-29" />
+    <meta property="article:modified_time" content="2026-05-02" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/cybersecurity-salary-2023.html" />
+    <title>Salaires cybersécurité Paris 2026 : grille par métier</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Salaires cybersécurité à Paris en 2026 : grille par métier",
+      "description": "Grille 2026 des salaires en cybersécurité à Paris/IDF : SOC, pentest, DevSecOps, architecte, RSSI, facteurs de rémunération et sources.",
+      "image": "https://beguier.eu/nicolas/img/cover/cyber-salaires-2023.jpg",
+      "url": "https://beguier.eu/nicolas/articles/cybersecurity-salary-2023.html",
+      "inLanguage": "fr-FR",
+      "datePublished": "2022-12-29",
+      "dateModified": "2026-05-02",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 860px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h2 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body h3 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+
+      .table-wrap { overflow-x: auto; margin: 0.5rem 0 1.5rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+      .article-body table { width: 100%; min-width: 720px; border-collapse: collapse; font-size: 0.86rem; }
+      .article-body th { background: var(--accent-soft); color: var(--accent); font-weight: 700; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+      .article-body td { padding: 0.6rem 0.8rem; border-top: 1px solid var(--border); color: var(--text-2); vertical-align: top; }
+      .article-body tr:nth-child(even) td { background: #fafbff; }
+
+      .note { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid #3b82f6; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1.1rem; font-size: 0.9rem; color: #1e40af; line-height: 1.6; }
+      .source-list li { font-size: 0.9rem; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/cyber-salaires-2023.jpg" alt="Salaires cybersécurité à Paris en 2026" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div
-          class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/cover/cyber-salaires-2023.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
-        >
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Grille des salaires</h1>
-            <p class="lead fw-normal">
-              Cybersecurité à Paris en 2023
-            </p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">Industry</span>
+        <h1 class="article-title">Salaires cybersécurité à Paris en 2026 : grille par métier</h1>
+        <p class="article-subtitle">Fourchettes indicatives en brut annuel fixe pour Paris et l'Île-de-France, avec les principaux facteurs qui font varier la rémunération.</p>
+        <div class="article-meta">
+          <time datetime="2026-05-02">2 mai 2026</time>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Dec 29, 2023 by Nicolas Béguier</p>
+      </header>
 
-          <h1 class="my-5 fs-3">Grille des salaires en cybersecurité à Paris en 2023 (en euros)</h1>
+      <div class="article-body">
+        <p>Le marché cyber reste tendu en 2026 : les offres sont nombreuses, les profils expérimentés sont rares, et les rémunérations se segmentent fortement selon le périmètre réel du poste. Parler d'un salaire de "pentester" ou de "RSSI" sans préciser l'expérience, le secteur, la taille de l'entreprise et le niveau de responsabilité devient trop approximatif.</p>
 
-          <div class="lead fs-6 text-light">
-            <p>
-              Retrouvez dans cette grille les fourchettes de salaire par poste en cybersecurité à Paris en 2023, ainsi que les années d'expérience et qualifications requises. Comparez les salaires selon votre niveau d'expérience et votre
-              formation dans le domaine de la cybersecurité.
-            </p>
-            <table class="table text-light">
-              <thead>
-                <tr>
-                  <th scope="col">Poste</th>
-                  <th scope="col">Salaire (par an en euros)</th>
-                  <th scope="col">Années d'expérience souhaitées</th>
-                  <th scope="col">Qualifications requises</th>
-                </tr>
-                <tr>
-                  <td scope="row"><b>RSSI</b></td>
-                  <td>85 000 - 95 000</td>
-                  <td>15 ans et plus</td>
-                  <td>Diplôme en informatique/cybersecurité et certification CISSP</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Architecte</b></td>
-                  <td>75 000 - 85 000</td>
-                  <td>10-15 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification CISM ou CISSP</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Chef de projet sécurité</b></td>
-                  <td>70 000 - 80 000</td>
-                  <td>10-15 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification PMP</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Auditeur</b></td>
-                  <td>65 000 - 75 000</td>
-                  <td>7-10 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification CISA</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Expert sécurité</b></td>
-                  <td>60 000 - 70 000</td>
-                  <td>7-10 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification OSCP</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Pentester</b></td>
-                  <td>55 000 - 65 000</td>
-                  <td>5-7 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification OSCP</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Ingénieur sécurité</b></td>
-                  <td>50 000 - 60 000</td>
-                  <td>5-7 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification CISSP</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Consultant</b></td>
-                  <td>45 000 - 55 000</td>
-                  <td>3-5 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification CISM ou CISSP</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Technicien sécurité</b></td>
-                  <td>40 000 - 50 000</td>
-                  <td>3-5 ans</td>
-                  <td>Diplôme en informatique/cybersecurité</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Analyste</b></td>
-                  <td>35 000 - 45 000</td>
-                  <td>0-3 ans</td>
-                  <td>Diplôme en informatique/cybersecurité</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Gestionnaire sécurité</b></td>
-                  <td>30 000 - 40 000</td>
-                  <td>2-3 ans</td>
-                  <td>Diplôme en informatique/cybersecurité</td>
-                </tr>
-                <tr>
-                  <td scope="row"><b>Formateur sécurité</b></td>
-                  <td>30 000 - 40 000</td>
-                  <td>2-3 ans</td>
-                  <td>Diplôme en informatique/cybersecurité et certification en enseignement/formation</td>
-                </tr>
-              </thead>
-            </table>
+        <p>Les montants ci-dessous sont des <b>fourchettes indicatives pour Paris/Île-de-France</b>, exprimées en <b>brut annuel fixe</b>. Elles ne comprennent pas les primes, bonus, intéressement, astreintes, BSPCE, avantages ou rémunération variable. Pour un poste en région, une PME, le secteur public ou une structure moins exposée, la fourchette peut être plus basse. Pour la finance, le cloud, l'OT, l'IAM, l'AppSec ou un périmètre international, elle peut monter sensiblement.</p>
 
-            <p class="my-5">
-              Cette étude a été menée en recueillant les données sur les salaires en cybersecurité à Paris en 2022 auprès d'un échantillon d'entreprises de tailles et de secteurs différents. Elle vise à fournir une idée générale des
-              fourchettes de salaire par poste dans ce domaine à Paris en 2023, mais il est important de noter que ces données ne sont pas totalement fiables et peuvent varier en fonction de l'expérience et des compétences de chaque
-              individu. Les salaires en cybersecurité peuvent également être influencés par le secteur d'activité de l'entreprise, la localisation et d'autres facteurs. Cette étude est donc uniquement destinée à fournir une orientation
-              générale et ne doit pas être utilisée comme référence absolue.
-            </p>
-          </div>
+        <div class="note">À lire comme un repère de négociation, pas comme une vérité absolue. Le bon salaire dépend aussi du niveau d'autonomie, de l'impact business, du niveau d'anglais, de la capacité à gérer les incidents et de la rareté des compétences demandées.</div>
+
+        <h2>Grille 2026 des salaires cybersécurité à Paris</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Poste</th>
+                <th>Junior</th>
+                <th>Confirmé</th>
+                <th>Senior / Lead</th>
+                <th>Ce qui fait monter la rémunération</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Analyste SOC / SIEM</b></td>
+                <td>40 - 55 k€</td>
+                <td>55 - 70 k€</td>
+                <td>70 - 85 k€</td>
+                <td>Détection avancée, threat hunting, SIEM/SOAR, astreintes, environnement critique</td>
+              </tr>
+              <tr>
+                <td><b>Pentester / auditeur technique</b></td>
+                <td>42 - 50 k€</td>
+                <td>50 - 68 k€</td>
+                <td>68 - 90 k€</td>
+                <td>Web, cloud, Active Directory, Red Team, OSCP/OSWE/OSEP, avant-vente</td>
+              </tr>
+              <tr>
+                <td><b>Ingénieur sécurité / SecOps</b></td>
+                <td>45 - 55 k€</td>
+                <td>55 - 70 k€</td>
+                <td>70 - 90 k€</td>
+                <td>EDR/XDR, durcissement, réseau, IAM, cloud, automatisation, gestion d'incidents</td>
+              </tr>
+              <tr>
+                <td><b>DevSecOps / AppSec</b></td>
+                <td>50 - 60 k€</td>
+                <td>60 - 80 k€</td>
+                <td>80 - 100 k€</td>
+                <td>CI/CD, Kubernetes, cloud, SAST/DAST, threat modeling, accompagnement équipes produit</td>
+              </tr>
+              <tr>
+                <td><b>Consultant cybersécurité / GRC</b></td>
+                <td>43 - 55 k€</td>
+                <td>55 - 75 k€</td>
+                <td>75 - 95 k€</td>
+                <td>ISO 27001, EBIOS RM, NIS2, DORA, pilotage client, anglais, secteur régulé</td>
+              </tr>
+              <tr>
+                <td><b>Chef de projet / programme cyber</b></td>
+                <td>50 - 60 k€</td>
+                <td>60 - 80 k€</td>
+                <td>80 - 105 k€</td>
+                <td>Budget, roadmap pluriannuelle, coordination transverse, comité de direction, programme groupe</td>
+              </tr>
+              <tr>
+                <td><b>Architecte sécurité</b></td>
+                <td>60 - 70 k€</td>
+                <td>70 - 90 k€</td>
+                <td>90 - 120 k€</td>
+                <td>Architecture cloud, Zero Trust, OT, IAM, normes, arbitrage technique et métier</td>
+              </tr>
+              <tr>
+                <td><b>Expert cybersécurité / incident response</b></td>
+                <td>55 - 65 k€</td>
+                <td>65 - 85 k€</td>
+                <td>85 - 110 k€</td>
+                <td>Forensic, crise, malware, expertise OT/cloud, habilitation, astreintes, anglais</td>
+              </tr>
+              <tr>
+                <td><b>RSSI / Responsable sécurité SI</b></td>
+                <td>70 - 85 k€</td>
+                <td>85 - 115 k€</td>
+                <td>115 - 160 k€+</td>
+                <td>Périmètre groupe, management, budget, secteur régulé, exposition COMEX, international</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Tendances du marché en 2026</h2>
+
+        <p>Le marché est plus mature. Les entreprises distinguent mieux les profils SOC, SecOps, AppSec, GRC, cloud security, OT et RSSI. Résultat : les fourchettes sont plus larges, et deux intitulés identiques peuvent cacher des réalités très différentes. Un "ingénieur sécurité" qui administre des outils ne se valorise pas comme un profil capable de piloter une réponse à incident, d'automatiser la remédiation ou de sécuriser une plateforme cloud critique.</p>
+
+        <p>Les certifications restent utiles, mais elles ne suffisent pas. En 2026, les écarts se font surtout sur la capacité à produire un impact mesurable : réduire l'exposition, accélérer la détection, améliorer la conformité, sécuriser des projets métier, ou rendre un dispositif cyber compréhensible par les équipes dirigeantes.</p>
+
+        <h2>Facteurs qui influencent fortement le salaire</h2>
+
+        <ul>
+          <li><b>Secteur</b> : finance, assurance, énergie, défense, santé, cloud et SaaS B2B paient souvent mieux que les organisations moins régulées.</li>
+          <li><b>Périmètre</b> : un rôle local, France, Europe ou groupe international ne se valorise pas de la même manière.</li>
+          <li><b>Responsabilité</b> : astreintes, incident majeur, management, budget, comités de direction et responsabilité réglementaire changent la grille.</li>
+          <li><b>Spécialisation</b> : cloud security, IAM, AppSec, OT/ICS, forensic, threat hunting et DORA/NIS2 tirent les rémunérations vers le haut.</li>
+          <li><b>Mode de travail</b> : le full remote national peut lisser les salaires, tandis que les postes parisiens hybrides restent souvent mieux payés.</li>
+        </ul>
+
+        <h2>Comment lire les sources</h2>
+
+        <p>Robert Half donne pour Paris en 2026 un repère de <b>54,6 - 84 k€</b> pour un expert cybersécurité entre les 25e et 75e percentiles, et <b>84 - 115,5 k€</b> pour un RSSI. Les offres Michael Page observées en 2025/2026 confirment que certains postes parisiens ou franciliens montent au-dessus : RSSI Groupe à Paris autour de 100 - 120 k€, DevSecOps autour de 75 - 85 k€, ou postes d'expertise/management cyber autour de 70 - 90 k€ selon le périmètre.</p>
+
+        <p>L'APEC reste utile pour replacer ces niveaux dans le marché cadre français : les offres d'ingénieur sécurité informatique y sont beaucoup plus dispersées, avec 80 % des offres entre 37 et 60 k€ et une moyenne autour de 48 k€. Cette différence illustre bien l'effet Paris, seniorité, cabinet spécialisé, secteur régulé et périmètre réel du poste.</p>
+
+        <h2>Sources</h2>
+
+        <ul class="source-list">
+          <li><a href="https://www.roberthalf.com/fr/fr/tendances/guide-salaires" target="_blank" rel="noopener">Robert Half - Guide des salaires 2026</a>, méthodologie et tendances IT/Tech.</li>
+          <li><a href="https://www.roberthalf.com/fr/fr/details-emploi/expert-cybersecurite/paris" target="_blank" rel="noopener">Robert Half - Expert cybersécurité à Paris, salaires 2026</a>.</li>
+          <li><a href="https://www.roberthalf.com/fr/fr/details-emploi/responsable-securite-des-systemes-dinformation-rssi/france" target="_blank" rel="noopener">Robert Half - RSSI, salaires 2026</a>.</li>
+          <li><a href="https://www.apec.fr/tous-nos-metiers/informatique/ingenieur-securite-informatique.html" target="_blank" rel="noopener">APEC - Ingénieur sécurité informatique</a> et <a href="https://www.apec.fr/tous-nos-metiers/informatique/responsable-securite-informatique.html" target="_blank" rel="noopener">Responsable sécurité informatique</a>.</li>
+          <li><a href="https://cyber.gouv.fr/actualites/publication-de-la-4e-%C3%A9dition-de-lobservatoire-des-m%C3%A9tiers-2025/" target="_blank" rel="noopener">ANSSI - Observatoire des métiers 2025</a>, tension du marché et évolution des offres cyber.</li>
+          <li><a href="https://www.grandeecolenumerique.fr/les-metiers-numeriques-les-mieux-payes/remunerations-tendances-securite-reseau-cloud-telecoms" target="_blank" rel="noopener">Grande École du Numérique - Rémunérations sécurité, réseau, cloud et télécoms</a>, synthèse de grilles métier.</li>
+          <li>Offres Michael Page consultées en avril/mai 2026 : RSSI Groupe Paris, DevSecOps Engineer Paris, Manager Pôle Cybersécurité Courbevoie, OT Security Expert Courbevoie.</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+
+        <p>En 2026, la cybersécurité reste un marché favorable aux profils spécialisés, mais le bon positionnement salarial dépend moins du titre que du périmètre. Pour négocier proprement, partez d'une grille, puis ajustez avec trois questions : quel risque porte le poste, quelle autonomie est attendue, et quelle valeur mesurable la personne apporte à l'organisation ?</p>
+
+        <div class="article-cta">
+          Si cet article vous a été utile, vous pouvez le partager ou <a href="https://www.linkedin.com/in/nicolasbeguier/">me contacter sur LinkedIn</a>.
         </div>
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
 
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <script src="/js/pub/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+    </script>
   </body>
 </html>

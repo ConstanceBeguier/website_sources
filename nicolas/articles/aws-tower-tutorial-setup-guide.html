@@ -1,134 +1,247 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="TODO" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Set up AWS Tower, an open-source AWS security audit tool, with the required credentials, configuration steps, and first checks." />
     <meta name="author" content="Nicolas Béguier" />
     <meta name="keywords" content="aws tower security audit opensource" />
     <meta property="og:title" content="AWS Tower Tutorial: Setup guide" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/nginx.jpg" />
-    <meta property="og:description" content="TODO" />
+    <meta property="og:description" content="Set up AWS Tower, an open-source AWS security audit tool, with the required credentials, configuration steps, and first checks." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/aws-tower-tutorial-setup-guide.html" />
     <meta property="og:type" content="article" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/aws-tower-tutorial-setup-guide.html" />
     <title>AWS Tower Tutorial: Setup guide</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/beguier.min.css" rel="stylesheet" />
-    <link href="/css/gist.min.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "AWS Tower Tutorial: Setup guide",
+      "description": "Set up AWS Tower, an open-source AWS security audit tool, with the required credentials, configuration steps, and first checks.",
+      "image": "https://beguier.eu/nicolas/img/cover/nginx.jpg",
+      "url": "https://beguier.eu/nicolas/articles/aws-tower-tutorial-setup-guide.html",
+      "datePublished": "2021-01-06",
+      "dateModified": "2021-01-06",
+      "author": {
+        "@type": "Person",
+        "name": "Nicolas Béguier",
+        "url": "https://beguier.eu/nicolas/"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Nicolas Béguier",
+        "url": "https://beguier.eu/nicolas/"
+      }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+        --code-prompt: #f87171;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 220px; overflow: hidden; }
+      .article-cover img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+      .article-cover::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.45); pointer-events: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h1, .article-body h2 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body h3 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+      .article-body table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.88rem; }
+      .article-body th { background: var(--accent-soft); color: var(--accent); font-weight: 600; padding: 0.6rem 0.9rem; border: 1px solid var(--border); text-align: left; }
+      .article-body td { padding: 0.55rem 0.9rem; border: 1px solid var(--border); color: var(--text-2); }
+      .article-body tr:nth-child(even) td { background: #fafbff; }
+
+      .text-code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82em; background: #f1f3f9; border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.4em; color: var(--text-1); word-break: break-word; }
+
+      .copy-code { display: block; position: relative; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; background: var(--code-bg); color: var(--code-text); border-radius: 8px; padding: 0.75rem 3rem 0.75rem 1rem; margin: 0.5rem 0 1rem; overflow-x: auto; white-space: pre; }
+
+      .copy-btn { position: absolute; top: 0.45rem; right: 0.45rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 5px; color: rgba(255,255,255,0.4); padding: 0.22rem 0.45rem; cursor: pointer; font-size: 0.68rem; line-height: 1; transition: background .15s, color .15s, border-color .15s; white-space: nowrap; }
+      .copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.28); }
+      .copy-btn.copied { color: #4ade80; border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.08); }
+
+      .article-body pre { background: var(--code-bg); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; margin: 0.5rem 0 1.25rem; }
+      .article-body pre code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; color: var(--code-text); background: none; border: none; padding: 0; }
+
+      .copy-code .text-danger { color: #f87171; }
+      .copy-code .text-secondary { color: #94a3b8; }
+      .text-danger { color: #f87171; }
+      .text-warning { color: #d97706; }
+      .text-success { color: #059669; }
+      .text-secondary { color: #94a3b8; }
+
+      .tip { display: flex; align-items: flex-start; gap: 0.6rem; background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid #3b82f6; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1.1rem; font-size: 0.88rem; color: #1e40af; line-height: 1.6; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+</style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/logo/aws-tower-logo.svg" alt="AWS Tower Tutorial: Setup guide" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div
-          class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/logo/aws-tower-logo.svg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
-        >
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">AWS Tower Tutorial</h1>
-            <p class="lead fw-normal">
-              Setup guide
-            </p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">Cloud Security</span>
+        <h1 class="article-title">AWS Tower Tutorial: Setup guide</h1>
+        <p class="article-subtitle">Setup guide</p>
+        <div class="article-meta">
+          <span>Jan 6, 2021</span>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Jan 1st, 2023 by Nicolas Béguier</p>
+      </header>
 
-          <div id="includedAWSTowerSummary"></div>
+      <div class="article-body">
+        
 
-          <h1 class="my-5 fs-3">Introduction</h1>
+<div id="includedAWSTowerSummary"></div>
+<h1>Introduction</h1>
 
-          <div class="lead fs-6 text-light">
             AWS Tower give the ability to discover and monitor AWS account to find vulnerabilities or misconfigurations. Give also a brief overview for non-AWS expert. Not related at all of the AWS Trusted Advisor.
-          </div>
+          
+<h1>Installation</h1>
 
-          <h1 class="my-5 fs-3">Installation</h1>
+<span class="text-code">
+<span class="text-secondary"># Git clone leboncoin/aws-tower</span><br/>
+<div class="tip">git</div> clone https://github.com/leboncoin/aws-tower<br/>
+<div class="tip">cd</div> aws-tower<br/>
+<span class="text-secondary"># Install python prerequisites</span><br/>
+<div class="tip">pip</div> install -r requirements.txt<br/>
+<br/>
+</span>
+<p>You also need an AWS account and the AWS CLI properly configured. If not, download the AWS CLI installation package from the <a href="https://aws.amazon.com/cli/" rel="noopener" target="_blank">AWS CLI page</a>.</p>
 
-          <div class="lead fs-6 text-light">
-            <span class="text-code text-light">
-              <span class="text-secondary"># Git clone leboncoin/aws-tower</span><br />
-              <span class="text-info">git</span> clone https://github.com/leboncoin/aws-tower<br />
-              <span class="text-info">cd</span> aws-tower<br />
-              <span class="text-secondary"># Install python prerequisites</span><br />
-              <span class="text-info">pip</span> install -r requirements.txt<br />
-              <br />
-            </span>
+<h1>Configuration</h1>
 
-            <p>You also need an AWS account and the AWS CLI properly configured. If not, download the AWS CLI installation package from the <a href="https://aws.amazon.com/cli/" class="link-info">AWS CLI page</a>.</p>
-          </div>
+            You can run AWS Tower without specific configuration. For better results, it's highly recomended to duplicate the sample files and edit them.<br/>
+<br/>
+<span class="text-code">
+<div class="tip">cp</div> config/rules.yaml.sample config/rules.yaml<br/>
+<div class="tip">cp</div> config/subnet_allow_list.txt.sample config/subnet_allow_list.txt<br/>
+<div class="tip">cp</div> config/trusted_accounts_list.txt.sample config/trusted_accounts_list.txt<br/>
+</span>
+<br/>
+<ul>
+<li><span class="text-code">config/rules.yaml</span>: This is a rules file. Mandatory for "audit" functionality. You can add your own rules or use the default ones. They are updated regularly.</li>
+<li><span class="text-code">config/subnet_allow_list.txt</span>: Contains the allow list of subnets. You can add it everything that should be interpreted as "local network".</li>
+<li><span class="text-code">config/trusted_accounts_list.txt</span>: This file permits to trust some AWS account. It's handy to whitelist VPN peering.</li>
+</ul>
 
-          <h1 class="my-5 fs-3">Configuration</h1>
+<h1>First try</h1>
 
-          <div class="lead fs-6 text-light">
-            You can run AWS Tower without specific configuration. For better results, it's highly recomended to duplicate the sample files and edit them.<br />
-            <br />
-            <span class="text-code text-light">
-              <span class="text-info">cp</span> config/rules.yaml.sample config/rules.yaml<br />
-              <span class="text-info">cp</span> config/subnet_allow_list.txt.sample config/subnet_allow_list.txt<br />
-              <span class="text-info">cp</span> config/trusted_accounts_list.txt.sample config/trusted_accounts_list.txt<br />
-            </span>
-            <br />
-            <ul>
-              <li><span class="text-code">config/rules.yaml</span>: This is a rules file. Mandatory for "audit" functionality. You can add your own rules or use the default ones. They are updated regularly.</li>
-              <li><span class="text-code">config/subnet_allow_list.txt</span>: Contains the allow list of subnets. You can add it everything that should be interpreted as "local network".</li>
-              <li><span class="text-code">config/trusted_accounts_list.txt</span>: This file permits to trust some AWS account. It's handy to whitelist VPN peering.</li>
-            </ul>
-          </div>
-
-          <h1 class="my-5 fs-3">First try</h1>
-
-          <div class="lead fs-6 text-light">
             First of all, use an alias to simplify the command line:
 
-            <span class="text-code text-light copy-code"> <span class="text-info">alias</span> aws-tower="${PWD}/aws_tower_cli.py"<br /> </span>
+            <span class="text-code"> <div class="tip">alias</div> aws-tower="${PWD}/aws_tower_cli.py"<br/> </span>
 
             Then, list all available profiles
 
-            <span class="text-code text-light copy-code"> <span class="text-info">aws-tower</span> --list-profiles<br /> </span>
+            <span class="text-code"> <div class="tip">aws-tower</div> --list-profiles<br/> </span>
 
             Let's suppose you have the profile <span class="text-warning">demo-account</span> listed.
 
-            <span class="text-code text-light copy-code"> <span class="text-info">aws-tower</span> discover <span class="text-warning">demo-account</span><br /> </span>
-          </div>
+            <span class="text-code"> <div class="tip">aws-tower</div> discover <span class="text-warning">demo-account</span><br/> </span>
 
-          <h1 class="my-5 fs-3">Troubleshooting</h1>
+<h1>Troubleshooting</h1>
 
-          <div class="lead fs-6 text-light">
-            Be sure you AWS CLI is properly configured:<br />
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># If you have the correct permission, you should be able to display all s3 buckets of your account</span><br />
-              <span class="text-info">aws</span> --profile <span class="text-warning">demo-account</span> s3 ls<br />
-            </span>
+            Be sure you AWS CLI is properly configured:<br/>
+<span class="text-code">
+<span class="text-secondary"># If you have the correct permission, you should be able to display all s3 buckets of your account</span><br/>
+<div class="tip">aws</div> --profile <span class="text-warning">demo-account</span> s3 ls<br/>
+</span>
 
             If you successfully observe the list of all your s3 buckets, then you should be able to discover it with AWS Tower. We specify the asset type s3 in this example:
-            <span class="text-code text-light copy-code"> <span class="text-info">aws-tower</span> discover <span class="text-warning">demo-account</span> -t S3<br /> </span>
-          </div>
+            <span class="text-code"> <div class="tip">aws-tower</div> discover <span class="text-warning">demo-account</span> -t S3<br/> </span>
+
+
+        <div class="article-cta">
+          If you enjoyed this article, feel free to share it or <a href="https://www.linkedin.com/in/nicolasbeguier/">reach out on LinkedIn</a>.
         </div>
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
-
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
-
-    <script src="/js/pub/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
+    
     <script>
-      $("#includedAWSTowerSummary").load("aws-tower-summary.html");
+      document.getElementById('yr').textContent = new Date().getFullYear();
+      // Set cover dark-sides background
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+      document.querySelectorAll('.copy-code').forEach(block => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.title = 'Copy to clipboard';
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        block.appendChild(btn);
+        btn.addEventListener('click', () => {
+          const lines = block.innerText.split('\\n');
+          const cleaned = lines.filter(l => !l.trimStart().startsWith('#')).map(l => l.replace(/^\\$\\s*/, '')).filter(l => l.trim() !== '').join('\\n').trim();
+          navigator.clipboard.writeText(cleaned).then(() => {
+            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        });
+      });
     </script>
   </body>
 </html>

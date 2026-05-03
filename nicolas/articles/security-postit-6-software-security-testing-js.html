@@ -1,260 +1,314 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="In this short security post-it, I explain how to secure your JavaScript and TypeScript code using open-source tools: SAST and SCA." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="sast sca javascript semgrep depscan software security testing cicd circleci github typescript sdlc splc" />
-    <meta property="og:title" content="Security Post-it #6 – Software Security Testing for JavaScript and TypeScript" />
+    <meta name="keywords" content="sast sca javascript semgrep njsscan depscan software security testing cicd github typescript sdlc splc" />
+    <meta property="og:title" content="Security Post-it #6: JavaScript and TypeScript SAST" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/logo_secu-postit6.jpg" />
     <meta property="og:description" content="In this short security post-it, I explain how to secure your JavaScript and TypeScript code using open-source tools: SAST and SCA." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html" />
     <meta property="og:type" content="article" />
-    <title>Security Post-it #6 – Software Security Testing for JavaScript and TypeScript</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html" />
+    <title>Security Post-it #6: JavaScript and TypeScript SAST</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Security Post-it #6 – Software Security Testing for JavaScript and TypeScript",
+      "description": "In this short security post-it, I explain how to secure your JavaScript and TypeScript code using open-source tools: SAST and SCA.",
+      "image": "https://beguier.eu/nicolas/img/cover/logo_secu-postit6.jpg",
+      "url": "https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html",
+      "datePublished": "2022-11-03",
+      "dateModified": "2022-11-03",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body h2 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
+      .article-body h3 { font-size: 0.92rem; font-weight: 600; color: var(--text-2); margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+
+      .text-code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82em; background: #f1f3f9; border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.4em; color: var(--text-1); word-break: break-word; }
+
+      .copy-code { display: block; position: relative; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; background: var(--code-bg); color: var(--code-text); border-radius: 8px; padding: 0.75rem 3rem 0.75rem 1rem; margin: 0.5rem 0 1.1rem; overflow-x: auto; white-space: pre; }
+      .copy-code .sh { color: #f87171; }
+      .copy-code .cm { color: #94a3b8; }
+
+      .copy-btn { position: absolute; top: 0.45rem; right: 0.45rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 5px; color: rgba(255,255,255,0.4); padding: 0.22rem 0.45rem; cursor: pointer; font-size: 0.68rem; line-height: 1; transition: background .15s, color .15s; }
+      .copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
+      .copy-btn.copied { color: #4ade80; border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.08); }
+
+      .output { display: block; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.78rem; background: #0d0f18; color: #94a3b8; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1.1rem; overflow-x: auto; white-space: pre-wrap; }
+      .output .warn { color: #fbbf24; }
+      .output .hi   { color: #e2e8f0; font-weight: 600; }
+
+      .lb-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; cursor: zoom-out; }
+      .lb-overlay.open { display: flex; }
+      .lb-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 6px; cursor: default; }
+      .lb-close { position: absolute; top: 1rem; right: 1.25rem; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; background: none; border: none; line-height: 1; }
+      .lb-close:hover { color: #fff; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/logo_secu-postit6.jpg" alt="Security Post-it #6 – Software Security Testing for JavaScript and TypeScript" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div
-          class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/cover/logo_secu-postit6.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
-        >
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Security Post-it #6 – Software Security Testing for JavaScript and TypeScript</h1>
-            <p class="lead fw-normal">In this short security post-it, I explain how to secure your JavaScript and TypeScript code using open-source tools: SAST and SCA.</p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">DevSecOps</span>
+        <h1 class="article-title">Security Post-it #6 – Software Security Testing for JavaScript and TypeScript</h1>
+        <p class="article-subtitle">How to secure your JS/TS repositories using open-source SAST and SCA tools, integrated into your CI/CD or pre-commit hooks.</p>
+        <div class="article-meta">
+          <span>Nov 3, 2022</span>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Nov 3, 2022 by Nicolas Béguier</p>
+      </header>
 
-          <div class="lead fs-6 text-light">
-            We all agree that you have to secure your code. On the other hand, it is not always easy to know where to start and identify what is effective. I will present here the SAST and SCA implementations on your
-            <b class="text-warning">JavaScript and TypeScript repositories</b>.<br />
-            <br />
-            Oh wait, I forgot to tell you. This is to build it <b class="text-info">yourself</b> on your CI/CD or in your pre-commit hooks, with open-source tools.
-          </div>
-          <h1 class="my-5 fs-3">What are SAST and SCA ?</h1>
+      <div class="article-body">
 
-          <div class="lead fs-6 text-light">
-            <b>Static Application Security Testing</b> (SAST) is used to scan the code you write for security vulnerabilities and <b>Software Composition Analysis</b> (SCA) is used to scan your dependencies for security vulnerabilities.
-            <br />
-            <br />
-            When we look at these two technologies side by side, it becomes clear that both are necessary for an effective and secure development approach. SAST is more helpful for the code you write, while SCA is effective at analyzing the
-            open-source software your organization uses, as well as its dependencies. <b class="text-warning">These two technologies address security issues early and often during the development cycle</b>.<br />
-            <br />
-            In my opinion, SAST should be both asynchronous and synchronous. Blocking CI/CD pipelines to prevent unsecured code is great, but you need to specify exceptions and false-positive management. Running it asynchronously permits
-            your security team to read reports and be alerted in real-time for potential vulnerabilities.<br />
-            SCA must be asynchronous only, otherwise you will only be alerted when new code is pushed. <b>Dead repositories are full of vulnerable dependencies</b>. Run it somewhere else but continuously, and why not use a tool to create
-            Pull Requests automatically, like Renovabot.<br />
-          </div>
+        <p>We all agree that you have to secure your code. The hard part is knowing where to start. Here I present SAST and SCA implementations for your <b>JavaScript and TypeScript repositories</b> — open-source tools you can wire up yourself in your CI/CD pipeline or pre-commit hooks.</p>
 
-          <h2 class="my-5 fs-4">Static Application Security Testing (SAST)</h2>
-          <div class="lead fs-6 text-light">
-            Today, if you want really effective security coverage, you need to use <a class="link-info" href="https://semgrep.dev/">semgrep</a>. I can propose
-            <a class="link-info" href="https://github.com/ajinabraham/njsscan">njsscan</a> which relies on semgrep with additionnal rules.<br />
-            <br />
-            Njsscan focuses only on server side javascript/html code, while you are interested in client-side security (Ex: DOM-XSS, postmessage abuse, open redirect) and extended rules.<br />
-          </div>
+        <p>See also: <a href="./security-postit-7-software-security-testing-golang.html"><b>Security Post-it #7 – Software Security Testing for Golang</b></a>.</p>
 
-          <h3 class="my-3 fs-5 text-success pt-3">Install</h3>
-          <div class="lead fs-6 text-light">
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Semgrep</span><br />
-              <span class="text-danger">$</span> pip install semgrep
-            </span>
+        <h1>What are SAST and SCA?</h1>
 
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Njsscan</span><br />
-              <span class="text-danger">$</span> pip install njsscan
-            </span>
-          </div>
+        <p><b>Static Application Security Testing (SAST)</b> scans the code you write for security vulnerabilities. <b>Software Composition Analysis (SCA)</b> scans your dependencies for known vulnerabilities.</p>
 
-          <h3 class="my-3 fs-5 text-success pt-3">Audit with semgrep</h3>
+        <p>Both are necessary for an effective security approach. SAST should run both synchronously (blocking CI/CD to prevent insecure code merges) and asynchronously (alerting the security team in real time). SCA must be asynchronous — running only on push misses vulnerable dependencies in dormant repositories. <b>Dead repositories are full of vulnerable dependencies.</b> Run it continuously and consider Renovabot to auto-create fix PRs.</p>
 
-          <div class="lead fs-6 text-light">
-            <b>Human readable output</b>
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Paranoid mode: OWASP Top Ten + some of my favorites</span><br />
-              <span class="text-danger">$</span> semgrep --config=r/javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation
-              --config=r/javascript.lang.security.audit.incomplete-sanitization.incomplete-sanitization --config=r/javascript.browser.security.dom-based-xss.dom-based-xss
-              --config=r/typescript.react.security.audit.react-css-injection.react-css-injection --config=r/typescript.react.security.audit.react-href-var.react-href-var --config=p/owasp-top-ten __CODE_DIRECTORY__
-            </span>
+        <h1>SAST — semgrep / njsscan</h1>
 
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># This ruleset is intended to produce low false positives, and safe for use in CI/CD pipelines.</span><br />
-              <span class="text-danger">$</span> semgrep --config=p/ci __CODE_DIRECTORY__
-            </span>
-            <br />
-            <b>Work with a JSON output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> semgrep --config=p/ci __CODE_DIRECTORY__ -o /tmp/semgrep.json --json</span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/semgrep.json | jq .results</span>
-          </div>
-          <h3 class="my-3 fs-5 text-success pt-3">Audit with njsscan</h3>
+        <p>For effective JS/TS security coverage, use <a href="https://semgrep.dev/" target="_blank" rel="noopener"><b>semgrep</b></a>. I also recommend <a href="https://github.com/ajinabraham/njsscan" target="_blank" rel="noopener"><b>njsscan</b></a>, which wraps semgrep with additional rules focused on server-side JavaScript. For client-side coverage (DOM-XSS, postMessage abuse, open redirects), the extended semgrep rules below are useful.</p>
 
-          <div class="lead fs-6 text-light">
-            <b>Human readable output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> njsscan __CODE_DIRECTORY__ </span>
-            <br />
-            <b>Work with a JSON output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> njsscan __CODE_DIRECTORY__ -o /tmp/njsscan.json --json</span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/njsscan.json | jq .nodejs </span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/njsscan.json | jq .templates </span>
-          </div>
-          <h3 class="my-3 fs-5 text-success pt-3">Example</h3>
+        <h2>Install</h2>
 
-          <div class="lead fs-6 text-light">
-            Let's take an example : <a class="link-secondary" href="https://github.com/juice-shop/juice-shop">https://github.com/juice-shop/juice-shop</a> - "OWASP Juice Shop: Probably the most modern and sophisticated insecure web
-            application"
+        <span class="copy-code"><span class="cm"># Semgrep</span>
+<span class="sh">$</span> pip install semgrep</span>
 
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Clone the vulnerable repo in /tmp.</span><br />
-              <span class="text-danger">$</span> git clone https://github.com/juice-shop/juice-shop /tmp/juice-shop
-            </span>
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Scan it with semgrep, in paranoiac mode.</span><br />
-              <span class="text-danger">$</span> semgrep --config=r/javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation
-              --config=r/javascript.lang.security.audit.incomplete-sanitization.incomplete-sanitization --config=r/javascript.browser.security.dom-based-xss.dom-based-xss
-              --config=r/typescript.react.security.audit.react-css-injection.react-css-injection --config=r/typescript.react.security.audit.react-href-var.react-href-var --config=p/owasp-top-ten /tmp/juice-shop/
-            </span>
-            <span class="text-code text-secondary">
-              …<br />
-              <span class="text-info">/tmp/juice-shop/data/static/codefixes/unionSqlInjectionChallenge_3.ts</span><br />
-              <b>javascript.express.security.injection.tainted-sql-string.tainted-sql-string</b><br />
-              Detected user input used to manually construct a SQL string. This is usually bad practice because manual construction could accidentally result in a SQL injection. An attacker could use a SQL injection to steal or modify
-              contents of the database. Instead, use a parameterized query which is available by default in most database engines. Alternatively, consider using an object-relational mapper (ORM) such as Sequelize which will protect your
-              queries.<br />
-              Details: https://sg.run/66ZL<br />
-              <br />
-              10┆ ... <b>criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`)</b> ...<br />
-              [shortened a long line from output, adjust with --max-chars-per-line]<br />
-              ⋮┆----------------------------------------<br />
-              …<br />
-              Ran 471 rules on 979 files: 41 findings.<br />
-            </span>
-          </div>
-          <h3 class="my-3 fs-5 text-success pt-3">Does it work on my CI ?</h3>
+        <span class="copy-code"><span class="cm"># Njsscan</span>
+<span class="sh">$</span> pip install njsscan</span>
 
-          <div class="lead fs-6 text-light">
-            <a class="link-info" href="https://semgrep.dev/docs/semgrep-ci/running-semgrep-ci-without-semgrep-app/">https://semgrep.dev/docs/semgrep-ci/running-semgrep-ci-without-semgrep-app/</a><br />
-            <br />
-            There is documentation for:
-            <ul>
-              <li>GitHub Actions</li>
-              <li>GitLab CI/CD</li>
-              <li>Jenkins</li>
-              <li>BitBucket Pipelines</li>
-              <li>CircleCI</li>
-              <li>Buildkite</li>
-            </ul>
-          </div>
-          <h2 class="my-5 fs-4">Software Composition Analysis (SCA)</h2>
-          <div class="lead fs-6 text-light">
-            <a class="link-info" href="https://github.com/AppThreat/dep-scan">Depscan by AppThreat</a> is a fully open-source security audit for project dependencies based on <b class="text-success">known vulnerabilities and advisories</b>.
-            <br />
-            <br />
-            <b>cdxgen</b> is extracting all dependencies from <span class="text-code">npm-shrinkwrap.json, package-lock.json, pnpm-lock.yaml, yarn.lock, rush.js, bower.json, .min.js</span>, and transitive dependencies.<br />
-            <br />
-            It doesn't work perfectly for all languages, but for JavaScript it works great.
-          </div>
+        <h2>Audit with semgrep</h2>
 
-          <h3 class="my-3 fs-5 text-success pt-3">Install</h3>
-          <div class="lead fs-6 text-light">
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Install cdxgen in /tmp/, use -g for a global install instead of --prefix /tmp/</span><br />
-              <span class="text-danger">$</span> npm install --prefix /tmp/ @appthreat/cdxgen
-            </span>
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Not very clean, but temporary</span><br />
-              <span class="text-danger">$</span> PATH=$PATH:/tmp/node_modules/.bin
-            </span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> pip install appthreat-depscan </span>
-          </div>
+        <h3>Paranoid mode</h3>
+        <span class="copy-code"><span class="cm"># OWASP Top Ten + extended client-side rules</span>
+<span class="sh">$</span> semgrep \
+    --config=r/javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation \
+    --config=r/javascript.lang.security.audit.incomplete-sanitization.incomplete-sanitization \
+    --config=r/javascript.browser.security.dom-based-xss.dom-based-xss \
+    --config=r/typescript.react.security.audit.react-css-injection.react-css-injection \
+    --config=r/typescript.react.security.audit.react-href-var.react-href-var \
+    --config=p/owasp-top-ten \
+    __CODE_DIRECTORY__</span>
 
-          <h3 class="my-3 fs-5 text-success pt-3">Audit</h3>
+        <h3>CI-safe mode (low false positives)</h3>
+        <span class="copy-code"><span class="sh">$</span> semgrep --config=p/ci __CODE_DIRECTORY__</span>
 
-          <div class="lead fs-6 text-light">
-            <b>Human readable output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cdxgen -o /tmp/bom.json __CODE_DIRECTORY__</span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --bom /tmp/bom.json -o /tmp/depscan.json</span>
-            <br />
-            <b>Work with a JSON output</b>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cat /tmp/depscan.json | jq . </span>
-          </div>
-          <h3 class="my-3 fs-5 text-success pt-3">Example</h3>
+        <h3>JSON output</h3>
+        <span class="copy-code"><span class="sh">$</span> semgrep --config=p/ci __CODE_DIRECTORY__ -o /tmp/semgrep.json --json
+<span class="sh">$</span> cat /tmp/semgrep.json | jq .results</span>
 
-          <div class="lead fs-6 text-light">
-            In this example, I'm using this random GitHub repository: <a class="link-secondary" href="https://github.com/Faten4/HW-Search">https://github.com/Faten4/HW-Search</a>
-            <span class="text-code text-light copy-code">
-              <span class="text-secondary"># Clone the vulnerable repo in /tmp.</span><br />
-              <span class="text-danger">$</span> git clone https://github.com/Faten4/HW-Search /tmp/HW-Search
-            </span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> cdxgen -o /tmp/bom.json /tmp/HW-Search/</span>
-            <span class="text-code text-light copy-code"> <span class="text-danger">$</span> depscan --bom /tmp/bom.json -o /tmp/depscan.json</span>
-            <span class="text-code text-secondary">
-              <div class="fs-6">
-                Dependency Scan Results (nodejs)<br />
-                ╔════════════════╤═══════════╤═══════════════════════╤═════════╤═════════════╤══════════╤═══════╗<br />
-                ║&nbsp;Id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;Package&nbsp;&nbsp;&nbsp;│&nbsp;Insights&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;Version&nbsp;│&nbsp;Fix&nbsp;Version&nbsp;│&nbsp;Severity&nbsp;│&nbsp;Score&nbsp;║
-                <br />
-                ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
-                ║&nbsp;CVE-2021-3803&nbsp;&nbsp;│&nbsp;nth-check&nbsp;│&nbsp;ℹ&nbsp;Indirect&nbsp;dependency&nbsp;│&nbsp;<2.0.1&nbsp;&nbsp;│&nbsp;2.0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;HIGH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;7.5&nbsp;║
-                <br />
-                ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
-                ║&nbsp;<b>CVE-2022-40215</b>&nbsp;│&nbsp;<b>tabs</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;🎯&nbsp;Direct&nbsp;usage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;<=3.7.1&nbsp;│&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;MEDIUM&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;5.4&nbsp;║
-                <br />
-                ╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢<br />
-                ║&nbsp;CVE-2022-33154&nbsp;│&nbsp;schema&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;ℹ&nbsp;Indirect&nbsp;dependency&nbsp;│&nbsp;<1.13.1&nbsp;│&nbsp;1.13.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│&nbsp;MEDIUM&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;5.4&nbsp;║
-                <br />
-                ╚════════════════╧═══════════╧═══════════════════════╧═════════╧═════════════╧══════════╧═══════╝<br />
-              </div>
-            </span>
-          </div>
-          <h3 class="my-3 fs-5 text-success pt-3">Does it work on my CI ?</h3>
+        <h2>Audit with njsscan</h2>
 
-          <div class="lead fs-6 text-light">
-            <a class="link-info" href="https://github.com/appthreat/dep-scan#integration-with-ci-environments">https://github.com/appthreat/dep-scan#integration-with-ci-environments</a><br />
-            <br />
-            There is documentation for:
-            <ul>
-              <li>GitHub Actions</li>
-            </ul>
-            But more with the <a class="link-info" href="https://slscan.io/en/latest/integrations/">shiftleft project</a>.
-          </div>
+        <span class="copy-code"><span class="sh">$</span> njsscan __CODE_DIRECTORY__
+<span class="sh">$</span> njsscan __CODE_DIRECTORY__ -o /tmp/njsscan.json --json
+<span class="sh">$</span> cat /tmp/njsscan.json | jq .nodejs
+<span class="sh">$</span> cat /tmp/njsscan.json | jq .templates</span>
 
-          <h1 class="my-5 fs-3">Conclusion</h1>
+        <h2>Example — OWASP Juice Shop</h2>
 
-          <div class="lead fs-6 text-light">
-            You don’t necessarily need an expensive code scanner like Snyk or CherckMarx, you can build it yourself. If you put it in <b>pre-commit hooks</b>, <b>CI/CD</b> and <b>asynchronous</b> you will have a complete view of your
-            application security risk and earn awareness of the developers about security concerns.<br />
-            At <a class="text-success" href="https://beguier.eu/tandem-technology/"><b>Tandem Technology</b></a>, we'll help you improve your development practices during a <b>workshop</b> to harden your code repository.
-          </div>
+        <p>Let's use <a href="https://github.com/juice-shop/juice-shop" target="_blank" rel="noopener">OWASP Juice Shop</a> — "probably the most modern and sophisticated insecure web application".</p>
+
+        <span class="copy-code"><span class="sh">$</span> git clone https://github.com/juice-shop/juice-shop /tmp/juice-shop
+<span class="sh">$</span> semgrep \
+    --config=r/javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation \
+    --config=r/javascript.lang.security.audit.incomplete-sanitization.incomplete-sanitization \
+    --config=r/javascript.browser.security.dom-based-xss.dom-based-xss \
+    --config=r/typescript.react.security.audit.react-css-injection.react-css-injection \
+    --config=r/typescript.react.security.audit.react-href-var.react-href-var \
+    --config=p/owasp-top-ten \
+    /tmp/juice-shop/</span>
+
+        <span class="output">…
+/tmp/juice-shop/data/static/codefixes/unionSqlInjectionChallenge_3.ts
+<span class="hi">javascript.express.security.injection.tainted-sql-string.tainted-sql-string</span>
+Detected user input used to manually construct a SQL string. This is usually bad
+practice because manual construction could accidentally result in a SQL injection.
+Use a parameterized query or an ORM such as Sequelize instead.
+Details: https://sg.run/66ZL
+
+10┆ ... criteria}%' OR description LIKE '%${criteria}%') AND deletedAt IS NULL) ORDER BY name`) ...
+
+Ran 471 rules on 979 files: 41 findings.</span>
+
+        <h2>CI Integration</h2>
+        <p>Semgrep documentation: <a href="https://semgrep.dev/docs/semgrep-ci/running-semgrep-ci-without-semgrep-app/" target="_blank" rel="noopener">Running Semgrep CI without Semgrep App</a> — supports GitHub Actions, GitLab CI/CD, Jenkins, BitBucket Pipelines, CircleCI, Buildkite.</p>
+
+        <h1>SCA — depscan</h1>
+
+        <p><a href="https://github.com/AppThreat/dep-scan" target="_blank" rel="noopener"><b>Depscan by AppThreat</b></a> is a fully open-source security audit for project dependencies based on known vulnerabilities and advisories. <b>cdxgen</b> extracts all dependencies from <span class="text-code">package-lock.json</span>, <span class="text-code">yarn.lock</span>, <span class="text-code">pnpm-lock.yaml</span>, and more — including transitive dependencies.</p>
+
+        <h2>Install</h2>
+
+        <span class="copy-code"><span class="cm"># Install cdxgen (use -g for global install instead of --prefix /tmp/)</span>
+<span class="sh">$</span> npm install --prefix /tmp/ @appthreat/cdxgen
+<span class="sh">$</span> PATH=$PATH:/tmp/node_modules/.bin
+<span class="sh">$</span> pip install appthreat-depscan</span>
+
+        <h2>Audit</h2>
+
+        <span class="copy-code"><span class="sh">$</span> cdxgen -o /tmp/bom.json __CODE_DIRECTORY__
+<span class="sh">$</span> depscan --bom /tmp/bom.json -o /tmp/depscan.json
+<span class="sh">$</span> cat /tmp/depscan.json | jq .</span>
+
+        <h2>Example</h2>
+
+        <span class="copy-code"><span class="sh">$</span> git clone https://github.com/Faten4/HW-Search /tmp/HW-Search
+<span class="sh">$</span> cdxgen -o /tmp/bom.json /tmp/HW-Search/
+<span class="sh">$</span> depscan --bom /tmp/bom.json -o /tmp/depscan.json</span>
+
+        <span class="output">Dependency Scan Results (nodejs)
+╔════════════════╤═══════════╤═══════════════════════╤═════════╤═════════════╤══════════╤═══════╗
+║ Id             │ Package   │ Insights              │ Version │ Fix Version │ Severity │ Score ║
+╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢
+║ CVE-2021-3803  │ nth-check │ ℹ Indirect dependency │ &lt;2.0.1  │ 2.0.1       │ HIGH     │   7.5 ║
+╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢
+║ <span class="hi">CVE-2022-40215</span> │ <span class="hi">tabs</span>      │ 🎯 Direct usage       │ &lt;=3.7.1 │             │ MEDIUM   │   5.4 ║
+╟────────────────┼───────────┼───────────────────────┼─────────┼─────────────┼──────────┼───────╢
+║ CVE-2022-33154 │ schema    │ ℹ Indirect dependency │ &lt;1.13.1 │ 1.13.1      │ MEDIUM   │   5.4 ║
+╚════════════════╧═══════════╧═══════════════════════╧═════════╧═════════════╧══════════╧═══════╝</span>
+
+        <h2>CI Integration</h2>
+        <p>Depscan documentation: <a href="https://github.com/appthreat/dep-scan#integration-with-ci-environments" target="_blank" rel="noopener">Integration with CI environments</a> — supports GitHub Actions. Also see the <a href="https://slscan.io/en/latest/integrations/" target="_blank" rel="noopener">ShiftLeft project</a>.</p>
+
+        <h1>Conclusion</h1>
+
+        <p>You don't need an expensive scanner like Snyk or CheckMarx. With <b>semgrep</b> and <b>depscan</b> wired into your <b>pre-commit hooks</b>, <b>CI/CD</b>, and as <b>async jobs</b>, you'll have a complete view of your application security posture and developers will build security awareness naturally.</p>
+
+        <p>At <a href="https://beguier.eu/tandem-technology/" target="_blank" rel="noopener"><b>Tandem Technology</b></a>, we help you improve your development practices during a workshop to harden your code repositories.</p>
+
+        <div class="article-cta">
+          If you enjoyed this article, feel free to share it or <a href="https://www.linkedin.com/in/nicolasbeguier/">reach out on LinkedIn</a>.
         </div>
+
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
 
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <script src="/js/pub/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+
+      document.querySelectorAll('.copy-code').forEach(block => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.title = 'Copy to clipboard';
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        block.appendChild(btn);
+        btn.addEventListener('click', () => {
+          const lines = block.innerText.split('\n');
+          const cleaned = lines
+            .filter(l => !l.trimStart().startsWith('#'))
+            .map(l => l.replace(/^\$\s*/, '').replace(/\\\s*$/, '').trim())
+            .filter(l => l !== '')
+            .join(' \\\n').trim();
+          navigator.clipboard.writeText(cleaned).then(() => {
+            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        });
+      });
+
+      const lbOverlay = document.createElement('div');
+      lbOverlay.className = 'lb-overlay';
+      lbOverlay.innerHTML = '<button class="lb-close">&#x2715;</button><img />';
+      document.body.appendChild(lbOverlay);
+      const lbImg = lbOverlay.querySelector('img');
+      document.querySelectorAll('.article-body img').forEach(img => {
+        img.addEventListener('click', () => { lbImg.src = img.src; lbOverlay.classList.add('open'); });
+      });
+      lbOverlay.querySelector('.lb-close').addEventListener('click', () => lbOverlay.classList.remove('open'));
+      lbOverlay.addEventListener('click', e => { if (e.target === lbOverlay) lbOverlay.classList.remove('open'); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') lbOverlay.classList.remove('open'); });
+    </script>
   </body>
 </html>

@@ -1,149 +1,223 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="In this article, I explain how to use KoaJS in a production environment, avoiding the vulnerabilities induced by the default configuration, and a tool to test your own website." />
+    <meta name="description" content="In this article, I explain how to use KoaJS in a production environment, avoiding the vulnerabilities induced by the default configuration." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="crack koajs koa configuration session security" />
-    <meta property="og:title" content="KoaJS Security Tips" />
+    <meta name="keywords" content="koajs koa configuration session security hmac sha1 keygrip cookies" />
+    <meta property="og:title" content="KoaJS Security Tips for Safer Production Web Apps Guide" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/logo_koa.jpg" />
-    <meta property="og:description" content="In this article, I explain how to use KoaJS in a production environment, avoiding the vulnerabilities induced by the default configuration, and a tool to test your own website." />
+    <meta property="og:description" content="In this article, I explain how to use KoaJS in a production environment, avoiding the vulnerabilities induced by the default configuration." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/koa.html" />
     <meta property="og:type" content="article" />
-    <title>KoaJS Security Tips</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/koa.html" />
+    <title>KoaJS Security Tips for Safer Production Web Apps Guide</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "KoaJS Security Tips",
+      "description": "In this article, I explain how to use KoaJS in a production environment, avoiding the vulnerabilities induced by the default configuration.",
+      "image": "https://beguier.eu/nicolas/img/cover/logo_koa.jpg",
+      "url": "https://beguier.eu/nicolas/articles/koa.html",
+      "datePublished": "2019-12-30",
+      "dateModified": "2019-12-30",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+      .article-body table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.88rem; }
+      .article-body th { background: var(--accent-soft); color: var(--accent); font-weight: 600; padding: 0.6rem 0.9rem; border: 1px solid var(--border); text-align: left; }
+      .article-body td { padding: 0.55rem 0.9rem; border: 1px solid var(--border); color: var(--text-2); }
+      .article-body tr:nth-child(even) td { background: #fafbff; }
+
+      .text-code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82em; background: #f1f3f9; border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.4em; color: var(--text-1); word-break: break-word; }
+
+      /* Blockquote */
+      .article-body blockquote {
+        border-left: 3px solid var(--border); padding: 0.75rem 1rem;
+        margin: 1rem 0 0.5rem; color: var(--text-2); font-style: italic;
+      }
+      .article-body figcaption { font-size: 0.78rem; color: var(--text-3); margin-bottom: 1.5rem; padding-left: 0.25rem; }
+
+      .lb-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; cursor: zoom-out; }
+      .lb-overlay.open { display: flex; }
+      .lb-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 6px; cursor: default; }
+      .lb-close { position: absolute; top: 1rem; right: 1.25rem; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; background: none; border: none; line-height: 1; }
+      .lb-close:hover { color: #fff; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/logo_koa.jpg" alt="KoaJS Security Tips" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div
-          class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/cover/logo_koa.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
-        >
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">KoaJS Security Tips</h1>
-            <p class="lead fw-normal">In this article, I explain how to use KoaJS in a production environment, avoiding the vulnerabilities induced by the default configuration, and a tool to test your own website.</p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">Web Security</span>
+        <h1 class="article-title">KoaJS Security Tips</h1>
+        <p class="article-subtitle">How to use KoaJS in production while avoiding the vulnerabilities induced by the default configuration.</p>
+        <div class="article-meta">
+          <span>Dec 30, 2019</span>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Dec 30, 2019 by Nicolas Béguier</p>
+      </header>
 
-          <h2 class="my-5 fs-3">How to use KoaJS without expose your users</h2>
+      <div class="article-body">
 
-          <div class="lead fs-6 text-middark">
-            According to
-            <a href="https://github.com/koajs/koa/blob/master/Readme.md" onclick="RedirectNewTab(this.href)" class="link-info">KoaJS description</a>, this is an Expressive HTTP middleware framework for node.js to make web
-            applications and APIs more enjoyable to write. <br />
-            There are about 30k stars on GitHub, <a href="https://www.npmjs.com/package/koa" onclick="RedirectNewTab(this.href)" class="link-info">downloaded 200k times</a> this week and it's a dependency of almost 4k npm
-            packages.<br />
-            <br />
-            <b class="text-light">We could assume that a lot of public websites are using it.</b>
-          </div>
+        <p>According to the <a href="https://github.com/koajs/koa/blob/master/Readme.md" target="_blank" rel="noopener">KoaJS description</a>, this is an expressive HTTP middleware framework for Node.js to make web applications and APIs more enjoyable to write. It has ~30k GitHub stars, is <a href="https://www.npmjs.com/package/koa" target="_blank" rel="noopener">downloaded 200k times per week</a>, and is a dependency of almost 4k npm packages.</p>
 
-          <h2 class="my-5 fs-3">Session cookie vulnerable by default</h2>
+        <p><b>We can assume that a lot of public websites are using it.</b></p>
 
-          <div class="lead fs-6 text-middark">
-            In every GitHub example, they specify <span class="text-code text-light">app.</span><span class="text-code text-info">keys</span> as a list of strings. If you are doing it, you are vulnerable to an offline known-plaintext
-            attack.
-            <script src="https://gist.github.com/nbeguier/aa4bd59184935654ee0c0c4a6464a893.js"></script>
+        <h1>Session cookie vulnerable by default</h1>
 
-            <a href="https://github.com/koajs/koa" onclick="RedirectNewTab(this.href)" class="link-info">koajs/koa</a> uses the library
-            <a href="https://github.com/pillarjs/cookies" onclick="RedirectNewTab(this.href)" class="link-info">pillarjs/cookies</a>, which is using
-            <a href="https://github.com/crypto-utils/keygrip" onclick="RedirectNewTab(this.href)" class="link-info">crypto-utils/keygrip</a> to <b class="text-light">sign</b> and <b class="text-light">verify</b> the session
-            cookie.<br />
-            <br />
-            In the koajs/koa package, a <span class="text-code text-danger">new </span><span class="text-code text-warning">Cookies</span> is created if none exists:
+        <p>In every GitHub example, they specify <span class="text-code">app.keys</span> as a list of strings. If you are doing it, you are vulnerable to an offline known-plaintext attack.</p>
 
-            <script src="https://gist.github.com/nbeguier/dd6e90b2a7b1cc6f25044819ac6de5ec.js"></script>
+        <script src="https://gist.github.com/nbeguier/aa4bd59184935654ee0c0c4a6464a893.js"></script>
 
-            The <span class="text-code text-warning">Cookies</span> function is taking options as a third argument. This argument takes a structure with the <span class="text-code text-info">keys</span> parameter equal to the
-            <span class="text-code text-light">app.</span><span class="text-code text-info">keys</span> value in the configuration.<br />
-            <br />
-            In the <a href="https://github.com/pillarjs/cookies/blob/master/index.js" onclick="RedirectNewTab(this.href)" class="link-info">index.js</a> of pillarjs/cookies:
+        <p><a href="https://github.com/koajs/koa" target="_blank" rel="noopener">koajs/koa</a> uses the library <a href="https://github.com/pillarjs/cookies" target="_blank" rel="noopener">pillarjs/cookies</a>, which uses <a href="https://github.com/crypto-utils/keygrip" target="_blank" rel="noopener">crypto-utils/keygrip</a> to <b>sign</b> and <b>verify</b> the session cookie.</p>
 
-            <script src="https://gist.github.com/nbeguier/5e89c881af8c12636e98491474f44e51.js"></script>
+        <p>In the koajs/koa package, a <span class="text-code">new Cookies</span> is created if none exists:</p>
 
-            In the <span class="text-code text-warning">Cookies</span> function, only the <span class="text-code text-danger">else</span> condition matches the koajs/koa options values. If <span class="text-code text-light">options.</span>
-            <span class="text-code text-info">keys</span> is an array, it returns a <span class="text-code text-danger">new </span><span class="text-code text-warning">Keygrip</span> object, with the default hash algorithm and encoding
-            method, respectively SHA-1 and base64. In the other case, it returns <span class="text-code text-light">options.</span><span class="text-code text-info">keys</span>, no matter what it is.<br />
-            <br />
-            To sign the session cookie, <span class="text-code text-warning">Keygrip</span> is doing an <span class="text-code text-warning">HMAC</span><span class="text-code text-light">(algorithm, keys)</span> of the session cookie,
-            encodes it and replaces some characters.<br />
-            <br />
-            Using HMAC is still secured in production, but when it's configure in a proper way. Since
-            <a href="./a1f951ed127f9232f101c4e81e0e01a463d86f26.html" onclick="RedirectNewTab(this.href)" class="link-info">SHA-1 is broken</a>, you have to be very careful of how HMAC is imlemented in your production. Two
-            options are possible, setting an <span class="text-code text-light">app.</span><span class="text-code text-info">keys</span> of an array of 20 bytes long strings, or using a stronger hash function: SHA-2.<br />
-            <br />
-            To override this encryption algorithm we need to set the <span class="text-code text-light">options.</span><span class="text-code text-info">keys</span> parameter as a
-            <span class="text-code text-warning">Keygrip</span> constructor which redefined the hash function and the encoding method.<br />
-            <br />
-            It leads to this configuration :
+        <script src="https://gist.github.com/nbeguier/dd6e90b2a7b1cc6f25044819ac6de5ec.js"></script>
 
-            <script src="https://gist.github.com/nbeguier/41a02712bb65a0aa7b0f0a378ea23ae5.js"></script>
-            The KoaJS team knows this flaw and have been warned. Some pull-request to patch multiple README
-            <a href="https://github.com/koajs/koa/pull/1418" onclick="RedirectNewTab(this.href)" class="link-info">has been merged</a>.<br />
-            <br />
-            These PR added a "security" part in the README to help users to copy & paste something secured. This comment explains very well the issue I'm talking about:
+        <p>The <span class="text-code">Cookies</span> function takes options as a third argument, with a <span class="text-code">keys</span> parameter equal to the <span class="text-code">app.keys</span> value in the configuration.</p>
 
-            <figure class="text-end my-5">
-              <blockquote class="blockquote">
-                <p>tl;dr the content of the cookie is not encoded, only the .sig when signed is used. Also, by default it uses the sha1 algorithm to generate the .sig cookie, which can be cracked in minutes.</p>
-              </blockquote>
-              <figcaption class="blockquote-footer">jmitchell38488 <a href="https://github.com/koajs/session/issues/181#issuecomment-522806986" class="link-secondary">commented on 20 Aug</a></figcaption>
-            </figure>
+        <p>In the <a href="https://github.com/pillarjs/cookies/blob/master/index.js" target="_blank" rel="noopener">index.js</a> of pillarjs/cookies:</p>
 
-            To conclude this part, the keys should have a minimum length to validate the requirements of HMAC:
+        <script src="https://gist.github.com/nbeguier/5e89c881af8c12636e98491474f44e51.js"></script>
 
-            <div class="col-lg-6 mx-auto">
-              <table class="table table-dark table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Hash algorithm</th>
-                    <th scope="col">Minimum key length</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">SHA-1</th>
-                    <td>20 bytes</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">SHA256</th>
-                    <td>32 bytes</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">SHA512</th>
-                    <td>64 bytes</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        <p>In the <span class="text-code">Cookies</span> function, only the <span class="text-code">else</span> condition matches the koajs/koa options. If <span class="text-code">options.keys</span> is an array, it returns a <span class="text-code">new Keygrip</span> object with the default hash algorithm and encoding — SHA-1 and base64. Otherwise it returns <span class="text-code">options.keys</span> as-is.</p>
+
+        <p>To sign the session cookie, <span class="text-code">Keygrip</span> performs an <span class="text-code">HMAC(algorithm, keys)</span> of the session cookie value, encodes it and replaces some characters.</p>
+
+        <p>Using HMAC is secure in production — but only when configured properly. Since <a href="./security-postit-1-sha1-broken-not-hmac.html">SHA-1 is broken</a>, you must be careful about how HMAC is implemented. Two options: set <span class="text-code">app.keys</span> to an array of 20-byte strings, or use a stronger hash function (SHA-2).</p>
+
+        <p>To override the hash algorithm, set <span class="text-code">options.keys</span> as a <span class="text-code">Keygrip</span> constructor that redefines the hash function and encoding:</p>
+
+        <script src="https://gist.github.com/nbeguier/41a02712bb65a0aa7b0f0a378ea23ae5.js"></script>
+
+        <p>The KoaJS team was informed of this issue and <a href="https://github.com/koajs/koa/pull/1418" target="_blank" rel="noopener">pull requests to patch the README</a> have been merged. This comment summarizes the issue well:</p>
+
+        <figure>
+          <blockquote>
+            <p>tl;dr the content of the cookie is not encoded, only the .sig when signed is used. Also, by default it uses the sha1 algorithm to generate the .sig cookie, which can be cracked in minutes.</p>
+          </blockquote>
+          <figcaption>— jmitchell38488, <a href="https://github.com/koajs/session/issues/181#issuecomment-522806986" target="_blank" rel="noopener">Aug 20, 2019</a></figcaption>
+        </figure>
+
+        <p>The keys must meet the minimum length requirements for HMAC:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Hash algorithm</th>
+              <th>Minimum key length</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>SHA-1</th><td>20 bytes</td></tr>
+            <tr><th>SHA-256</th><td>32 bytes</td></tr>
+            <tr><th>SHA-512</th><td>64 bytes</td></tr>
+          </tbody>
+        </table>
+
+        <div class="article-cta">
+          If you enjoyed this article, feel free to share it or <a href="https://www.linkedin.com/in/nicolasbeguier/">reach out on LinkedIn</a>.
         </div>
+
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
 
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <script src="/js/pub/jquery.min.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+
+      const lbOverlay = document.createElement('div');
+      lbOverlay.className = 'lb-overlay';
+      lbOverlay.innerHTML = '<button class="lb-close">&#x2715;</button><img />';
+      document.body.appendChild(lbOverlay);
+      const lbImg = lbOverlay.querySelector('img');
+      document.querySelectorAll('.article-body img').forEach(img => {
+        img.addEventListener('click', () => { lbImg.src = img.src; lbOverlay.classList.add('open'); });
+      });
+      lbOverlay.querySelector('.lb-close').addEventListener('click', () => lbOverlay.classList.remove('open'));
+      lbOverlay.addEventListener('click', e => { if (e.target === lbOverlay) lbOverlay.classList.remove('open'); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') lbOverlay.classList.remove('open'); });
+    </script>
   </body>
 </html>

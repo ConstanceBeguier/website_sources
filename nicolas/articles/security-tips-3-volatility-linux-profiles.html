@@ -1,137 +1,261 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="volatility linux profile symbols dwarf2json table docker 4.4.0-72-lowlatency forensic ctf" />
-    <meta property="og:title" content="Security Post-it #3 – Volatility Linux Profiles" />
+    <meta name="keywords" content="volatility linux profile symbols dwarf2json docker forensic ctf" />
+    <meta property="og:title" content="Security Post-it #3: Volatility Linux Profiles Guide" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/logo_secu-postit3.jpg" />
     <meta property="og:description" content="In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html" />
     <meta property="og:type" content="article" />
-    <title>Security Post-it #3 – Volatility Linux Profiles</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html" />
+    <title>Security Post-it #3: Volatility Linux Profiles Guide</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Security Post-it #3 – Volatility Linux Profiles",
+      "description": "In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.",
+      "image": "https://beguier.eu/nicolas/img/cover/logo_secu-postit3.jpg",
+      "url": "https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html",
+      "datePublished": "2021-03-15",
+      "dateModified": "2021-03-15",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+
+      .text-code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82em; background: #f1f3f9; border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.4em; color: var(--text-1); word-break: break-word; }
+
+      /* Code blocks */
+      .copy-code { display: block; position: relative; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; background: var(--code-bg); color: var(--code-text); border-radius: 8px; padding: 0.75rem 3rem 0.75rem 1rem; margin: 0.5rem 0 1.1rem; overflow-x: auto; white-space: pre; }
+      /* $ = user prompt (red), # = root prompt (amber), ## = comment (grey) */
+      .copy-code .sh  { color: #f87171; }
+      .copy-code .rt  { color: #fbbf24; }
+      .copy-code .cm  { color: #94a3b8; }
+      /* Output block (no copy button) */
+      .output { display: block; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.78rem; background: #0d0f18; color: #94a3b8; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1.1rem; overflow-x: auto; white-space: pre-wrap; }
+
+      .copy-btn { position: absolute; top: 0.45rem; right: 0.45rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 5px; color: rgba(255,255,255,0.4); padding: 0.22rem 0.45rem; cursor: pointer; font-size: 0.68rem; line-height: 1; transition: background .15s, color .15s; }
+      .copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
+      .copy-btn.copied { color: #4ade80; border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.08); }
+
+      .article-body pre { background: var(--code-bg); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; margin: 0.5rem 0 1.25rem; }
+      .article-body pre code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; color: var(--code-text); }
+
+      .tip { display: flex; align-items: flex-start; gap: 0.6rem; background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid #3b82f6; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1.1rem; font-size: 0.88rem; color: #1e40af; line-height: 1.6; }
+
+      .lb-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; cursor: zoom-out; }
+      .lb-overlay.open { display: flex; }
+      .lb-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 6px; box-shadow: 0 8px 40px rgba(0,0,0,.6); cursor: default; }
+      .lb-close { position: absolute; top: 1rem; right: 1.25rem; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; background: none; border: none; line-height: 1; }
+      .lb-close:hover { color: #fff; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/logo_secu-postit3.jpg" alt="Volatility Linux Profiles" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div
-          class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/cover/logo_secu-postit3.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
-        >
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Security Post-it #3 – Volatility Linux Profiles</h1>
-            <p class="lead fw-normal">In this short security post-it, I explain how to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container.</p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">Forensics</span>
+        <h1 class="article-title">Security Post-it #3 – Volatility Linux Profiles</h1>
+        <p class="article-subtitle">How to generate Linux profiles for Volatility 2 and 3 using an ephemeral Docker container.</p>
+        <div class="article-meta">
+          <span>Mar 15, 2021</span>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Mar 15, 2021 by Nicolas Béguier</p>
+      </header>
 
-          <h2 class="my-5 fs-3">How to generate Linux profiles for Volatility 2 and 3, using an ephemeral docker container</h2>
+      <div class="article-body">
 
-          <div class="lead fs-6 text-middark">
-            Volatility is a tool supported by the <a href="https://www.volatilityfoundation.org/" class="link-info" onclick="RedirectNewTab(this.href)"><b>Volatility Foundation</b></a> and aims to assist the forensic investigator when
-            analyzing a computer memory dump.<br />
-            In this article, I'll be focusing on both Volatility 2 & 3.<br />
-            <br />
-            This security post-it is about generating <b class="text-warning">a new Linux profile</b> for a memory dump. By default, Volatility only integrates Windows profiles, but none for Linux and Mac. A Linux Volatility profile or
-            symbol table is unique for each version of the Linux kernel.
-          </div>
+        <p><a href="https://www.volatilityfoundation.org/" target="_blank" rel="noopener"><b>Volatility</b></a> is a tool supported by the Volatility Foundation and aims to assist forensic investigators when analyzing a computer memory dump. This article covers both Volatility 2 &amp; 3.</p>
 
-          <h2 class="my-5 fs-3">Identify the kernel version</h2>
+        <p>This post-it is about generating <b>a new Linux profile</b> for a memory dump. By default, Volatility only integrates Windows profiles — none for Linux or Mac. A Linux Volatility profile or symbol table is unique for each version of the Linux kernel.</p>
 
-          <div class="lead fs-6 text-middark">
-            Run the banner plugin of Volatility 3 on your memory dump to display the Linux kernel version:<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility3 -f dump.raw banner</span>
-            <br />
-            On my example, it's a <b class="text-warning">4.4.0-72-lowlatency kernel</b>, on an Ubuntu 16.04.4.<br />
-            Before creating your own profile or symbol table, you may be lucky and find your match in the
-            <a href="https://github.com/volatilityfoundation/profiles/" class="link-info" onclick="RedirectNewTab(this.href)"><b>Volatility 2 profiles repository</b></a> or the
-            <a href="https://pypi.org/project/volatility3/" class="link-info" onclick="RedirectNewTab(this.href)"><b>Volatility 3 Pypi project</b></a>.
-          </div>
-          <h2 class="my-5 fs-3">Generating a profile for Volatility 2</h2>
+        <h1>Identify the kernel version</h1>
 
-          <div class="lead fs-6 text-middark">
-            A Linux Volatility 2 profile can be generated from valid Linux headers and a System map. You just need the file, not necessarily the operating system booted on it. Using Docker is a good way to get the file into a suitable
-            environment without starting a virtual machine.<br />
-            <br />
-            First, clone Volatility 2 to use their Linux tools.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> git clone https://github.com/volatilityfoundation/volatility</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cd volatility/tools/linux/</span><br />
-            I advise you to replace the automatic kernel detection with a static value, which is your target linux kernel, in my case it is 4.4.0-72-lowlatency.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> sed -i 's/$(shell uname -r)/4.4.0-72-lowlatency/g' Makefile</span><br />
-            Next, run a docker container that matches the target operating system, in my case Ubuntu 16.04, and install the necessary packages.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> apt update && apt install -y linux-image-4.4.0-72-lowlatency linux-headers-4.4.0-72-lowlatency build-essential dwarfdump make zip</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> cd /volatility/</span><br />
-            Finally, create the dwarf file with the volatility tool.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> make</span>
-            Create a zip archive containing the dwarf file and the System map.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> zip Ubuntu1604.zip module.dwarf /boot/System.map-4.4.0-72-lowlatency</span>
-            You now have an Ubuntu1604.zip archive containing the correct profile.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> exit</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cp Ubuntu1604.zip &lt;volatility&gt;/plugins/overlays/linux/</span>
-            <br />
-            Your profile is ready, you can check that Volatility has loaded it with the following command:<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility --info | grep Profile</span>
-          </div>
-          <h2 class="my-5 fs-3">Generating a profile for Volatility 3</h2>
+        <p>Run the banner plugin of Volatility 3 on your memory dump to display the Linux kernel version:</p>
+        <span class="copy-code"><span class="sh">$</span> volatility3 -f dump.raw banner</span>
 
-          <div class="lead fs-6 text-middark">
-            There is no profile in Volatility 3, and you could not create a symbol table from a Volatility 2 profile.<br />
-            <br />
-            First, you need to clone the dwarf2json repository which allows to get a json file from an elf file. Build the go binary before running the docker container.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> git clone https://github.com/volatilityfoundation/dwarf2json</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cd dwarf2json/</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> go mod download github.com/spf13/pflag</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> go build</span>
-            <br />
-            Then you need to download the debug symbols from the target Linux kernel. Several methods are possible to get it, but I recommend to google it and to download it manually. In my case, it was available on the official Ubuntu
-            mirrors.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> wget http://launchpadlibrarian.net/313821743/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</span>
-            <br />
-            Next, run a docker container that matches the target operating system, in my case Ubuntu 16.04, and install the debug symbols.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> dpkg -i /volatility/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</span>
-            <br />
-            Run the dwarf2json binary to generate the symbol table.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> /volatility/dwarf2json linux --elf /usr/lib/debug/boot/vmlinux-4.4.0-72-lowlatency > linux-image-4.4.0-72-lowlatency-amd64.json</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">#</span> exit</span>
-            <br />
-            Find the volatility3 symbols directory and move your symbol table in it.<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility3 -vvv -f dump.raw banner</span>
-            <span class="text-code text-secondary">Volatility 3 Framework 1.0.1 INFO root : Volatility plugins path: ['&lt;volatility3&gt;/framework/plugins'] INFO root : Volatility symbols path: ['&lt;volatility3&gt;/symbols']</span>
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> cp linux-image-4.4.0-72-lowlatency-amd64.json &lt;volatility3&gt;/symbols/</span>
-            <br />
-            Your symbols are ready, you can check that Volatility has loaded it with the following command:<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility3 -f dump.raw linux.pstree.PsTree</span>
-          </div>
+        <p>In my example, it's a <b>4.4.0-72-lowlatency kernel</b> on Ubuntu 16.04.4. Before creating your own profile, you may find your match in the <a href="https://github.com/volatilityfoundation/profiles/" target="_blank" rel="noopener">Volatility 2 profiles repository</a> or the <a href="https://pypi.org/project/volatility3/" target="_blank" rel="noopener">Volatility 3 PyPI project</a>.</p>
+
+        <h1>Generating a profile for Volatility 2</h1>
+
+        <p>A Linux Volatility 2 profile can be generated from valid Linux headers and a System map. Using Docker is a good way to get the files into a suitable environment without starting a full virtual machine.</p>
+
+        <p>Clone Volatility 2 to use their Linux tools and patch the Makefile to target your kernel version:</p>
+        <span class="copy-code"><span class="sh">$</span> git clone https://github.com/volatilityfoundation/volatility
+<span class="sh">$</span> cd volatility/tools/linux/
+<span class="sh">$</span> sed -i 's/$(shell uname -r)/4.4.0-72-lowlatency/g' Makefile</span>
+
+        <p>Run a Docker container matching the target OS (Ubuntu 16.04) and install the necessary packages:</p>
+        <span class="copy-code"><span class="sh">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash
+<span class="rt">#</span> apt update &amp;&amp; apt install -y linux-image-4.4.0-72-lowlatency linux-headers-4.4.0-72-lowlatency build-essential dwarfdump make zip
+<span class="rt">#</span> cd /volatility/</span>
+
+        <p>Create the dwarf file with the Volatility tool, then zip it with the System map:</p>
+        <span class="copy-code"><span class="rt">#</span> make
+<span class="rt">#</span> zip Ubuntu1604.zip module.dwarf /boot/System.map-4.4.0-72-lowlatency
+<span class="rt">#</span> exit</span>
+
+        <p>Copy the profile to the Volatility overlays directory and verify it loaded:</p>
+        <span class="copy-code"><span class="sh">$</span> cp Ubuntu1604.zip &lt;volatility&gt;/plugins/overlays/linux/
+<span class="sh">$</span> volatility --info | grep Profile</span>
+
+        <h1>Generating a profile for Volatility 3</h1>
+
+        <p>There are no profiles in Volatility 3 — you need to generate a symbol table using <a href="https://github.com/volatilityfoundation/dwarf2json" target="_blank" rel="noopener">dwarf2json</a>, which converts ELF debug symbols to JSON. Build it first:</p>
+        <span class="copy-code"><span class="sh">$</span> git clone https://github.com/volatilityfoundation/dwarf2json
+<span class="sh">$</span> cd dwarf2json/
+<span class="sh">$</span> go mod download github.com/spf13/pflag
+<span class="sh">$</span> go build</span>
+
+        <p>Download the debug symbols for your target kernel. In my case they were available on official Ubuntu mirrors:</p>
+        <span class="copy-code"><span class="sh">$</span> wget http://launchpadlibrarian.net/313821743/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb</span>
+
+        <p>Run a Docker container and install the debug symbols, then generate the symbol table:</p>
+        <span class="copy-code"><span class="sh">$</span> docker run -it --rm -v $PWD:/volatility ubuntu:16.04 /bin/bash
+<span class="rt">#</span> dpkg -i /volatility/linux-image-4.4.0-72-lowlatency-dbgsym_4.4.0-72.93_amd64.ddeb
+<span class="rt">#</span> /volatility/dwarf2json linux --elf /usr/lib/debug/boot/vmlinux-4.4.0-72-lowlatency &gt; linux-image-4.4.0-72-lowlatency-amd64.json
+<span class="rt">#</span> exit</span>
+
+        <p>Find the Volatility 3 symbols directory (visible with <span class="text-code">-vvv</span>):</p>
+        <span class="copy-code"><span class="sh">$</span> volatility3 -vvv -f dump.raw banner</span>
+        <span class="output">Volatility 3 Framework 1.0.1
+INFO root : Volatility plugins path: ['&lt;volatility3&gt;/framework/plugins']
+INFO root : Volatility symbols path: ['&lt;volatility3&gt;/symbols']</span>
+
+        <p>Copy the symbol table and verify it works:</p>
+        <span class="copy-code"><span class="sh">$</span> cp linux-image-4.4.0-72-lowlatency-amd64.json &lt;volatility3&gt;/symbols/
+<span class="sh">$</span> volatility3 -f dump.raw linux.pstree.PsTree</span>
+
+        <div class="article-cta">
+          If you enjoyed this article, feel free to share it or <a href="https://www.linkedin.com/in/nicolasbeguier/">reach out on LinkedIn</a>.
         </div>
+
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
 
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <script src="/js/pub/jquery.min.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+      // Cover dark sides
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+
+      // Copy buttons — strips both $ and # shell prompts
+      document.querySelectorAll('.copy-code').forEach(block => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.title = 'Copy to clipboard';
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        block.appendChild(btn);
+        btn.addEventListener('click', () => {
+          const lines = block.innerText.split('\n');
+          const cleaned = lines
+            .filter(l => !l.trimStart().startsWith('##'))
+            .map(l => l.replace(/^[#$]\s*/, ''))
+            .filter(l => l.trim() !== '')
+            .join('\n').trim();
+          navigator.clipboard.writeText(cleaned).then(() => {
+            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        });
+      });
+
+      // Lightbox
+      const lbOverlay = document.createElement('div');
+      lbOverlay.className = 'lb-overlay';
+      lbOverlay.innerHTML = '<button class="lb-close">&#x2715;</button><img />';
+      document.body.appendChild(lbOverlay);
+      const lbImg = lbOverlay.querySelector('img');
+      document.querySelectorAll('.article-body img').forEach(img => {
+        img.addEventListener('click', () => { lbImg.src = img.src; lbOverlay.classList.add('open'); });
+      });
+      lbOverlay.querySelector('.lb-close').addEventListener('click', () => lbOverlay.classList.remove('open'));
+      lbOverlay.addEventListener('click', e => { if (e.target === lbOverlay) lbOverlay.classList.remove('open'); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') lbOverlay.classList.remove('open'); });
+    </script>
   </body>
 </html>

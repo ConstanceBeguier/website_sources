@@ -1,142 +1,205 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Discover the essential principles of zero trust architecture and how to implement it in your organization." />
+    <meta name="description" content="Understand the core principles of zero trust architecture, from identity and MFA to microsegmentation, least privilege, and monitoring." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="Zero Trust Architecture, cybersecurity, cyber threats, network security, data protection, cyber attacks, cyber defense" />
-    <meta property="og:title" content="Zero Trust Architecture: A Comprehensive Guide to Improving Cybersecurity" />
+    <meta name="keywords" content="Zero Trust Architecture, cybersecurity, network security, data protection, ZTA, microsegmentation, MFA" />
+    <meta property="og:title" content="Zero Trust Architecture Guide for Better Cybersecurity" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/cover2.jpg" />
-    <meta property="og:description" content="Discover the essential principles of zero trust architecture and how to implement it in your organization." />
+    <meta property="og:description" content="Understand the core principles of zero trust architecture, from identity and MFA to microsegmentation, least privilege, and monitoring." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/zero-trust-approach-to-cybersecurity.html" />
     <meta property="og:type" content="article" />
-    <title>Zero Trust Architecture: A Comprehensive Guide to Improving Cybersecurity</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/zero-trust-approach-to-cybersecurity.html" />
+    <title>Zero Trust Architecture Guide for Better Cybersecurity</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Zero Trust Architecture: A Comprehensive Guide to Improving Cybersecurity",
+      "description": "Understand the core principles of zero trust architecture, from identity and MFA to microsegmentation, least privilege, and monitoring.",
+      "image": "https://beguier.eu/nicolas/img/cover/cover2.jpg",
+      "url": "https://beguier.eu/nicolas/articles/zero-trust-approach-to-cybersecurity.html",
+      "datePublished": "2022-12-10",
+      "dateModified": "2022-12-10",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body h2 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+
+      .lb-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; cursor: zoom-out; }
+      .lb-overlay.open { display: flex; }
+      .lb-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 6px; box-shadow: 0 8px 40px rgba(0,0,0,.6); cursor: default; }
+      .lb-close { position: absolute; top: 1rem; right: 1.25rem; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; background: none; border: none; line-height: 1; }
+      .lb-close:hover { color: #fff; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+
+      @media (max-width: 700px) {
+        nav { padding: 0 1rem; }
+        .article-cover { height: 160px; }
+        .article-cover img { width: 100%; }
+        .article-wrap { padding: 0 1rem 4rem; }
+      }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/cover2.jpg" alt="Zero Trust Architecture" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div
-          class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/cover/cover2.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
-        >
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Zero Trust Architecture: A Comprehensive Guide to Improving Cybersecurity</h1>
-            <p class="lead fw-normal">Discover the essential principles of zero trust architecture and how to implement it in your organization.</p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">Architecture</span>
+        <h1 class="article-title">Zero Trust Architecture: A Comprehensive Guide to Improving Cybersecurity</h1>
+        <p class="article-subtitle">Discover the essential principles of zero trust architecture and how to implement it in your organization.</p>
+        <div class="article-meta">
+          <span>Dec 10, 2022</span>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Dec 10, 2022 by Nicolas Béguier</p>
+      </header>
 
-          <div class="lead fs-5 text-light py-3">
-            Zero trust architecture is a cybersecurity framework that was first proposed by <b>John Kindervag</b>, a Forrester Research analyst, in 2010. It was developed as a response to the increasingly complex and dynamic nature of
-            cybersecurity threats, and the limitations of traditional security architectures that are based on the idea of building a strong perimeter around an organization's network and resources.<br />
-            <br />
-            Kindervag argued that in today's interconnected world, where employees and devices are constantly accessing network resources from a variety of locations and devices,
-            <b class="text-danger">it is impossible to effectively secure an organization's network by simply building a strong perimeter around it</b>. Instead, he proposed the concept of zero trust architecture, which assumes that all
-            network traffic is potentially malicious and requires verification before it is allowed access to network resources.
-          </div>
+      <div class="article-body">
 
-          <h2 class="my-5 fs-4">Core Architecture Principals</h2>
+        <p>Zero trust architecture is a cybersecurity framework first proposed by <b>John Kindervag</b>, a Forrester Research analyst, in 2010. It was developed as a response to the increasingly complex nature of cybersecurity threats, and the limitations of traditional security architectures based on building a strong perimeter around an organization's network.</p>
 
-          <div class="lead fs-5 text-light py-3">
-            One of the key principles of zero trust architecture is to <b>never trust, always verify</b>. This means that every access request, whether it comes from inside or outside the network, is treated the same and is subject to the
-            same level of scrutiny. To implement zero trust architecture, organizations need to implement a variety of security controls, including <b>multi-factor authentication</b>, <b>network segmentation</b>, and
-            <b>microsegmentation</b>.
-          </div>
-          <div class="lead fs-5 text-light py-3">
-            <b class="text-warning">Multi-factor authentication</b>, also known as two-factor authentication, requires users to provide more than one form of authentication when logging in to a system. This can include a password, a
-            security token, or biometric data such as a fingerprint or facial recognition. <b class="text-warning">Network segmentation</b> involves dividing a network into smaller, isolated segments, each of which has its own security
-            controls. <b class="text-warning">Microsegmentation</b> takes this a step further by creating fine-grained security policies that control access to individual resources or groups of resources.
-          </div>
-          <div class="lead fs-5 text-light py-3">
-            Zero trust architecture has become increasingly popular in recent years as organizations seek to protect themselves from the growing threat of cyberattacks. It is particularly
-            <b class="text-success">effective against attacks that involve lateral movement</b>, in which an attacker gains access to one part of a network and then uses that access to move laterally and compromise other parts of the
-            network. By implementing zero trust architecture, organizations can prevent lateral movement and limit the scope of any potential breach.
-          </div>
+        <p>Kindervag argued that in today's interconnected world — where employees and devices constantly access network resources from a variety of locations — <b>it is impossible to effectively secure a network by simply building a strong perimeter around it</b>. Instead, zero trust architecture assumes that all network traffic is potentially malicious and requires verification before being granted access to resources.</p>
 
-          <h2 class="my-5 fs-4">Apply Zero-Trust with BYOD and remote work</h2>
+        <h1>Core Principles</h1>
 
-          <div class="lead fs-5 text-light py-3">
-            <p>To apply ZTA with BYOD and remote work, organizations should consider the following steps:</p>
-            <ol>
-              <li><b>Identify</b> and inventory all devices and users that will be accessing the organization's resources. This includes personal devices used for BYOD and any devices used by remote workers.</li>
-              <li>Establish policies and procedures for the use of these devices and the handling of sensitive data. This may include requirements for device encryption, password management, and data backup and recovery.</li>
-              <li>
-                Implement <b>multi-factor authentication</b> (MFA) for all users and devices. MFA requires users to provide multiple forms of authentication, such as a password and a security token, to access resources. This helps to
-                prevent unauthorized access and reduce the risk of a breach.
-              </li>
-              <li>
-                Use <b>network segmentation</b> to divide the network into smaller, more secure zones. This allows you to apply different security controls to different parts of the network, depending on the sensitivity of the resources and
-                the level of trust of the users and devices accessing them.
-              </li>
-              <li>Monitor and log all access to resources, including successful and unsuccessful attempts. This can help you identify potential security threats and take appropriate action. <b class="text-warning">#SIEM</b></li>
-              <li>
-                Regularly review and update your security policies and procedures to ensure they are effective in protecting your organization's resources and data. This includes evaluating the security of third-party apps and services used
-                by your organization and the security posture of remote workers.
-              </li>
-            </ol>
-            <p>By following these steps, organizations can effectively apply ZTA to secure their resources and data in the face of the increasing challenges posed by BYOD and remote work.</p>
-          </div>
+        <p>One of the key principles of zero trust architecture is to <b>never trust, always verify</b>. Every access request, whether it comes from inside or outside the network, is treated identically and is subject to the same level of scrutiny. To implement ZTA, organizations need to deploy a combination of security controls:</p>
 
-          <h2 class="my-5 fs-4">Challenges of implementing zero trust architecture</h2>
+        <p><b>Multi-factor authentication (MFA)</b> requires users to provide more than one form of authentication when logging in — a password combined with a security token or biometric data such as a fingerprint or facial recognition.</p>
 
-          <div class="lead fs-5 text-light py-3">
-            <p>There are a few potential arguments that could be made for why an organization might not want to implement zero trust architecture (ZTA):</p>
-            <ol>
-              <li>
-                <b class="text-danger">Cost</b>: Implementing ZTA can be a costly and resource-intensive process, as it requires organizations to evaluate and secure all users, devices, and networks within the organization. This can require
-                significant investments in technology, training, and personnel.
-              </li>
-              <li>
-                <b class="text-danger">Complexity</b>: ZTA can be complex to implement and maintain, particularly for large organizations with a wide range of users, devices, and resources. This can require a significant amount of planning
-                and coordination, and may require organizations to overhaul their existing security infrastructure.
-              </li>
-              <li>
-                <b class="text-danger">User experience</b>: ZTA can introduce additional authentication and access controls that may be perceived as inconvenient or disruptive by users. This can lead to user frustration and a decrease in
-                productivity.
-              </li>
-            </ol>
-            <p>
-              It's important to note that these potential drawbacks are not necessarily insurmountable, and organizations may be able to mitigate some of these concerns through careful planning and implementation. Ultimately, the decision
-              to implement ZTA should be based on a careful evaluation of an organization's specific security needs and risks.
-            </p>
-          </div>
+        <p><b>Network segmentation</b> divides a network into smaller, isolated segments each with its own security controls. <b>Microsegmentation</b> takes this further by creating fine-grained security policies that control access to individual resources or groups of resources.</p>
 
-          <div class="lead fs-5 text-light py-3">
-            <p>For more information about zero trust architecture, see the following resources:</p>
-            <ul>
-              <li><a href="https://www.nist.gov/publications/zero-trust-architecture" class="link-info">Zero-trust security (NIST)</a></li>
-              <li><a href="https://www.csoonline.com/article/3247848/what-is-zero-trust-a-model-for-more-effective-security.html" class="link-info">What is zero trust? A model for more effective security (CSO Online)</a></li>
-              <li><a href="https://www.ssi.gouv.fr/agence/publication/le-modele-zero-trust/" class="link-info">Le Modèle Zero Trust (ANSSI)</a></li>
-            </ul>
-          </div>
+        <p>Zero trust is particularly <b>effective against lateral movement attacks</b>, in which an attacker gains access to one part of a network and then uses that foothold to compromise other parts. ZTA prevents lateral movement and limits the scope of any potential breach.</p>
+
+        <h1>Applying ZTA with BYOD and Remote Work</h1>
+
+        <p>To apply zero trust architecture with BYOD and remote work, organizations should consider the following steps:</p>
+        <ol>
+          <li><b>Inventory</b> all devices and users that will be accessing the organization's resources, including personal devices and remote worker equipment.</li>
+          <li>Establish <b>policies and procedures</b> for device usage and the handling of sensitive data — device encryption, password management, data backup and recovery.</li>
+          <li>Implement <b>multi-factor authentication (MFA)</b> for all users and devices to prevent unauthorized access.</li>
+          <li>Use <b>network segmentation</b> to divide the network into more secure zones, applying different controls depending on the sensitivity of the resources and the trust level of the users.</li>
+          <li><b>Monitor and log</b> all access to resources, including successful and unsuccessful attempts. This helps identify security threats early — consider a SIEM for centralized visibility.</li>
+          <li>Regularly <b>review and update</b> security policies, including evaluating the security posture of third-party apps and remote workers.</li>
+        </ol>
+
+        <h1>Challenges</h1>
+
+        <p>There are legitimate arguments against implementing zero trust architecture:</p>
+        <ol>
+          <li><b>Cost</b> — Implementing ZTA can be costly and resource-intensive, requiring significant investments in technology, training, and personnel.</li>
+          <li><b>Complexity</b> — ZTA can be complex to implement and maintain, particularly for large organizations, and may require overhauling existing security infrastructure.</li>
+          <li><b>User experience</b> — Additional authentication and access controls can be perceived as inconvenient, leading to user frustration and decreased productivity.</li>
+        </ol>
+
+        <p>These drawbacks are not insurmountable, and can be mitigated through careful planning and a phased implementation. Ultimately, the decision to adopt ZTA should be based on a careful evaluation of an organization's specific security needs and risk tolerance.</p>
+
+        <p>For more information about zero trust architecture:</p>
+        <ul>
+          <li><a href="https://www.nist.gov/publications/zero-trust-architecture" target="_blank" rel="noopener">Zero-Trust Security (NIST)</a></li>
+          <li><a href="https://www.csoonline.com/article/3247848/what-is-zero-trust-a-model-for-more-effective-security.html" target="_blank" rel="noopener">What is Zero Trust? A model for more effective security (CSO Online)</a></li>
+          <li><a href="https://www.ssi.gouv.fr/agence/publication/le-modele-zero-trust/" target="_blank" rel="noopener">Le Modèle Zero Trust (ANSSI)</a></li>
+        </ul>
+
+        <div class="article-cta">
+          If you enjoyed this article, feel free to share it or <a href="https://www.linkedin.com/in/nicolasbeguier/">reach out on LinkedIn</a>.
         </div>
+
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
 
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <script src="/js/pub/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+
+      const lbOverlay = document.createElement('div');
+      lbOverlay.className = 'lb-overlay';
+      lbOverlay.innerHTML = '<button class="lb-close">&#x2715;</button><img />';
+      document.body.appendChild(lbOverlay);
+      const lbImg = lbOverlay.querySelector('img');
+      document.querySelectorAll('.article-body img').forEach(img => {
+        img.addEventListener('click', () => { lbImg.src = img.src; lbOverlay.classList.add('open'); });
+      });
+      lbOverlay.querySelector('.lb-close').addEventListener('click', () => lbOverlay.classList.remove('open'));
+      lbOverlay.addEventListener('click', e => { if (e.target === lbOverlay) lbOverlay.classList.remove('open'); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') lbOverlay.classList.remove('open'); });
+    </script>
   </body>
 </html>

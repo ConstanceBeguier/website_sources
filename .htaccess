@@ -3,8 +3,27 @@ RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+<IfModule mod_setenvif.c>
+    SetEnvIf Request_URI "^/(footer\.html|src/index\.html|scripts/index\.html)(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/(src|scripts|css|js|experiment)/?(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/(css|js)/(index|pub/index|fonts/index)\.html(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/(css|js)/(pub|fonts)/?(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/constance/(navbar|img/index|img/logo/index)\.html(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/constance/img(/logo)?/?(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/nicolas/(navbar|phishing|articles/index|articles/aws-tower-summary|articles/aws-tower-tutorial-setup-guide|img/index|img/article/index|img/cover/index|img/logo/index)\.html(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/nicolas/(articles|img)/?(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/nicolas/img/(article|cover|logo)/?(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/experiment/(index|recette)\.html(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/tandem-technology/img/index\.html(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/tandem-technology/img/?(\?.*)?$" noindex_page
+    SetEnvIf Request_URI "^/legal\.html(\?.*)?$" noindex_page
+</IfModule>
+
 # Security Headers
 <IfModule mod_headers.c>
+    # Search indexing
+    Header set X-Robots-Tag "noindex, nofollow" env=noindex_page
+
     # X-Content-Type-Options
     Header set X-Content-Type-Options "nosniff"
     
@@ -20,4 +39,3 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
     SSLCipherSuite ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305
     SSLHonorCipherOrder on
 </IfModule>
-

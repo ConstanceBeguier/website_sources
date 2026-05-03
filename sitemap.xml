@@ -7,118 +7,13 @@
 
 <url>
   <loc>https://beguier.eu/</loc>
-  <lastmod>2023-06-28T06:00:00+00:00</lastmod>
+  <lastmod>2026-05-03T00:00:00+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
-  <loc>https://beguier.eu/constance/</loc>
-  <lastmod>2023-06-28T06:00:00+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/constance/publications.html</loc>
-  <lastmod>2023-06-28T06:00:00+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
   <loc>https://beguier.eu/nicolas/</loc>
-  <lastmod>2024-01-02T16:00:00+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/about.html</loc>
-  <lastmod>2023-06-28T06:00:00+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/projects.html</loc>
-  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
-  <priority>0.80</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/koa.html</loc>
-  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/security-postit-1-sha1-broken-not-hmac.html</loc>
-  <lastmod>2022-12-19T14:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/security-tips-2-volatility-gimp.html</loc>
-  <lastmod>2021-10-31T21:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html</loc>
-  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/security-tips-4-xss-with-style.html</loc>
-  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/security-postit-5-secrets.html</loc>
-  <lastmod>2022-11-03T06:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html</loc>
-  <lastmod>2022-12-01T08:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/security-postit-7-software-security-testing-golang.html</loc>
-  <lastmod>2022-12-01T08:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/zero-trust-approach-to-cybersecurity.html</loc>
-  <lastmod>2022-12-19T14:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/splc-vs-sdlc-differences-why-they-matter.html</loc>
-  <lastmod>2022-12-18T13:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/comparing-shhgit-gitleaks-code-protection.html</loc>
-  <lastmod>2022-12-18T13:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/differences-between-symmetrical-asymmetrical-hashing-encryption.html</loc>
-  <lastmod>2022-12-18T13:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/cybersecurity-salary-2023.html</loc>
-  <lastmod>2022-12-29T10:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/nginx-tls-security-configuration.html</loc>
-  <lastmod>2024-01-02T16:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/aws-tower-tutorial-setup-guide.html</loc>
-  <lastmod>2022-12-29T10:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/android-mitm-intercept-trafic.html</loc>
-  <lastmod>2023-05-12T12:00:00+00:00</lastmod>
-  <priority>0.64</priority>
-</url>
-<url>
-  <loc>https://beguier.eu/nicolas/articles/apache-tls-security-configuration.html</loc>
-  <lastmod>2024-01-02T16:00:00+00:00</lastmod>
-  <priority>0.64</priority>
+  <lastmod>2026-05-03T00:00:00+00:00</lastmod>
+  <priority>0.90</priority>
 </url>
 <url>
   <loc>https://beguier.eu/tandem-technology/</loc>
@@ -126,8 +21,99 @@
   <priority>0.80</priority>
 </url>
 <url>
-  <loc>https://beguier.eu/marvel-snap/top-combo.html</loc>
-  <lastmod>2022-11-18T14:00:00+00:00</lastmod>
-  <priority>0.1</priority>
+  <loc>https://beguier.eu/constance/</loc>
+  <lastmod>2023-06-28T06:00:00+00:00</lastmod>
+  <priority>0.70</priority>
 </url>
+<url>
+  <loc>https://beguier.eu/constance/publications.html</loc>
+  <lastmod>2023-06-28T06:00:00+00:00</lastmod>
+  <priority>0.60</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/android-mitm-intercept-trafic.html</loc>
+  <lastmod>2023-05-05T00:00:00+00:00</lastmod>
+  <priority>0.70</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/apache-tls-security-configuration.html</loc>
+  <lastmod>2026-05-02T00:00:00+00:00</lastmod>
+  <priority>0.70</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/nginx-tls-security-configuration.html</loc>
+  <lastmod>2026-05-02T00:00:00+00:00</lastmod>
+  <priority>0.70</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/splc-vs-sdlc-differences-why-they-matter.html</loc>
+  <lastmod>2022-12-10T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-tips-3-volatility-linux-profiles.html</loc>
+  <lastmod>2021-03-15T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/cybersecurity-salary-2023.html</loc>
+  <lastmod>2026-05-02T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/differences-between-symmetrical-asymmetrical-hashing-encryption.html</loc>
+  <lastmod>2022-12-16T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/comparing-shhgit-gitleaks-code-protection.html</loc>
+  <lastmod>2022-12-11T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/zero-trust-approach-to-cybersecurity.html</loc>
+  <lastmod>2022-12-10T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-postit-8-software-security-testing-mobile.html</loc>
+  <lastmod>2022-11-22T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-postit-7-software-security-testing-golang.html</loc>
+  <lastmod>2022-11-22T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-postit-6-software-security-testing-js.html</loc>
+  <lastmod>2022-11-03T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-postit-5-secrets.html</loc>
+  <lastmod>2021-10-31T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-tips-4-xss-with-style.html</loc>
+  <lastmod>2021-05-11T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-tips-2-volatility-gimp.html</loc>
+  <lastmod>2021-03-08T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/koa.html</loc>
+  <lastmod>2019-12-30T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>https://beguier.eu/nicolas/articles/security-postit-1-sha1-broken-not-hmac.html</loc>
+  <lastmod>2019-12-13T00:00:00+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
 </urlset>

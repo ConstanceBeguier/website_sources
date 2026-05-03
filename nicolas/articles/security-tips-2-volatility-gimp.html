@@ -1,121 +1,229 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="In this short security post-it, I explain how to extract visuals from a process memory dump with Volatility and Gimp." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="beguier cyber security post-it blog volatility process visuals gimp forensic ctf" />
-    <meta property="og:title" content="Security Post-it #2 – Volatility x Gimp" />
+    <meta name="keywords" content="volatility gimp process memory dump forensic ctf visualization" />
+    <meta property="og:title" content="Security Post-it #2: Volatility and Gimp Forensics" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/logo_secu-postit2.jpg" />
     <meta property="og:description" content="In this short security post-it, I explain how to extract visuals from a process memory dump with Volatility and Gimp." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/security-tips-2-volatility-gimp.html" />
     <meta property="og:type" content="article" />
-    <title>Security Post-it #2 – Volatility x Gimp</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link href="/css/beguier.min.css" rel="stylesheet" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/security-tips-2-volatility-gimp.html" />
+    <title>Security Post-it #2: Volatility and Gimp Forensics</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Security Post-it #2 – Volatility x Gimp",
+      "description": "In this short security post-it, I explain how to extract visuals from a process memory dump with Volatility and Gimp.",
+      "image": "https://beguier.eu/nicolas/img/cover/logo_secu-postit2.jpg",
+      "url": "https://beguier.eu/nicolas/articles/security-tips-2-volatility-gimp.html",
+      "datePublished": "2021-03-08",
+      "dateModified": "2021-03-08",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+
+      .text-code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82em; background: #f1f3f9; border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.4em; color: var(--text-1); word-break: break-word; }
+
+      .copy-code { display: block; position: relative; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; background: var(--code-bg); color: var(--code-text); border-radius: 8px; padding: 0.75rem 3rem 0.75rem 1rem; margin: 0.5rem 0 1.1rem; overflow-x: auto; white-space: pre; }
+      .copy-code .sh { color: #f87171; }
+      .copy-code .cm { color: #94a3b8; }
+
+      .copy-btn { position: absolute; top: 0.45rem; right: 0.45rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 5px; color: rgba(255,255,255,0.4); padding: 0.22rem 0.45rem; cursor: pointer; font-size: 0.68rem; line-height: 1; transition: background .15s, color .15s; }
+      .copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
+      .copy-btn.copied { color: #4ade80; border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.08); }
+
+      .article-body img { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem auto; display: block; cursor: zoom-in; transition: opacity .2s; }
+      .article-body img:hover { opacity: 0.88; }
+
+      .lb-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; cursor: zoom-out; }
+      .lb-overlay.open { display: flex; }
+      .lb-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 6px; box-shadow: 0 8px 40px rgba(0,0,0,.6); cursor: default; }
+      .lb-close { position: absolute; top: 1rem; right: 1.25rem; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; background: none; border: none; line-height: 1; }
+      .lb-close:hover { color: #fff; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/logo_secu-postit2.jpg" alt="Volatility x Gimp" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div class="position-relative overflow-hidden text-center" style="background: url('/nicolas/img/cover/logo_secu-postit2.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;">
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Security Post-it #2 – Volatility x Gimp</h1>
-            <p class="lead fw-normal">In this short security post-it, I explain how to extract visuals from a process memory dump with Volatility and Gimp.</p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">Forensics</span>
+        <h1 class="article-title">Security Post-it #2 – Volatility × Gimp</h1>
+        <p class="article-subtitle">How to extract visuals from a process memory dump using Volatility and Gimp.</p>
+        <div class="article-meta">
+          <span>Mar 8, 2021</span>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Mar 08, 2021 by Nicolas Béguier</p>
+      </header>
 
-          <h2 class="my-5 fs-3">How to extract visuals from a process memory dump with Volatility and Gimp</h2>
+      <div class="article-body">
 
-          <div class="lead fs-6 text-middark">
-            Volatility is a tool supported by the <a href="https://www.volatilityfoundation.org/" onclick="RedirectNewTab(this.href)" class="link-info"><b>Volatility Foundation</b></a> and aims to assist the forensic
-            investigator when analyzing a computer memory dump.<br />
-            In this article, I'll be focusing on Volatility2, but it's possible to do things in a similar way with Volatility3, I'm just less comfortable with this tool. I will surely update this article to outline the steps of Volatility3
-            when I find out.<br />
-            <br />
+        <p><a href="https://www.volatilityfoundation.org/" target="_blank" rel="noopener"><b>Volatility</b></a> is a tool supported by the Volatility Foundation that assists forensic investigators when analyzing a computer memory dump. This article focuses on Volatility 2 — a similar workflow is possible with Volatility 3.</p>
 
-            This security post-it is about exploring the visuals in a process memory dump, which cannot be done with raw memory dump. I'll walk you through how to extract a process memory dump and how to use Gimp to visualize it.<br />
-            <br />
-            This can be done easily on a Windows or MacOS memory dump, tooling on a Linux dump is not that straightforward. Probably in a future update I'll explain how to do it.<br />
-            <br />
-          </div>
+        <p>This post-it covers how to explore <b>visuals inside a process memory dump</b>. This cannot be done directly on a raw memory dump — you first need to extract the process memory, then use Gimp to visualize it. This works well on Windows and macOS memory dumps; Linux support requires extra steps.</p>
 
-          <h2 class="my-5 fs-3">Dump process memory</h2>
+        <h1>Dump process memory</h1>
 
-          <div class="lead fs-6 text-middark">
-            Here, volatility is an alias for my <a href="https://github.com/volatilityfoundation/volatility" onclick="RedirectNewTab(this.href)" class="link-info"><b>volatility2</b></a> python path.<br />
-            <br />
+        <p>Create a directory for the output, then dump the memory of the target process (PID 1234):</p>
 
-            Prepare the directory to dump the process memory dump:<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> mkdir /tmp/memdump/</span><br />
-            For a Windows profile, with the process PID 1234:<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility -f dump.raw --profile=MyWinProfile memdump --pid 1234 --dump-dir /tmp/memdump/</span><br />
-            For a MacOS profile, with the process PID 1234:<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> volatility -f dump.raw --profile=MyMacProfile mac_memdump --pid 1234 --dump-dir /tmp/memdump/</span>
-          </div>
-          <h2 class="my-5 fs-3">Edit with GIMP and start digging</h2>
+        <span class="copy-code"><span class="sh">$</span> mkdir /tmp/memdump/
 
-          <div class="lead fs-6 text-middark">
-            Now you have your process memory dump in <span class="text-code text-light">/tmp/memdump/</span>, you can rename the file with the extension <span class="text-code text-light">.data</span>, which Gimp will automatically
-            understand as a raw input.<br />
-            <br />
-            Then, open it with gimp in command line:<br />
-            <span class="text-code text-light copy-code"><span class="text-danger">$</span> gimp /tmp/memdump/1234.data</span><br />
-            First of all, set the <b class="text-danger">Image type</b> to <b class="text-code text-light">RGB Alpha</b>, <b class="text-success">width</b> to <b class="text-code text-light">1024</b> and
-            <b class="text-success">height</b> to <b class="text-code text-light">733</b>, which represent a classic low computer resolution.
+<span class="cm"># Windows profile</span>
+<span class="sh">$</span> volatility -f dump.raw --profile=MyWinProfile memdump --pid 1234 --dump-dir /tmp/memdump/
 
-            <div class="col-md-8 col-lg-6 mx-auto">
-              <div class="card rounded shadow-sm bg-dark card-zoom my-3">
-                <img src="../img/article/gimp1.jpg" class="card-img" alt="Default GIMP configuration" />
-              </div>
-            </div>
+<span class="cm"># macOS profile</span>
+<span class="sh">$</span> volatility -f dump.raw --profile=MyMacProfile mac_memdump --pid 1234 --dump-dir /tmp/memdump/</span>
 
-            You can now adjust the <b class="text-info">displacement</b> to observe the memory and find something interesting.<br />
-            <br />
-            For instance, a large striped white screen can be found at <b class="text-code text-light">93004251</b>.
+        <h1>Visualize with GIMP</h1>
 
-            <div class="col-md-8 col-lg-6 mx-auto">
-              <div class="card rounded shadow-sm bg-dark card-zoom my-3">
-                <img src="../img/article/gimp2.jpg" class="card-img" alt="GIMP white observable" />
-              </div>
-            </div>
-            We need to tune the width to display the original image, here at <b class="text-code text-light">944</b>.
-            <div class="col-md-8 col-lg-6 mx-auto">
-              <div class="card rounded shadow-sm bg-dark card-zoom my-3">
-                <img src="../img/article/gimp3.jpg" class="card-img" alt="GIMP login" />
-              </div>
-            </div>
-            Great, we've found one image from the process memory dump, way more can be found in it.<br />
-            <br />
-            Here is my personal bash function to abstract all those command lines and directly observe the process memory dump.<br />
-            <br />
-            <script src="https://gist.github.com/nbeguier/81e727385a3d69b7aa9d897bb2205963.js"></script>
-          </div>
+        <p>Rename the dumped file with a <span class="text-code">.data</span> extension — GIMP will automatically recognize it as raw input — then open it:</p>
+
+        <span class="copy-code"><span class="sh">$</span> mv /tmp/memdump/1234.dmp /tmp/memdump/1234.data
+<span class="sh">$</span> gimp /tmp/memdump/1234.data</span>
+
+        <p>In the import dialog, set <b>Image type</b> to <b>RGB Alpha</b>, <b>width</b> to <b>1024</b> and <b>height</b> to <b>733</b> (a classic low-resolution screen).</p>
+
+        <img src="../img/article/gimp1.jpg" alt="Default GIMP configuration" />
+
+        <p>Adjust the <b>displacement</b> offset to scroll through the memory and find something interesting. For instance, a large striped white region can be found at offset <b>93004251</b>.</p>
+
+        <img src="../img/article/gimp2.jpg" alt="GIMP white region observable" />
+
+        <p>Tune the <b>width</b> to reconstruct the original image dimensions — here at <b>944</b>.</p>
+
+        <img src="../img/article/gimp3.jpg" alt="GIMP login screen reconstructed" />
+
+        <p>We've found an image extracted from the process memory. Many more can be found by scrolling through the dump. Here is a personal bash function that abstracts all these steps:</p>
+
+        <script src="https://gist.github.com/nbeguier/81e727385a3d69b7aa9d897bb2205963.js"></script>
+
+        <div class="article-cta">
+          If you enjoyed this article, feel free to share it or <a href="https://www.linkedin.com/in/nicolasbeguier/">reach out on LinkedIn</a>.
         </div>
+
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
 
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <script src="/js/pub/jquery.min.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+
+      document.querySelectorAll('.copy-code').forEach(block => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.title = 'Copy to clipboard';
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        block.appendChild(btn);
+        btn.addEventListener('click', () => {
+          const lines = block.innerText.split('\n');
+          const cleaned = lines
+            .filter(l => !l.trimStart().startsWith('#'))
+            .map(l => l.replace(/^\$\s*/, ''))
+            .filter(l => l.trim() !== '')
+            .join('\n').trim();
+          navigator.clipboard.writeText(cleaned).then(() => {
+            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        });
+      });
+
+      const lbOverlay = document.createElement('div');
+      lbOverlay.className = 'lb-overlay';
+      lbOverlay.innerHTML = '<button class="lb-close">&#x2715;</button><img />';
+      document.body.appendChild(lbOverlay);
+      const lbImg = lbOverlay.querySelector('img');
+      document.querySelectorAll('.article-body img').forEach(img => {
+        img.addEventListener('click', () => { lbImg.src = img.src; lbOverlay.classList.add('open'); });
+      });
+      lbOverlay.querySelector('.lb-close').addEventListener('click', () => lbOverlay.classList.remove('open'));
+      lbOverlay.addEventListener('click', e => { if (e.target === lbOverlay) lbOverlay.classList.remove('open'); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') lbOverlay.classList.remove('open'); });
+    </script>
   </body>
 </html>

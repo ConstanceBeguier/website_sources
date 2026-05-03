@@ -1,238 +1,319 @@
 <!DOCTYPE html>
-<html xmlns:og="http://ogp.me/ns#" lang="en" class="h-100">
+<html xmlns:og="http://ogp.me/ns#" lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Ensure the security of your Apache server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year."
-    />
+    <meta name="description" content="Updated Apache TLS hardening guide for 2026: Mozilla Intermediate configuration, TLS 1.2/1.3, OCSP stapling, HSTS, and security headers." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="apache tls security configuration ssllabs cipher suites oscp hsts" />
-    <meta property="og:title" content="Secure Your Apache Server in 2024: Achieving an A+ Rating on Qualys SSL Labs" />
+    <meta name="keywords" content="apache tls security configuration ssllabs cipher suites ocsp hsts" />
+    <meta property="og:title" content="Apache TLS Security Configuration for A+ SSL Labs 2026" />
     <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/apache.jpg" />
-    <meta
-      property="og:description"
-      content="Ensure the security of your Apache server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in the coming year."
-    />
+    <meta property="og:description" content="Updated Apache TLS hardening guide for 2026: Mozilla Intermediate configuration, TLS 1.2/1.3, OCSP stapling, HSTS, and security headers." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/apache-tls-security-configuration.html" />
     <meta property="og:type" content="article" />
-    <title>Secure Your Apache Server in 2024: Achieving an A+ Rating on Qualys SSL Labs</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/css/beguier.min.css" rel="stylesheet" />
-    <link href="/css/gist.min.css" rel="stylesheet" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/apache-tls-security-configuration.html" />
+    <title>Apache TLS Security Configuration for A+ SSL Labs 2026</title>
     <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Secure Your Apache Server: Achieving an A+ Rating on Qualys SSL Labs",
+      "description": "Updated Apache TLS hardening guide for 2026: Mozilla Intermediate configuration, TLS 1.2/1.3, OCSP stapling, HSTS, and security headers.",
+      "image": "https://beguier.eu/nicolas/img/cover/apache.jpg",
+      "url": "https://beguier.eu/nicolas/articles/apache-tls-security-configuration.html",
+      "datePublished": "2024-01-02",
+      "dateModified": "2026-05-02",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body h2 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+
+      .text-code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82em; background: #f1f3f9; border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.4em; color: var(--text-1); word-break: break-word; }
+
+      .copy-code { display: block; position: relative; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; background: var(--code-bg); color: var(--code-text); border-radius: 8px; padding: 0.75rem 3rem 0.75rem 1rem; margin: 0.5rem 0 1.1rem; overflow-x: auto; white-space: pre; }
+      .copy-code .kw { color: #f87171; }
+      .copy-code .cm { color: #94a3b8; }
+      .copy-code .sh { color: #f87171; }
+
+      .copy-btn { position: absolute; top: 0.45rem; right: 0.45rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 5px; color: rgba(255,255,255,0.4); padding: 0.22rem 0.45rem; cursor: pointer; font-size: 0.68rem; line-height: 1; transition: background .15s, color .15s; }
+      .copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
+      .copy-btn.copied { color: #4ade80; border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.08); }
+
+      .article-body pre { background: var(--code-bg); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; margin: 0.5rem 0 1.25rem; }
+      .article-body pre code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; color: var(--code-text); }
+
+      .article-body img { max-width: 100%; height: auto; border-radius: 8px; margin: 1rem auto; display: block; cursor: zoom-in; transition: opacity .2s; }
+      .article-body img:hover { opacity: 0.88; }
+
+      .tip { display: flex; align-items: flex-start; gap: 0.6rem; background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid #3b82f6; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1.1rem; font-size: 0.88rem; color: #1e40af; line-height: 1.6; }
+
+      .lb-overlay { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; cursor: zoom-out; }
+      .lb-overlay.open { display: flex; }
+      .lb-overlay img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 6px; box-shadow: 0 8px 40px rgba(0,0,0,.6); cursor: default; }
+      .lb-close { position: absolute; top: 1rem; right: 1.25rem; color: rgba(255,255,255,.7); font-size: 1.5rem; cursor: pointer; background: none; border: none; line-height: 1; }
+      .lb-close:hover { color: #fff; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+    </style>
   </head>
 
-  <body class="d-flex flex-column h-100 bg-black">
-    <!-- Begin nav header -->
-    <div id="includedNavbar">
-      <header class="p-3 border-bottom bg-white" />
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/apache.jpg" alt="Apache TLS Security" />
     </div>
 
-    <!-- Begin article body -->
-    <main class="flex-shrink-0">
-      <div class="container col-lg-8 p-0 bg-dark text-light">
-        <!-- Begin title banner -->
-        <div
-          class="position-relative overflow-hidden text-center"
-          style="background: url('/nicolas/img/cover/apache.jpg') center no-repeat; background-color: rgba(0, 0, 0, 0.68) !important; background-blend-mode: overlay; background-size: cover;"
-        >
-          <div class="col-md-6 m-5 mx-md-auto">
-            <h1 class="display-4 fw-normal">Secure Your Apache Server in 2024: Achieving an A+ Rating on Qualys SSL Labs</h1>
-            <p class="lead fw-normal">
-              Ensure the security of your Apache server with these comprehensive best practices for TLS configuration. By following these steps, you can earn an A+ rating on Qualys SSL Labs and protect your website from potential threats in
-              the coming year.
-            </p>
-          </div>
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">TLS Security</span>
+        <h1 class="article-title">Secure Your Apache Server: Achieving an A+ Rating on Qualys SSL Labs</h1>
+        <p class="article-subtitle">Updated 2026 baseline for Apache TLS — Mozilla Intermediate, TLS 1.2/1.3, OCSP stapling, HSTS, and security headers.</p>
+        <div class="article-meta">
+          <span>May 2, 2026</span>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
         </div>
-        <!-- Begin article content -->
-        <div class="p-5">
-          <p class="text-muted">Jan 2nd, 2024 by Nicolas Béguier</p>
+      </header>
 
-          <div class="lead fs-5 text-light">
-            In this article, we will provide expert tips on how to enhance the security of your Apache web server. We will cover key areas such as system security, SSL/TLS security, and data security. By following these best practices, you
-            can aim for an A+ rating on Qualys SSL Labs and protect your server from potential threats.<br />
-            <br />
-            One objective can be to have a grade of A+ on <a href="https://www.ssllabs.com/ssltest/" class="link-success"><b>Qualys SSL Labs</b></a>.
-          </div>
+      <div class="article-body">
 
-          <div class="col-md-8 col-lg-6 mx-auto">
-            <div class="card rounded shadow-sm bg-dark card-zoom my-3">
-              <img src="../img/article/nginx-ssllabs-a-plus.jpg" class="card-img" alt="SSL Labs A+ rating" />
-            </div>
-          </div>
+        <p>In this update, the recommended baseline is the <a href="https://ssl-config.mozilla.org/" target="_blank" rel="noopener"><b>Mozilla SSL Configuration Generator</b></a> <b>Intermediate</b> profile. It is the right default for public websites that need a good balance between modern security and real-world client compatibility. If you only support very recent clients, the Mozilla <b>Modern</b> profile is even stricter, but it is no longer the safest default for a general-purpose web server.</p>
 
-          <h1 class="my-5 fs-3">1. Basic security</h1>
+        <p>The goal is still a clean result on <a href="https://www.ssllabs.com/ssltest/" target="_blank" rel="noopener"><b>Qualys SSL Labs</b></a>, but the scanner grade should not be the only target: keep renewals automated, monitor compatibility, and re-test after Apache, OpenSSL, certificate, or CDN changes.</p>
 
-          <div class="lead fs-6 text-light">
-            Minimizing the amount of data that is revealed to potential attackers is a key way to safeguard your web server. This can include details such as the version number of Apache, PHP, and the operating system. This type of
-            information is often included in HTTP headers, but it can be hidden to better protect your server. To achieve this:<br />
-            <br />
-            <span class="text-code text-light">
-              <span class="text-secondary"># Hide server version on error pages</span><br />
-              <span class="text-danger">ServerSignature</span> Off<br />
-              <span class="text-secondary"># Only return Apache in server header</span><br />
-              <span class="text-danger">ServerTokens</span> Prod<br />
-            </span>
-            <br />
-            <p>
-              Using TLS 1.2 and TLS 1.3 on an apache server is important because these versions of the TLS protocol provide stronger security features and improved performance compared to older versions. Some of the key benefits of using TLS
-              1.2 and TLS 1.3 include:
-            </p>
+        <img src="../img/article/nginx-ssllabs-a-plus.jpg" alt="SSL Labs A+ rating" />
 
-            <ul>
-              <li><b>Stronger encryption</b>: TLS 1.2 and TLS 1.3 use stronger encryption algorithms and key lengths to protect data transmitted over the internet.</li>
-              <li><b>Improved performance</b>: TLS 1.2 and TLS 1.3 are designed to be more efficient than older versions of the TLS protocol, which can result in faster connection times and improved overall performance.</li>
-              <li>
-                <b>Improved security</b>: TLS 1.2 and TLS 1.3 include additional security features, such as Perfect Forward Secrecy, which helps to prevent an attacker from using previously recorded traffic to decrypt current traffic.
-              </li>
-            </ul>
+        <h1>1. Basic Security</h1>
 
-            <p>
-              Overall, using TLS 1.2 and TLS 1.3 helps to protect the confidentiality, integrity, and availability of data transmitted over the internet, and it is an important security measure for any server that handles sensitive
-              information.
-            </p>
-            <span class="text-code text-light"> <span class="text-danger">SSLProtocol</span> all -SSLv3 -TLSv1 -TLSv1.1</span>
-          </div>
+        <p>Minimizing the amount of data revealed to potential attackers is still useful. Apache should not expose detailed version information on error pages or in the <span class="text-code">Server</span> header. If your application does not rely on the HTTP <span class="text-code">TRACE</span> method, disable it too.</p>
 
-          <h1 class="my-5 fs-3">2. Cipher Suite</h1>
-          There are four main types of encryption algorithms:<br />
-          <ul>
-            <li>Key exchange</li>
-            <li>Authentication</li>
-            <li>Block encryption</li>
-            <li>Message Authentication</li>
-          </ul>
-          <br />
-          Some of these algorithms, such as RC4, DH, 3DES, and EXP, should be avoided due to their lower levels of security. It is important to prioritize the use of more secure algorithms in order to balance security with accessibility for
-          customers.<br />
-          <br />
-          For more information on the security of different cipher suites, you can refer to the following link: <a href="https://ciphersuite.info/cs/?security=secure" class="link-success">https://ciphersuite.info/</a><br />
-          <br />
-          <span class="text-code text-light">
-            <span class="text-secondary"># Compilation of the top cipher suites 2024</span><br />
-            <span class="text-secondary"># https://ssl-config.mozilla.org/#server=apache</span><br />
-            <span class="text-danger">SSLCipherSuite</span>
-            ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305
-          </span>
+        <span class="copy-code"><span class="cm"># Hide server version on error pages</span>
+<span class="kw">ServerSignature</span> Off
+<span class="cm"># Only return Apache in server header</span>
+<span class="kw">ServerTokens</span> Prod
+<span class="cm"># Disable TRACE unless explicitly required</span>
+<span class="kw">TraceEnable</span> Off</span>
 
-          <h1 class="my-5 fs-3">3. Optimization</h1>
+        <p>For broad compatibility in 2026, allow TLS 1.2 and TLS 1.3 only. Prefer an explicit allowlist over <span class="text-code">all -TLSv1 -TLSv1.1</span>, because it makes the intended policy obvious and mirrors the current Mozilla generator output.</p>
+        <ul>
+          <li><b>TLS 1.3</b> — faster handshakes, simpler cipher negotiation, and no legacy key exchange modes.</li>
+          <li><b>TLS 1.2</b> — still needed for older but common clients when restricted to ECDHE and AEAD cipher suites.</li>
+          <li><b>No TLS 1.0/1.1</b> — these legacy protocols should remain disabled for internet-facing services.</li>
+        </ul>
 
-          <div class="lead fs-6 text-light">
-            <p>The "<span class="text-code">SSLHonorCipherOrder</span>" directive tells the server to use its own list of preferred ciphers, rather than relying on the client to specify them.</p>
-            <span class="text-code text-light">
-              <span class="text-secondary"># Perfect Forward Secrecy(PFS) is frequently compromised without this</span><br />
-              <span class="text-danger">SSLHonorCipherOrder</span> on<br />
-            </span><br />
+        <span class="copy-code"><span class="kw">SSLProtocol</span> -all +TLSv1.2 +TLSv1.3</span>
 
-            <p>The "<span class="text-code">SSLSessionTickets</span>" directive is used to disable the use of SSL session tickets, which are used to resume SSL sessions and improve performance.</p>
-            <span class="text-code text-light"> <span class="text-danger">SSLSessionTickets</span> off<br /></span><br />
+        <p>If Apache rejects <span class="text-code">TLSv1.3</span>, check the Apache/OpenSSL versions first. TLS 1.3 requires an OpenSSL build that supports it; removing <span class="text-code">+TLSv1.3</span> is a temporary compatibility fallback, not a long-term hardening strategy.</p>
 
-            <p>
-              The "<span class="text-code">SSLSessionCacheTimeout</span>" and "<span class="text-code">SSLSessionCache</span>" directives enable SSL session caching, which helps to improve performance by allowing the server to reuse previously established SSL sessions.
-            </p>
+        <h1>2. Cipher Suite</h1>
 
-            <span class="text-code text-light">
-              <span class="text-secondary"># Enable SSL session caching for improved performance</span><br />
-              <span class="text-danger">SSLSessionCacheTimeout</span> 300<br />
-              <span class="text-danger">SSLSessionCache</span> "shmcb:/usr/local/apache2/logs/ssl_scache(512000)"<br />
-            </span>
-            <br />
-            <p>
-              The "<span class="text-code">SSLUseStapling</span>" and "<span class="text-code">SSLStaplingCache</span>" directives enable OCSP (Online Certificate Status Protocol) stapling, which is a method of checking the revocation
-              status of SSL certificates without the need for a separate request to the certificate authority. This helps to improve performance by reducing the number of requests that need to be made.
-            </p>
+        <p>For TLS 1.2, keep the cipher list short: ECDHE for forward secrecy, AES-GCM or ChaCha20-Poly1305 for authenticated encryption, and ECDSA/RSA depending on your certificate. The current Mozilla Intermediate profile no longer needs finite-field DHE suites for a normal Apache website.</p>
 
-            <span class="text-code text-light">
-              <span class="text-secondary"># OCSP stapling</span><br />
-              <span class="text-danger">SSLUseStapling</span> on<br />
-              <span class="text-danger">SSLStaplingCache</span> "shmcb:logs/ssl_stapling(32768)"<br />
-            </span>
-          </div>
+        <span class="copy-code"><span class="cm"># Mozilla SSL Configuration Generator 6.0, Intermediate, Apache</span>
+<span class="cm"># TLS 1.2 cipher suites</span>
+<span class="kw">SSLCipherSuite</span> ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305
+<span class="cm"># TLS 1.3 cipher suites, if supported by your Apache/OpenSSL build</span>
+<span class="kw">SSLCipherSuite</span> TLSv1.3 TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256</span>
 
-          <h1 class="my-5 fs-3">4. Security headers</h1>
+        <p>This removes RSA key exchange, static DH, CBC, RC4, 3DES, export ciphers, and old SHA1-based suites. If you need to reason about a particular cipher, <a href="https://ciphersuite.info/cs/?security=secure" target="_blank" rel="noopener">ciphersuite.info</a> remains a useful reference.</p>
 
-          <div class="lead fs-6 text-light">
-            The <b class="text-code">X-Content-Type-Options</b> response HTTP header is a marker used by the server to indicate that the MIME types advertised in the <span class="text-code">Content-Type</span> headers should be followed and
-            not be changed. The header allows you to <b>avoid MIME type sniffing</b> by saying that the MIME types are deliberately configured.<br />
-            <br />
-            <b>Content Security Policy (CSP)</b> is an added layer of security that helps to detect and <b>mitigate certain types of attacks, including Cross-Site Scripting (XSS) and data injection attacks</b>. These attacks are used for
-            everything from data theft, to site defacement, to malware distribution. This CSP configuration is highly secure, but it is recommended to test it first to ensure that it does not block third party scripts.
-            <a class="link-success" href="https://csp-evaluator.withgoogle.com/">CSP Evaluator</a> is an excellent tool for testing your CSP configuration.<br />
-            <br />
-            The <b>HTTP Strict-Transport-Security</b> response header (often abbreviated as <b>HSTS</b>) informs browsers that the site should only be accessed using HTTPS, and that any future attempts to access it using HTTP should
-            automatically be converted to HTTPS.<br />
-            <br />
-            <span class="text-code text-light">
-              <span class="text-secondary"># Security headers</span><br />
-              <span class="text-secondary">## X-Content-Type-Options: avoid MIME type sniffing</span><br />
-              <span class="text-danger">Header always set</span> X-Content-Type-Options <span class="text-info">nosniff</span>;<br />
-              <br />
-              <span class="text-secondary">## Content-Security-Policy (CSP): Yes</span><br />
-              <span class="text-secondary">## No 'script-src' directive, you need to test it yourself</span><br />
-              <span class="text-danger">Header always set</span> Content-Security-Policy <span class="text-info">"object-src 'none'; base-uri 'none'; require-trusted-types-for 'script'; frame-ancestors 'self';"</span>;<br />
-              <span class="text-secondary">## The safest CSP, only block your website to be inside an inframe</span><br />
-              <span class="text-danger">Header always set</span> Content-Security-Policy <span class="text-info">"frame-ancestors 'self';"</span>;<br />
-              <br />
-              <span class="text-secondary">## Strict Transport Security (HSTS): Yes</span><br />
-              <span class="text-danger">Header always set</span> Strict-Transport-Security <span class="text-info">"max-age=31536000; includeSubdomains; preload"</span>;<br />
-            </span>
-          </div>
+        <h1>3. Optimization</h1>
 
-          <h1 class="my-5 fs-3">5. DH Param</h1>
-          <div class="lead fs-6 text-light">
-            <p>
-              Diffie-Hellman (DH) is a cryptographic algorithm used to establish a shared secret between two parties. It's commonly used in various cryptographic protocols to ensure secure communications over an untrusted network, such as
-              the internet. DH parameters, often simply termed "DH params", play an essential role in this process.
-            </p>
-            <p>
-              It's crucial for security reasons that these parameters are generated in a strong and robust manner. Specifically, the size of the DH group (measured in bits) directly influences the strength of the cryptographic operation.
-              Modern best practices recommend using a 4096-bit DH group for most applications.
-            </p>
-            <p>To generate a 4096-bits DH group using the OpenSSL toolkit, you can use the following command:</p>
+        <p>The <span class="text-code">SSLHonorCipherOrder</span> directive no longer needs to be forced on for this profile. With a short list of strong TLS 1.2 suites, allowing the client preference can improve hardware acceleration and ChaCha20 selection without weakening the policy.</p>
+        <span class="copy-code"><span class="kw">SSLHonorCipherOrder</span> off
+<span class="kw">SSLCompression</span> off</span>
 
-            <span class="text-code text-light">
-              <span class="text-secondary"># Generate 4096-bits DH group</span><br />
-              <span class="text-danger">openssl</span> dhparam -out /etc/ssl/certs/dhparam.pem <span class="text-info">4096</span><br />
-              <br />
-            </span>
-            <p>After generating the DH parameters, you might want to inspect or verify them. To check the content and details of the generated DH group, use</p>
-            <span class="text-code text-light"> <span class="text-danger">openssl</span> dh -in /etc/ssl/certs/dhparam.pem -text<br /> </span>
-            <br />
-            <p>
-              Once you've generated the DH params, you need to integrate them into your server configuration to use them. For servers running Apache, the directive is `SSLOpenSSLConfCmd`. Here's how you can specify the path to the DH params in the
-              server configuration:
-            </p>
-            <span class="text-code text-light"> <span class="text-danger">SSLOpenSSLConfCmd</span> DHParameters "/etc/ssl/certs/dhparam.pem"</span>
-          </div>
-          <h2 class="my-5 fs-4">Complete configuration</h2>
-          <script src="https://gist.github.com/nbeguier/b0dd442aa77433b0b4163d08f00c0edb.js"></script>
-          <a href="https://gist.github.com/nbeguier/b0dd442aa77433b0b4163d08f00c0edb" class="link-secondary">GitHub GIST Link</a>
+        <p>The <span class="text-code">SSLSessionTickets</span> directive disables TLS session tickets. Apache enables tickets by default; if ticket keys are not rotated frequently, session tickets can weaken forward secrecy.</p>
+        <span class="copy-code"><span class="kw">SSLSessionTickets</span> off</span>
 
-          <h1 class="my-5 fs-3">Conclusion</h1>
+        <p>The <span class="text-code">SSLSessionCacheTimeout</span> and <span class="text-code">SSLSessionCache</span> directives enable SSL session caching to improve performance.</p>
+        <span class="copy-code"><span class="cm"># Enable SSL session caching for improved performance</span>
+<span class="kw">SSLSessionCacheTimeout</span> 300
+<span class="kw">SSLSessionCache</span> "shmcb:/usr/local/apache2/logs/ssl_scache(512000)"</span>
 
-          <div class="lead fs-5 text-light">
-            In conclusion, it is vital to prioritize the security of your Apache web server in order to protect your website and its users from potential threats. By following best practices such as minimizing the amount of data revealed to
-            attackers, using secure encryption algorithms, and implementing security headers and cipher suites, you can significantly enhance the security of your server. It is important to regularly review and update your security measures
-            to stay ahead of evolving threats and to maintain the trust of your users. By taking these steps, you can help to ensure the safety and integrity of your web server and the sensitive data it handles.<br />
-            <br />
-            Evaluate your configuration using the following link: <a href="https://www.ssllabs.com/ssltest/analyze.html" class="link-success">https://www.ssllabs.com/ssltest/analyze.html</a>
-          </div>
+        <p>The <span class="text-code">SSLUseStapling</span> and <span class="text-code">SSLStaplingCache</span> directives enable OCSP stapling, which lets Apache include a certificate revocation response during the TLS handshake. It requires a configured stapling cache.</p>
+        <span class="copy-code"><span class="cm"># OCSP stapling</span>
+<span class="kw">SSLUseStapling</span> on
+<span class="kw">SSLStaplingCache</span> "shmcb:logs/ssl_stapling(32768)"</span>
+
+        <h1>4. Security Headers</h1>
+
+        <p><b>X-Content-Type-Options</b> tells the browser to respect the MIME types in <span class="text-code">Content-Type</span> headers, avoiding MIME type sniffing.</p>
+
+        <p><b>Content Security Policy (CSP)</b> helps mitigate XSS, clickjacking, and data injection attacks. Do not publish two alternative enforcing CSP headers at once: browsers enforce all CSP headers they receive. Start with a small enforcing policy, then test stricter <span class="text-code">script-src</span> rules with <span class="text-code">Content-Security-Policy-Report-Only</span>.</p>
+
+        <p><b>HTTP Strict-Transport-Security (HSTS)</b> tells browsers to access the site over HTTPS in the future. Use a long <span class="text-code">max-age</span> only after HTTP to HTTPS redirects and all subdomains are under control. The <span class="text-code">preload</span> directive should be an explicit opt-in, not a default.</p>
+
+        <span class="copy-code"><span class="cm"># Security headers</span>
+
+<span class="cm">## X-Content-Type-Options: avoid MIME type sniffing</span>
+<span class="kw">Header always set</span> X-Content-Type-Options "nosniff"
+
+<span class="cm">## Referrer-Policy: keep full referrers on same-origin requests only</span>
+<span class="kw">Header always set</span> Referrer-Policy "strict-origin-when-cross-origin"
+
+<span class="cm">## Optional: disable browser features that this site does not use</span>
+<span class="kw">Header always set</span> Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+<span class="cm">## Small enforcing CSP baseline</span>
+<span class="kw">Header always set</span> Content-Security-Policy "object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
+
+<span class="cm">## Test a stricter CSP before enforcing it</span>
+<span class="kw">Header always set</span> Content-Security-Policy-Report-Only "default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'self';"
+
+<span class="cm">## Strict Transport Security (HSTS)</span>
+<span class="kw">Header always set</span> Strict-Transport-Security "max-age=63072000; includeSubDomains"</span>
+
+        <h1>5. DH Parameters</h1>
+
+        <p>With the cipher list above, Apache should negotiate ECDHE for TLS 1.2 and TLS 1.3 key exchange groups for TLS 1.3. A custom finite-field Diffie-Hellman parameter file is no longer necessary for the default configuration.</p>
+
+        <p>Keep DH parameters only if you intentionally re-enable DHE suites for a legacy or compliance requirement. In that case, use at least 2048 bits, test the performance impact, and document why DHE is still needed.</p>
+
+        <span class="copy-code"><span class="cm"># Optional: only if your enabled cipher suites include DHE</span>
+<span class="sh">$</span> openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+<span class="sh">$</span> openssl dh -in /etc/ssl/certs/dhparam.pem -text</span>
+
+        <p>Once generated, reference the file in your Apache config only for that DHE-enabled policy:</p>
+        <span class="copy-code"><span class="kw">SSLOpenSSLConfCmd</span> DHParameters "/etc/ssl/certs/dhparam.pem"</span>
+
+        <h2>Complete configuration</h2>
+        <p>The complete Apache example is kept in the embedded Gist below. Keep it synchronized with the Mozilla generator and your actual Apache/OpenSSL versions.</p>
+        <script src="https://gist.github.com/nbeguier/b0dd442aa77433b0b4163d08f00c0edb.js"></script>
+
+        <h1>Sources</h1>
+
+        <ul>
+          <li><a href="https://ssl-config.mozilla.org/" target="_blank" rel="noopener">Mozilla SSL Configuration Generator</a> and its machine-readable guideline files.</li>
+          <li><a href="https://httpd.apache.org/docs/2.4/en/mod/mod_ssl.html" target="_blank" rel="noopener">Apache mod_ssl documentation</a> for protocol, ciphers, session tickets, compression, and OCSP stapling directives.</li>
+          <li><a href="https://hstspreload.org/" target="_blank" rel="noopener">HSTS preload submission requirements</a> for HSTS ramp-up and preload opt-in guidance.</li>
+          <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP HTTP Security Response Headers Cheat Sheet</a> for security header recommendations.</li>
+        </ul>
+
+        <h1>Conclusion</h1>
+
+        <p>Apache TLS hardening is not a one-time copy-paste task. Use a maintained profile, keep certificates and dependencies current, avoid legacy compatibility unless you have measured demand for it, and test after every meaningful platform change.</p>
+
+        <p>Evaluate your configuration: <a href="https://www.ssllabs.com/ssltest/analyze.html" target="_blank" rel="noopener">ssllabs.com/ssltest</a></p>
+
+        <div class="article-cta">
+          If you enjoyed this article, feel free to share it or <a href="https://www.linkedin.com/in/nicolasbeguier/">reach out on LinkedIn</a>.
         </div>
+
       </div>
+    </div>
 
-      <!-- Begin Thanks -->
-      <h3 class="m-5 fs-5 text-light text-center">If you enjoyed this story, please recommend and share to help others find it! Feel free to contact me if you have any questions.</h3>
-    </main>
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
 
-    <!-- Begin footer -->
-    <div id="includedFooter" class="mt-auto"></div>
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
 
-    <script src="/js/pub/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script src="/js/nico.min.js"></script>
+      // Cover dark sides
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+
+      // Copy buttons
+      document.querySelectorAll('.copy-code').forEach(block => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.title = 'Copy to clipboard';
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        block.appendChild(btn);
+        btn.addEventListener('click', () => {
+          const lines = block.innerText.split('\n');
+          const cleaned = lines
+            .filter(l => !l.trimStart().startsWith('#'))
+            .map(l => l.replace(/^\$\s*/, ''))
+            .filter(l => l.trim() !== '')
+            .join('\n').trim();
+          navigator.clipboard.writeText(cleaned).then(() => {
+            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        });
+      });
+
+      // Lightbox
+      const lbOverlay = document.createElement('div');
+      lbOverlay.className = 'lb-overlay';
+      lbOverlay.innerHTML = '<button class="lb-close">&#x2715;</button><img />';
+      document.body.appendChild(lbOverlay);
+      const lbImg = lbOverlay.querySelector('img');
+      document.querySelectorAll('.article-body img').forEach(img => {
+        img.addEventListener('click', () => { lbImg.src = img.src; lbOverlay.classList.add('open'); });
+      });
+      lbOverlay.querySelector('.lb-close').addEventListener('click', () => lbOverlay.classList.remove('open'));
+      lbOverlay.addEventListener('click', e => { if (e.target === lbOverlay) lbOverlay.classList.remove('open'); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') lbOverlay.classList.remove('open'); });
+    </script>
   </body>
 </html>
