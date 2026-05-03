@@ -102,6 +102,83 @@
 
       footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
       footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+
+      /* Responsive article layout */
+      html, body { overflow-x: hidden; }
+      body { min-width: 0; }
+      nav { min-height: 52px; height: auto; gap: 1rem; }
+      .nav-back { min-width: 0; }
+      .nav-links a { white-space: nowrap; }
+      .article-cover { height: clamp(150px, 28vw, 220px); }
+      .article-wrap { width: min(100%, 780px); max-width: 100%; padding: 0 clamp(1rem, 4vw, 1.5rem) 5rem; min-width: 0; }
+      .article-body { min-width: 0; overflow-wrap: anywhere; }
+      .article-body img { max-width: 100%; height: auto; }
+      .article-body ul, .article-body ol { min-width: 0; }
+      .table-wrap { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .article-body table { max-width: 100%; }
+      .copy-code { width: 100%; max-width: 100%; -webkit-overflow-scrolling: touch; overflow-wrap: normal; overscroll-behavior-inline: contain; }
+      .article-body pre { max-width: 100%; -webkit-overflow-scrolling: touch; overscroll-behavior-inline: contain; }
+      .article-body pre code { white-space: pre; overflow-wrap: normal; }
+      .article-cta { overflow-wrap: anywhere; }
+
+      @media (max-width: 640px) {
+        nav {
+          padding: 0.55rem 1rem;
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 0.35rem;
+        }
+
+        .nav-links {
+          width: 100%;
+          overflow-x: auto;
+          padding-bottom: 0.15rem;
+        }
+
+        .nav-links a:first-child { padding-left: 0; }
+        .article-cover { height: 150px; }
+        .article-cover img { width: 100%; max-width: none; }
+        .article-wrap { padding: 0 1rem 4rem; }
+
+        .article-header {
+          padding: 1.5rem 0 1.35rem;
+          margin-bottom: 1.5rem;
+        }
+
+        .article-title {
+          font-size: 1.55rem;
+          line-height: 1.22;
+        }
+
+        .article-subtitle { font-size: 0.92rem; }
+        .article-meta { flex-wrap: wrap; row-gap: 0.2rem; }
+
+        .article-body p,
+        .article-body li {
+          font-size: 0.92rem;
+          line-height: 1.75;
+        }
+
+        .article-body h1,
+        .article-body h2 {
+          font-size: 1.08rem;
+          margin-top: 2rem;
+        }
+
+        .article-body h3 { font-size: 0.98rem; }
+        .article-body ul,
+        .article-body ol { padding-left: 1.15rem; }
+
+        .copy-code,
+        .article-body pre code { font-size: 0.76rem; }
+
+        .copy-code { padding: 0.75rem 2.5rem 0.75rem 0.8rem; }
+        .article-body pre { padding: 0.85rem 0.95rem; }
+        .tip,
+        .note { padding: 0.7rem 0.85rem; font-size: 0.84rem; }
+        .article-cta { padding: 1.1rem; }
+        footer { padding: 1.2rem 1rem; }
+      }
     </style>
   </head>
 
