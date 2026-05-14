@@ -12,7 +12,7 @@
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/</loc>
-  <lastmod>2026-05-03T00:00:00+00:00</lastmod>
+  <lastmod>2026-05-14T00:00:00+00:00</lastmod>
   <priority>0.90</priority>
 </url>
 <url>
@@ -31,6 +31,11 @@
   <priority>0.60</priority>
 </url>
 <url>
+  <loc>https://beguier.eu/nicolas/articles/subdomain-analysis-toolkit-external-exposure-monitoring.html</loc>
+  <lastmod>2026-05-14T00:00:00+00:00</lastmod>
+  <priority>0.70</priority>
+</url>
+<url>
   <loc>https://beguier.eu/nicolas/articles/android-mitm-intercept-trafic.html</loc>
   <lastmod>2023-05-05T00:00:00+00:00</lastmod>
   <priority>0.70</priority>
@@ -47,7 +52,7 @@
 </url>
 <url>
   <loc>https://beguier.eu/nicolas/articles/splc-vs-sdlc-differences-why-they-matter.html</loc>
-  <lastmod>2022-12-10T00:00:00+00:00</lastmod>
+  <lastmod>2026-05-14T00:00:00+00:00</lastmod>
   <priority>0.64</priority>
 </url>
 <url>

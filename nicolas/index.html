@@ -168,6 +168,8 @@
       .art-cover.tall    { height: 160px; }
       .art-cover.regular { height: 120px; }
       .art-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+      .art-cover img.focus-top { object-position: center top; }
+      .art-cover img.contain-cover { object-fit: contain; padding: 0.35rem; background: #f7f8fc; }
       .art-card:hover .art-cover img { transform: scale(1.04); }
       .art-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; }
       .art-tag {
@@ -264,6 +266,8 @@
       }
       .proj-icon img { height: 24px; }
       .proj-icon.gh { background: #f6f8fa; border-color: #d0d7de; }
+      .proj-icon.article-thumb { overflow: hidden; padding: 0; align-items: flex-start; }
+      .proj-icon.article-thumb img { width: auto; height: 200%; max-width: none; object-fit: cover; object-position: center top; transform: translate(2px, -3px); }
       .proj-title { font-size: 0.95rem; font-weight: 700; color: var(--text-1); margin-bottom: 0.3rem; }
       .proj-desc  { font-size: 0.82rem; color: var(--text-2); line-height: 1.6; margin-bottom: 0.75rem; }
       .proj-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
@@ -318,20 +322,20 @@
 
         <!-- Featured: 2 top articles -->
         <div class="grid-2">
+          <a href="./articles/subdomain-analysis-toolkit-external-exposure-monitoring.html" class="art-card">
+            <div class="art-cover tall"><img src="./img/cover/sat.png" alt="Subdomain Analysis Toolkit" /></div>
+            <div class="art-body">
+              <span class="art-tag">DevSecOps</span>
+              <p class="art-title">Monitor External Exposure with Subdomain Analysis Toolkit</p>
+              <p class="art-date">May 3, 2026</p>
+            </div>
+          </a>
           <a href="./articles/android-mitm-intercept-trafic.html" class="art-card">
             <div class="art-cover tall"><img src="./img/cover/mitm.jpg" alt="Android MITM" /></div>
             <div class="art-body">
               <span class="art-tag">Pentest</span>
               <p class="art-title">Two Effective Ways to Intercept Android App Traffic</p>
               <p class="art-date">May 5, 2023</p>
-            </div>
-          </a>
-          <a href="https://rebirth.devoteam.com/2023/03/30/interview-securite-leboncoin/" class="art-card" target="_blank" rel="noopener">
-            <div class="art-cover tall"><img src="https://rebirth.devoteam.com/wp-content/uploads/2021/04/Devoteam_Revolve_Blog_Securite_Cloud_Bancaire.jpg" alt="Interview" /></div>
-            <div class="art-body">
-              <span class="art-tag">Interview</span>
-              <p class="art-title">L'interview sécurité : cybersécurité et sécurité Cloud chez leboncoin</p>
-              <p class="art-date">Mar 30, 2023</p>
             </div>
           </a>
         </div>
@@ -367,7 +371,7 @@
         <!-- Third row: 2 articles -->
         <div class="grid-2" style="margin-top:1rem;">
           <a href="./articles/splc-vs-sdlc-differences-why-they-matter.html" class="art-card">
-            <div class="art-cover regular"><img src="./img/cover/cover3.jpg" alt="SPLC vs SDLC" /></div>
+            <div class="art-cover regular"><img class="contain-cover" src="./img/cover/splc-sdlc.png" alt="SPLC vs SDLC product security lifecycle illustration" /></div>
             <div class="art-body">
               <span class="art-tag">DevSecOps</span>
               <p class="art-title">The SPLC vs. SDLC: Understanding the Differences and Why They Matter</p>
@@ -550,13 +554,14 @@
               </div>
             </div>
             <div class="proj-card">
-              <div class="proj-icon gh">
-                <img src="https://github.githubassets.com/favicons/favicon.svg" alt="GitHub" />
+              <div class="proj-icon article-thumb">
+                <img src="./img/cover/sat.png" alt="Subdomain Analysis Toolkit" />
               </div>
               <div>
                 <p class="proj-title">Subdomain Analysis Toolkit</p>
                 <p class="proj-desc">Automate subdomain discovery, analysis, reporting and statistical insights.</p>
                 <div class="proj-links">
+                  <a href="./articles/subdomain-analysis-toolkit-external-exposure-monitoring.html" class="proj-link">Article</a>
                   <a href="https://github.com/nbeguier/SubdomainAnalysisToolkit" class="proj-link" target="_blank" rel="noopener">GitHub</a>
                 </div>
               </div>
