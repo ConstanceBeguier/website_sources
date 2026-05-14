@@ -4,27 +4,27 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Learn everything you need to know about the Secure Product LifeCycle (SPLC), including its phases, its differences with the SDLC, and how to implement it." />
+    <meta name="description" content="SPLC means Secure Product Lifecycle. Learn how it differs from SDLC, why product security needs extra phases, and where to start." />
     <meta name="author" content="Nicolas Béguier" />
-    <meta name="keywords" content="SPLC, SDLC, differences, importance, software development, secure product lifecycle, devsecops" />
-    <meta property="og:title" content="SPLC vs SDLC: Secure Product Lifecycle Differences" />
-    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/cover3.jpg" />
-    <meta property="og:description" content="Learn everything you need to know about the Secure Product LifeCycle (SPLC), including its phases, its differences with the SDLC, and how to implement it." />
+    <meta name="keywords" content="SPLC, SDLC, secure product lifecycle, secure SDLC, product security, devsecops, software security lifecycle" />
+    <meta property="og:title" content="The SPLC vs. SDLC: What Changes for Product Security?" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/splc-sdlc.png" />
+    <meta property="og:description" content="SPLC means Secure Product Lifecycle. Learn how it differs from SDLC, why product security needs extra phases, and where to start." />
     <meta property="og:url" content="https://beguier.eu/nicolas/articles/splc-vs-sdlc-differences-why-they-matter.html" />
     <meta property="og:type" content="article" />
     <link rel="canonical" href="https://beguier.eu/nicolas/articles/splc-vs-sdlc-differences-why-they-matter.html" />
-    <title>SPLC vs SDLC: Secure Product Lifecycle Differences</title>
+    <title>The SPLC vs. SDLC: What Changes for Product Security?</title>
     <link rel="icon" href="/favicon.png" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      "headline": "The SPLC vs. SDLC: Understanding the Differences and Why They Matter",
-      "description": "Learn everything you need to know about the Secure Product LifeCycle (SPLC), including its phases, its differences with the SDLC, and how to implement it.",
-      "image": "https://beguier.eu/nicolas/img/cover/cover3.jpg",
+      "headline": "The SPLC vs. SDLC: What Changes for Product Security?",
+      "description": "SPLC means Secure Product Lifecycle. Learn how it differs from SDLC, why product security needs extra phases, and where to start.",
+      "image": "https://beguier.eu/nicolas/img/cover/splc-sdlc.png",
       "url": "https://beguier.eu/nicolas/articles/splc-vs-sdlc-differences-why-they-matter.html",
       "datePublished": "2022-12-10",
-      "dateModified": "2022-12-10",
+      "dateModified": "2026-05-14",
       "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
       "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
     }
@@ -55,9 +55,9 @@
       .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
       .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
 
-      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover { position: relative; width: 100%; height: 260px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
       .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
-      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover img { position: relative; z-index: 1; width: min(94%, 760px); height: 100%; object-fit: contain; object-position: center; display: block; filter: brightness(0.9); }
       .article-cover::after { display: none; }
 
       .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
@@ -71,8 +71,8 @@
 
       .article-body { line-height: 1.8; }
       .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
-      .article-body h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
-      .article-body h2 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
+      .article-body h2 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body h3 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
       .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
       .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.75rem; line-height: 1.7; }
       .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
@@ -101,7 +101,7 @@
       nav { min-height: 52px; height: auto; gap: 1rem; }
       .nav-back { min-width: 0; }
       .nav-links a { white-space: nowrap; }
-      .article-cover { height: clamp(150px, 28vw, 220px); }
+      .article-cover { height: clamp(220px, 34vw, 320px); }
       .article-wrap { width: min(100%, 780px); max-width: 100%; padding: 0 clamp(1rem, 4vw, 1.5rem) 5rem; min-width: 0; }
       .article-body { min-width: 0; overflow-wrap: anywhere; }
       .article-body img { max-width: 100%; height: auto; }
@@ -128,8 +128,8 @@
         }
 
         .nav-links a:first-child { padding-left: 0; }
-        .article-cover { height: 150px; }
-        .article-cover img { width: 100%; max-width: none; }
+        .article-cover { height: 210px; }
+        .article-cover img { width: 96%; max-width: none; height: 100%; }
         .article-wrap { padding: 0 1rem 4rem; }
 
         .article-header {
@@ -151,13 +151,12 @@
           line-height: 1.75;
         }
 
-        .article-body h1,
-        .article-body h2 {
+        .article-body h2,
+        .article-body h3 {
           font-size: 1.08rem;
           margin-top: 2rem;
         }
 
-        .article-body h3 { font-size: 0.98rem; }
         .article-body ul,
         .article-body ol { padding-left: 1.15rem; }
 
@@ -184,14 +183,14 @@
     </nav>
 
     <div class="article-cover">
-      <img src="/nicolas/img/cover/cover3.jpg" alt="SPLC vs SDLC" />
+      <img src="/nicolas/img/cover/splc-sdlc.png" alt="SPLC vs SDLC product security lifecycle illustration" />
     </div>
 
     <div class="article-wrap">
       <header class="article-header">
         <span class="art-tag">DevSecOps</span>
-        <h1 class="article-title">The SPLC vs. SDLC: Understanding the Differences and Why They Matter</h1>
-        <p class="article-subtitle">Everything you need to know about the Secure Product LifeCycle — its phases, its differences with the SDLC, and how to implement it.</p>
+        <h1 class="article-title">The SPLC vs. SDLC: What Changes for Product Security?</h1>
+        <p class="article-subtitle">SPLC means Secure Product Lifecycle: a security process that extends SDLC from product planning to retirement.</p>
         <div class="article-meta">
           <span>Dec 10, 2022</span>
           <span>·</span>
@@ -201,28 +200,44 @@
 
       <div class="article-body">
 
-        <p>The Secure Product LifeCycle (SPLC) is a framework for managing the security of a product throughout its entire life cycle, from inception to retirement. It is similar to the Software Development LifeCycle (SDLC), but with a focus on security rather than just software development. The SPLC consists of several phases, each focusing on a specific aspect of product security.</p>
+        <p><b>SPLC means Secure Product Lifecycle.</b> It is a framework for managing product security throughout the whole life cycle, from the first planning discussions to retirement. It is close to the Software Development Lifecycle (SDLC), but it is broader: the SDLC explains how software is designed, built, tested, and delivered; the SPLC explains how a product stays secure before, during, and after that delivery work.</p>
 
-        <h1>SPLC Phases</h1>
+        <p>If you are here for the quick difference: <b>SDLC is about building software, while SPLC is about securing the product over time.</b> A secure SDLC can be one part of an SPLC, but it does not cover everything alone.</p>
+
+        <h2>SPLC in One Sentence</h2>
+
+        <p>SPLC is the security lifecycle around a product: define security requirements, design controls, implement them, verify them, release safely, and retire the product without leaving exposed systems or data behind.</p>
+
+        <h2>SPLC Phases</h2>
 
         <p>The SPLC has six phases:</p>
         <ol>
-          <li><b>Planning</b> — The product team defines the security requirements and design objectives for the product. This includes identifying potential threats and vulnerabilities, as well as determining how to mitigate them. A security plan is created that outlines the steps to be taken throughout the product's life cycle.</li>
-          <li><b>Design</b> — The product team designs the product's security features and mechanisms. This includes selecting the appropriate security technologies and implementing them in the product's design. The goal is to ensure security is integrated into every aspect of the product from the start.</li>
-          <li><b>Implementation</b> — The product team builds the product according to the security design. This includes writing code, testing the product, and integrating it with other systems. The goal is to ensure the product is secure and functions as intended.</li>
-          <li><b>Verification</b> — The product team verifies that the product meets the security requirements and design objectives. This includes testing security features and conducting a security audit to identify potential vulnerabilities. The goal is to ensure the product is secure and ready for release.</li>
-          <li><b>Release</b> — The product is released to the market and made available to customers. This phase also involves providing ongoing support and maintenance, including security updates and patches.</li>
-          <li><b>Retirement</b> — The product reaches the end of its life cycle and is retired. This involves decommissioning the product, disposing of it securely, and transferring any remaining assets or data to a new product.</li>
+          <li><b>Planning</b>: The product team defines the security requirements and design objectives for the product. This includes identifying potential threats and vulnerabilities, as well as determining how to mitigate them. A security plan is created that outlines the steps to be taken throughout the product's life cycle.</li>
+          <li><b>Design</b>: The product team designs the product's security features and mechanisms. This includes selecting the appropriate security technologies and implementing them in the product's design. The goal is to ensure security is integrated into every aspect of the product from the start.</li>
+          <li><b>Implementation</b>: The product team builds the product according to the security design. This includes writing code, testing the product, and integrating it with other systems. The goal is to ensure the product is secure and functions as intended.</li>
+          <li><b>Verification</b>: The product team verifies that the product meets the security requirements and design objectives. This includes testing security features and conducting a security audit to identify potential vulnerabilities. The goal is to ensure the product is secure and ready for release.</li>
+          <li><b>Release</b>: The product is released to the market and made available to customers. This phase also involves providing ongoing support and maintenance, including security updates and patches.</li>
+          <li><b>Retirement</b>: The product reaches the end of its life cycle and is retired. This involves decommissioning the product, disposing of it securely, and transferring any remaining assets or data to a new product.</li>
         </ol>
 
         <img src="https://www.inventonus.com/wp-content/uploads/2021/03/Secure-Product-Lifecycle-Management.jpg" alt="SPLC production steps" />
-        <p class="img-caption">Example of the SPLC steps (without Retirement) — <a href="https://www.inventonus.com/secure-product-lifecycle-management-splm/" target="_blank" rel="noopener">Inventonus</a></p>
+        <p class="img-caption">Example of the SPLC steps (without Retirement): <a href="https://www.inventonus.com/secure-product-lifecycle-management-splm/" target="_blank" rel="noopener">Inventonus</a></p>
 
-        <h1>Differences with SDLC</h1>
+        <h2>SPLC vs SDLC: The Practical Differences</h2>
 
         <p>The SPLC and SDLC are similar in many ways, but there are also key differences. The main difference is the focus: the SDLC focuses on the development of software, while the SPLC focuses on the <b>security of a product</b>. This means the SPLC includes additional phases such as <b>planning</b> and <b>verification</b> that are not present in the SDLC. The SPLC also puts a greater emphasis on security throughout the entire life cycle, while the SDLC focuses mainly on the development phase.</p>
 
-        <p>Another difference is the level of detail and rigor. The SPLC is a more detailed process, involving more phases and more thorough security testing. This is necessary because the security of a product is critical to its success — any vulnerabilities or weaknesses can have serious consequences.</p>
+        <p>Another difference is the level of detail and rigor. The SPLC is a more detailed process, involving more phases and more thorough security testing. This is necessary because the security of a product is critical to its success; any vulnerabilities or weaknesses can have serious consequences.</p>
+
+        <h2>Where to Start</h2>
+
+        <p>You do not need a perfect process to start using SPLC ideas. A useful first step is to make product security explicit in places where it is often implicit:</p>
+
+        <ul>
+          <li>Add security requirements during product planning, not only during implementation.</li>
+          <li>Review product design before development starts, especially authentication, authorization, data flows, and external integrations.</li>
+          <li>Keep verification and retirement in the scope: a product is not only secure when it ships, it also needs updates, monitoring, and a clean end-of-life path.</li>
+        </ul>
 
         <p>For more information about SPLC and SDLC:</p>
         <ul>

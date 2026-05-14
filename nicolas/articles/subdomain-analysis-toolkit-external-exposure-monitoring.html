@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html xmlns:og="http://ogp.me/ns#" lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Use Subdomain Analysis Toolkit to discover subdomains, run Nuclei, and catch low-hanging public exposure in 10 minutes with free tools." />
+    <meta name="author" content="Nicolas Béguier" />
+    <meta name="keywords" content="external exposure monitoring open source security tools subdomain analysis toolkit nuclei subfinder amass devsecops" />
+    <meta property="og:title" content="Monitor External Exposure with Open Source Security Tools" />
+    <meta property="og:image" content="https://beguier.eu/nicolas/img/cover/sat.png" />
+    <meta property="og:description" content="Use Subdomain Analysis Toolkit to discover subdomains, run Nuclei, and catch low-hanging public exposure in 10 minutes with free tools." />
+    <meta property="og:url" content="https://beguier.eu/nicolas/articles/subdomain-analysis-toolkit-external-exposure-monitoring.html" />
+    <meta property="og:type" content="article" />
+    <link rel="canonical" href="https://beguier.eu/nicolas/articles/subdomain-analysis-toolkit-external-exposure-monitoring.html" />
+    <title>Monitor External Exposure with Open Source Security Tools</title>
+    <link rel="icon" href="/favicon.png" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Monitor External Exposure with Open Source Security Tools",
+      "description": "Use Subdomain Analysis Toolkit to discover subdomains, run Nuclei, and catch low-hanging public exposure in 10 minutes with free tools.",
+      "image": "https://beguier.eu/nicolas/img/cover/sat.png",
+      "url": "https://beguier.eu/nicolas/articles/subdomain-analysis-toolkit-external-exposure-monitoring.html",
+      "datePublished": "2026-05-03",
+      "dateModified": "2026-05-14",
+      "author": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" },
+      "publisher": { "@type": "Person", "name": "Nicolas Béguier", "url": "https://beguier.eu/nicolas/" }
+    }
+    </script>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg:          #f7f8fc;
+        --surface:     #ffffff;
+        --border:      #e8eaf0;
+        --text-1:      #0f1117;
+        --text-2:      #5a6078;
+        --text-3:      #9ba3bb;
+        --accent:      #4f46e5;
+        --accent-soft: #eef2ff;
+        --code-bg:     #1a1d2e;
+        --code-text:   #e2e8f0;
+      }
+
+      html, body { min-height: 100vh; }
+      body { background: var(--bg); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text-1); display: flex; flex-direction: column; }
+
+      nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; height: 52px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+      .nav-back { font-size: 0.76rem; color: var(--text-3); text-decoration: none; transition: color .15s; }
+      .nav-back:hover { color: var(--text-2); text-decoration: none; }
+      .nav-links { display: flex; gap: 0.2rem; }
+      .nav-links a { font-size: 0.8rem; color: var(--text-2); text-decoration: none; padding: 0.28rem 0.65rem; border-radius: 6px; transition: background .15s, color .15s; }
+      .nav-links a:hover { background: #f1f5f9; color: var(--text-1); }
+
+      .article-cover { position: relative; width: 100%; height: 200px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #000; }
+      .article-cover::before { content: ''; position: absolute; inset: 0; z-index: 0; background-image: var(--cover-url, none); background-size: cover; background-position: center; filter: brightness(0.12); transform: scale(1.03); pointer-events: none; }
+      .article-cover img { position: relative; z-index: 1; width: 50%; height: 100%; object-fit: cover; object-position: center; display: block; filter: brightness(0.82); }
+      .article-cover::after { display: none; }
+
+      .article-wrap { max-width: 780px; margin: 0 auto; padding: 0 1.5rem 5rem; flex: 1; }
+
+      .article-header { padding: 2rem 0 1.75rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+      .art-tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--accent-soft); color: var(--accent); margin-bottom: 0.75rem; }
+      .article-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text-1); letter-spacing: -0.02em; line-height: 1.25; margin-bottom: 0.5rem; }
+      .article-subtitle { font-size: 1rem; color: var(--text-2); line-height: 1.5; margin-bottom: 1rem; }
+      .article-meta { font-size: 0.78rem; color: var(--text-3); display: flex; align-items: center; gap: 0.5rem; }
+      .article-meta a { color: var(--accent); text-decoration: none; }
+
+      .article-body { line-height: 1.8; }
+      .article-body p { margin-bottom: 1.1rem; color: var(--text-2); font-size: 0.95rem; }
+      .article-body h2 { font-size: 1.2rem; font-weight: 700; color: var(--text-1); margin: 2.5rem 0 1rem; padding-left: 0.75rem; border-left: 3px solid var(--accent); letter-spacing: -0.01em; }
+      .article-body h3 { font-size: 1rem; font-weight: 700; color: var(--text-1); margin: 1.75rem 0 0.75rem; }
+      .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1.1rem; }
+      .article-body li { color: var(--text-2); font-size: 0.95rem; margin-bottom: 0.5rem; line-height: 1.7; }
+      .article-body b, .article-body strong { color: var(--text-1); font-weight: 600; }
+      .article-body a { color: var(--accent); text-decoration: none; }
+      .article-body a:hover { text-decoration: underline; }
+
+      .text-code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82em; background: #f1f3f9; border: 1px solid var(--border); border-radius: 4px; padding: 0.1em 0.4em; color: var(--text-1); word-break: break-word; }
+
+      .copy-code { display: block; position: relative; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; background: var(--code-bg); color: var(--code-text); border-radius: 8px; padding: 0.75rem 3rem 0.75rem 1rem; margin: 0.5rem 0 1.1rem; overflow-x: auto; white-space: pre; }
+      .copy-code .kw { color: #f87171; }
+      .copy-code .cm { color: #94a3b8; }
+      .copy-code .sh { color: #f87171; }
+
+      .copy-btn { position: absolute; top: 0.45rem; right: 0.45rem; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.14); border-radius: 5px; color: rgba(255,255,255,0.4); padding: 0.22rem 0.45rem; cursor: pointer; font-size: 0.68rem; line-height: 1; transition: background .15s, color .15s; }
+      .copy-btn:hover { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
+      .copy-btn.copied { color: #4ade80; border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.08); }
+
+      .article-body pre { background: var(--code-bg); border-radius: 8px; padding: 1rem 1.25rem; overflow-x: auto; margin: 0.5rem 0 1.25rem; }
+      .article-body pre code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 0.82rem; color: var(--code-text); }
+
+      .tip { display: flex; align-items: flex-start; gap: 0.6rem; background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid #3b82f6; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1.1rem; font-size: 0.88rem; color: #1e40af; line-height: 1.6; }
+
+      .repo-link-card { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; margin: 0.5rem 0 1.4rem; }
+      .repo-link-card span { color: var(--text-1); font-size: 0.9rem; font-weight: 700; }
+      .repo-link-card a { display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-size: 0.78rem; font-weight: 700; padding: 0.35rem 0.75rem; text-decoration: none; white-space: nowrap; }
+      .repo-link-card a:hover { background: rgba(79,70,229,0.12); text-decoration: none; }
+
+      .article-cta { margin-top: 3rem; padding: 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 0.88rem; color: var(--text-2); overflow-wrap: anywhere; }
+      .article-cta a { color: var(--accent); }
+
+      footer { text-align: center; padding: 1.5rem; font-size: 0.75rem; color: var(--text-3); border-top: 1px solid var(--border); }
+      footer a { color: var(--text-3); text-decoration: underline; text-underline-offset: 2px; }
+
+      html, body { overflow-x: hidden; }
+      body { min-width: 0; }
+      nav { min-height: 52px; height: auto; gap: 1rem; }
+      .nav-back { min-width: 0; }
+      .nav-links a { white-space: nowrap; }
+      .article-cover { height: clamp(190px, 34vw, 320px); }
+      .article-wrap { width: min(100%, 780px); max-width: 100%; padding: 0 clamp(1rem, 4vw, 1.5rem) 5rem; min-width: 0; }
+      .article-body { min-width: 0; overflow-wrap: anywhere; }
+      .article-body ul, .article-body ol { min-width: 0; }
+      .copy-code { width: 100%; max-width: 100%; -webkit-overflow-scrolling: touch; overflow-wrap: normal; overscroll-behavior-inline: contain; }
+      .article-body pre { max-width: 100%; -webkit-overflow-scrolling: touch; overscroll-behavior-inline: contain; }
+      .article-body pre code { white-space: pre; overflow-wrap: normal; }
+
+      @media (max-width: 640px) {
+        nav { padding: 0.55rem 1rem; align-items: flex-start; flex-direction: column; gap: 0.35rem; }
+        .nav-links { width: 100%; overflow-x: auto; padding-bottom: 0.15rem; }
+        .nav-links a:first-child { padding-left: 0; }
+        .article-cover { height: 190px; }
+        .article-cover img { width: 100%; max-width: none; }
+        .article-wrap { padding: 0 1rem 4rem; }
+        .article-header { padding: 1.5rem 0 1.35rem; margin-bottom: 1.5rem; }
+        .article-title { font-size: 1.55rem; line-height: 1.22; }
+        .article-subtitle { font-size: 0.92rem; }
+        .article-meta { flex-wrap: wrap; row-gap: 0.2rem; }
+        .article-body p, .article-body li { font-size: 0.92rem; line-height: 1.75; }
+        .article-body h2, .article-body h3 { font-size: 1.08rem; margin-top: 2rem; }
+        .article-body ul, .article-body ol { padding-left: 1.15rem; }
+        .copy-code, .article-body pre code { font-size: 0.76rem; }
+        .copy-code { padding: 0.75rem 2.5rem 0.75rem 0.8rem; }
+        .article-body pre { padding: 0.85rem 0.95rem; }
+        .tip { padding: 0.7rem 0.85rem; font-size: 0.84rem; }
+        .repo-link-card { align-items: flex-start; flex-direction: column; gap: 0.65rem; }
+        .article-cta { padding: 1.1rem; }
+        footer { padding: 1.2rem 1rem; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav>
+      <a href="/nicolas/" class="nav-back">← Nicolas Béguier</a>
+      <div class="nav-links">
+        <a href="https://www.linkedin.com/in/nicolasbeguier/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/nbeguier/" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </nav>
+
+    <div class="article-cover">
+      <img src="/nicolas/img/cover/sat.png" alt="Subdomain Analysis Toolkit" />
+    </div>
+
+    <div class="article-wrap">
+      <header class="article-header">
+        <span class="art-tag">DevSecOps</span>
+        <h1 class="article-title">Monitor External Exposure with Open Source Security Tools</h1>
+        <p class="article-subtitle">Use Subdomain Analysis Toolkit to discover subdomains, run Nuclei, and catch low-hanging public exposure in 10 minutes.</p>
+        <div class="article-meta">
+          <time datetime="2026-05-03">May 3, 2026</time>
+          <span>·</span>
+          <a href="/nicolas/">Nicolas Béguier</a>
+        </div>
+      </header>
+
+      <div class="article-body">
+
+        <p>You do not need a paid attack surface management platform to catch the obvious mistakes. In a fast-moving information system, public exposure changes all the time. New subdomains appear, temporary services stay online longer than expected, demo applications become production dependencies, and with the rise of vibe coding it is even easier to ship something quickly and forget the boring security cleanup.</p>
+
+        <p>That is why I like having a simple blackbox monitoring loop on the public perimeter. Not because it replaces a pentest. It does not. But because it catches low-hanging fruits before they become embarrassing: forgotten admin panels, exposed Swagger documentation, database banners, directory listing, debug pages, or old test applications still reachable from the internet.</p>
+
+        <p><a href="https://github.com/nbeguier/SubdomainAnalysisToolkit" target="_blank" rel="noopener"><b>Subdomain Analysis Toolkit</b></a> is my small open-source toolbox for that use case. It is not an ASM platform and it will not do miracles. It is a cheap safety net that you can run once, then automate if it proves useful.</p>
+
+        <div class="repo-link-card">
+          <span>Subdomain Analysis Toolkit on GitHub</span>
+          <a href="https://github.com/nbeguier/SubdomainAnalysisToolkit" target="_blank" rel="noopener">View repository</a>
+        </div>
+
+        <div class="tip">
+          <span>This article focuses on the main workflow: discover subdomains, scan them with Nuclei, read the report, and schedule the loop. The repository contains more helper scripts, but the goal here is to bootstrap something useful fast.</span>
+        </div>
+
+        <h2>1. The Basic Idea</h2>
+
+        <p>The workflow is intentionally simple:</p>
+
+        <span class="copy-code">targets.txt
+  -> subdomains.sh
+  -> targets.latest.txt
+  -> nuclei.sh
+  -> report.2026-Week16.txt</span>
+
+        <p><span class="text-code">targets.txt</span> contains the root domains you are allowed to test. <span class="text-code">subdomains.sh</span> collects and consolidates subdomains. <span class="text-code">nuclei.sh</span> scans the resulting list by severity and protocol. The output is a weekly report that can be archived, compared, or plugged into your own internal alerting.</p>
+
+        <p>The important part is not only finding subdomains. The useful part is repeating the scan over time and noticing what changed.</p>
+
+        <h2>2. 10-Minute Bootstrap</h2>
+
+        <p>Assuming you already have Go available, clone the project and install only what is needed for this first loop: <span class="text-code">subfinder</span> and <span class="text-code">amass</span> for discovery, then <span class="text-code">nuclei</span> for the scan. <span class="text-code">curl</span> is also used by <span class="text-code">nuclei.sh</span> to check the current outbound IP, but it is usually already installed on Linux servers.</p>
+
+        <span class="copy-code"><span class="sh">$</span> git clone https://github.com/nbeguier/SubdomainAnalysisToolkit.git
+<span class="sh">$</span> cd SubdomainAnalysisToolkit
+<span class="sh">$</span> go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+<span class="sh">$</span> go install -v github.com/owasp-amass/amass/v3/...@master
+<span class="sh">$</span> go install -v github.com/projectdiscovery/nuclei/v2/cmd/nuclei@latest</span>
+
+        <p>The other Python and Go dependencies are useful for the rest of the toolbox: stats, CSV exports, provider mapping, Wayback URLs, public bucket checks, or TCP exposure checks. You do not need them to validate the main idea.</p>
+
+        <p>Create your local configuration and a small target file. Only scan domains you own or have explicit permission to test.</p>
+
+        <span class="copy-code"><span class="sh">$</span> cp settings.sample.py settings.py
+<span class="sh">$</span> echo "beguier.eu" &gt; targets.txt</span>
+
+        <p>Now generate the subdomain list and run the Nuclei scan. For a first manual run, keep the colored output in your terminal:</p>
+
+        <span class="copy-code"><span class="sh">$</span> bash subdomains.sh
+<span class="sh">$</span> bash nuclei.sh</span>
+
+        <p>If you want to archive the run as a clean weekly report, use the no-color output variant:</p>
+
+        <span class="copy-code"><span class="sh">$</span> bash nuclei.sh --no-color &gt; "report.$(date +%G-Week%V).txt"</span>
+
+        <p>At this point you already have the two files that matter most for a first run: the latest known public targets and the current scan report.</p>
+
+        <h2>3. Reading the Target List</h2>
+
+        <p>The consolidated list is stored in <span class="text-code">targets.latest.txt</span>. For example:</p>
+
+        <pre><code>$ cat targets.latest.txt
+beguier.eu
+secret.beguier.eu
+www.beguier.eu</code></pre>
+
+        <p>In a real perimeter, this file quickly becomes your blackbox inventory. It will not replace your CMDB, cloud inventory, DNS management, or asset ownership data. It gives you a simple outside view: what can an external observer discover and try to reach?</p>
+
+        <h2>4. Why Nuclei Is Split by Severity and Protocol</h2>
+
+        <p><span class="text-code">nuclei.sh</span> does not launch everything as one big opaque scan. It loops over severities and protocols. This keeps the scan easier to follow, limits the impact of heavy template categories, and gives you progress visibility while the run is still active.</p>
+
+        <pre><code>$ more report.2026-Week16.txt
+[*] Checking SOCKS5 proxy at socks5://127.0.0.1:9050...
+[-] SOCKS5 proxy not detected. Proceeding without proxy.
+[+] Current IP without proxy: 10.0.0.1
+[*] Updating HTTPx, DNSx, Nuclei and templates...
+[*] Starting Nuclei scans on 1050 targets...
+[*] Severity: critical
+    [*] Protocol: dns
+    [+] Found 2 templates for severity: critical and protocol: dns
+    [*] Protocol: file
+    [+] Found 5 templates for severity: critical and protocol: file
+    [*] Protocol: http
+    [+] Found 1618 templates for severity: critical and protocol: http
+    [*] Protocol: headless
+    [+] Found 3 templates for severity: critical and protocol: headless
+    [*] Protocol: tcp
+    [+] Found 31 templates for severity: critical and protocol: tcp
+    [*] Protocol: workflow
+    [+] Found 2 templates for severity: critical and protocol: workflow
+[*] Severity: high
+    [*] Protocol: http
+    [+] Found 2267 templates for severity: high and protocol: http
+[CVE-2025-4123:open-redirect] [http] [high] https://secret.beguier.eu/grafana/..%2F%5coast.pro%2F%3f%2F..%2F..
+[symfony-debug] [http] [high] https://www.beguier.eu
+[...]</code></pre>
+
+        <p>During a run, Nuclei exposes runtime metrics on port <span class="text-code">9092</span>:</p>
+
+        <pre><code>$ curl localhost:9092/metrics; echo ""
+{"matched":0,"total":4024467,"templates":1605,"summary":"[0:00:04] | Templates: 1605 | Hosts: 1251 | RPS: 182 | Matched: 0 | Errors: 384 | Requests: 790/4024467 (0%)\n","duration":"0:00:04","rps":"182","requests":790,"errors":384,"startedAt":"2026-05-03T08:24:57.631716231Z","hosts":1251,"percent":"0"}</code></pre>
+
+        <h2>5. What I Triage First</h2>
+
+        <p>The first pass is obvious: critical, high, and medium findings. But do not ignore all low or info templates blindly. Some of them are low from a generic scanner perspective but very interesting in a real company context.</p>
+
+        <p>If I have limited time, I usually start with high signal findings such as:</p>
+
+        <ul>
+          <li><span class="text-code">mysql-detect</span> and <span class="text-code">pgsql-detect</span> - exposed database services should always raise questions.</li>
+          <li><span class="text-code">dir-listing</span> - directory listing is often boring until it leaks backups, source maps, or deployment artifacts.</li>
+          <li><span class="text-code">phpmyadmin-panel</span> and other admin panels - even when authentication exists, the exposure itself may be unwanted.</li>
+          <li><span class="text-code">swagger-api</span> - public API documentation can reveal endpoints, models, and internal assumptions.</li>
+          <li><span class="text-code">exposed-gitignore</span>, <span class="text-code">makefile-exposure</span>, and <span class="text-code">package-json</span> - small files can disclose stack details and deployment habits.</li>
+        </ul>
+
+        <p>Nuclei has a lot of templates. That is a strength, but it also means you must tune your review process. The goal is not to worship scanner severity. The goal is to find things that should not be public.</p>
+
+        <h2>6. Run It Continuously with systemd</h2>
+
+        <p>For a one-shot test, the commands above are enough. In a company environment, I prefer turning it into a recurring monitoring loop. The public repository gives the scanning toolbox; your environment can add storage, ownership mapping, ticketing, Slack alerts, or whatever matches your constraints.</p>
+
+        <p>On Linux, a simple pattern is to refresh subdomains every day, then run Nuclei once a week.</p>
+
+        <h3>Subdomain discovery service</h3>
+
+        <pre><code># /etc/systemd/system/subdomains.service
+[Unit]
+Description=Subdomain Analysis Toolkit - Daily run
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/SubdomainAnalysisToolkit
+ExecStart=/bin/bash /opt/SubdomainAnalysisToolkit/subdomains.sh</code></pre>
+
+        <pre><code># /etc/systemd/system/subdomains.timer
+[Unit]
+Description=Run Subdomain Analysis Toolkit every day at 23:00
+
+[Timer]
+OnCalendar=*-*-* 23:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target</code></pre>
+
+        <h3>Nuclei scan service</h3>
+
+        <pre><code># /etc/systemd/system/nuclei.service
+[Unit]
+Description=Nuclei scan - daily run
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/SubdomainAnalysisToolkit
+Environment=HOME=/root
+Environment=XDG_CONFIG_HOME=/root/.config
+Environment=XDG_CACHE_HOME=/root/.cache
+ExecStart=/bin/bash -c '/bin/bash nuclei.sh --no-color &gt; report.$(date +%%G-Week%%V).txt'</code></pre>
+
+        <pre><code># /etc/systemd/system/nuclei.timer
+[Unit]
+Description=Run Nuclei scan every Monday at 00:00
+
+[Timer]
+OnCalendar=Mon *-*-* 00:00:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target</code></pre>
+
+        <span class="copy-code"><span class="sh">$</span> systemctl daemon-reload
+<span class="sh">$</span> systemctl enable --now subdomains.timer nuclei.timer
+<span class="sh">$</span> systemctl list-timers subdomains.timer nuclei.timer
+<span class="sh">$</span> journalctl -x -u subdomains.service -f
+<span class="sh">$</span> journalctl -x -u nuclei.service -f</span>
+
+        <h2>7. Limits</h2>
+
+        <p>This is not a replacement for a pentest. It does not test business logic, authenticated workflows, chained vulnerabilities, or architecture decisions. It is also not a full external attack surface management platform.</p>
+
+        <p>It is a small blackbox control that costs almost nothing and catches obvious mistakes. If it finds nothing, good. If it finds a forgotten panel, an exposed debug endpoint, a database banner, or a public Swagger file, it already paid for itself.</p>
+
+        <h2>Conclusion</h2>
+
+        <p>The public perimeter is your storefront. In a system that constantly changes, you need at least a cheap way to notice when something new becomes visible from the outside.</p>
+
+        <p>Start small: one target file, one subdomain discovery run, one Nuclei report. Then automate it if the signal is useful.</p>
+
+        <div class="article-cta">
+          The project is available on GitHub: <a href="https://github.com/nbeguier/SubdomainAnalysisToolkit" target="_blank" rel="noopener">Subdomain Analysis Toolkit</a>.
+        </div>
+
+      </div>
+    </div>
+
+    <footer>Beguier &mdash; Copyright &copy; 2019–<span id="yr"></span> &mdash; <a href="/legal.html">Legal</a></footer>
+
+    <script>
+      document.getElementById('yr').textContent = new Date().getFullYear();
+
+      (function(){
+        var c = document.querySelector('.article-cover');
+        var i = c && c.querySelector('img');
+        if (c && i) c.style.setProperty('--cover-url', "url('" + i.getAttribute('src') + "')");
+      })();
+
+      document.querySelectorAll('.copy-code').forEach(block => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.title = 'Copy to clipboard';
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+        block.appendChild(btn);
+        btn.addEventListener('click', () => {
+          const lines = block.innerText.split('\n');
+          const cleaned = lines
+            .filter(l => !l.trimStart().startsWith('#'))
+            .map(l => l.replace(/^\$\s*/, ''))
+            .filter(l => l.trim() !== '')
+            .join('\n').trim();
+          navigator.clipboard.writeText(cleaned).then(() => {
+            btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+            btn.classList.add('copied');
+            setTimeout(() => {
+              btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+              btn.classList.remove('copied');
+            }, 1800);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

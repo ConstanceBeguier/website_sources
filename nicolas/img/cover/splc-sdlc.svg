@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Product security lifecycle cover</title>
+  <desc id="desc">An editorial illustration of a secure product workspace with code, a shield, and lifecycle controls.</desc>
+  <defs>
+    <linearGradient id="desk" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef2ff"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#101426"/>
+      <stop offset="1" stop-color="#27223f"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/>
+      <stop offset="1" stop-color="#00a884"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#111827" flood-opacity="0.16"/>
+    </filter>
+    <filter id="smallShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#111827" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f7f8fc"/>
+  <rect x="64" y="54" width="1072" height="522" rx="34" fill="url(#desk)" stroke="#e8eaf0"/>
+
+  <g opacity="0.52">
+    <path d="M106 152 C230 98 350 108 456 168 C566 231 670 240 796 178 C914 119 1010 130 1092 196" fill="none" stroke="#c7d2fe" stroke-width="3"/>
+    <path d="M94 452 C226 378 346 392 468 456 C590 520 722 514 840 444 C958 374 1048 388 1110 452" fill="none" stroke="#bfdbfe" stroke-width="3"/>
+  </g>
+
+  <g transform="translate(206 142)" filter="url(#softShadow)">
+    <rect x="0" y="0" width="642" height="376" rx="28" fill="#ffffff"/>
+    <rect x="28" y="28" width="586" height="286" rx="18" fill="url(#screen)"/>
+    <rect x="182" y="322" width="278" height="18" rx="9" fill="#d8deef"/>
+    <rect x="114" y="350" width="414" height="24" rx="12" fill="#e8eaf0"/>
+
+    <g transform="translate(62 66)">
+      <rect x="0" y="0" width="174" height="16" rx="8" fill="#818cf8"/>
+      <rect x="0" y="42" width="458" height="10" rx="5" fill="#475569"/>
+      <rect x="0" y="70" width="356" height="10" rx="5" fill="#334155"/>
+      <rect x="0" y="98" width="412" height="10" rx="5" fill="#475569"/>
+      <rect x="0" y="126" width="302" height="10" rx="5" fill="#334155"/>
+
+      <rect x="0" y="178" width="122" height="12" rx="6" fill="#00a884"/>
+      <rect x="146" y="178" width="72" height="12" rx="6" fill="#f59e0b"/>
+      <rect x="240" y="178" width="192" height="12" rx="6" fill="#818cf8"/>
+    </g>
+
+    <g transform="translate(432 84)">
+      <path d="M74 0 L142 28 L132 116 C126 166 100 196 74 212 C48 196 22 166 16 116 L6 28 Z" fill="url(#shield)" opacity="0.95"/>
+      <path d="M74 34 C50 34 34 51 34 74 V93 H114 V74 C114 51 98 34 74 34 Z" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round"/>
+      <rect x="28" y="86" width="92" height="70" rx="16" fill="#ffffff"/>
+      <circle cx="74" cy="120" r="11" fill="#4f46e5"/>
+      <rect x="69" y="129" width="10" height="18" rx="5" fill="#4f46e5"/>
+    </g>
+  </g>
+
+  <g transform="translate(110 165)" filter="url(#smallShadow)">
+    <rect x="0" y="0" width="164" height="132" rx="20" fill="#ffffff" stroke="#e8eaf0"/>
+    <circle cx="40" cy="38" r="13" fill="#00a884"/>
+    <rect x="66" y="29" width="66" height="10" rx="5" fill="#0f1117" opacity="0.72"/>
+    <rect x="28" y="72" width="108" height="9" rx="5" fill="#cbd5e1"/>
+    <rect x="28" y="96" width="78" height="9" rx="5" fill="#e2e8f0"/>
+  </g>
+
+  <g transform="translate(912 136)" filter="url(#smallShadow)">
+    <rect x="0" y="0" width="176" height="322" rx="24" fill="#ffffff" stroke="#e8eaf0"/>
+    <rect x="32" y="42" width="92" height="12" rx="6" fill="#0f1117" opacity="0.75"/>
+    <g stroke="#00a884" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M35 98 l11 11 l24 -28"/>
+      <path d="M35 160 l11 11 l24 -28"/>
+      <path d="M35 222 l11 11 l24 -28"/>
+    </g>
+    <g fill="#cbd5e1">
+      <rect x="84" y="91" width="58" height="9" rx="5"/>
+      <rect x="84" y="108" width="38" height="9" rx="5"/>
+      <rect x="84" y="153" width="62" height="9" rx="5"/>
+      <rect x="84" y="170" width="42" height="9" rx="5"/>
+      <rect x="84" y="215" width="56" height="9" rx="5"/>
+      <rect x="84" y="232" width="36" height="9" rx="5"/>
+    </g>
+    <rect x="32" y="278" width="112" height="10" rx="5" fill="#818cf8"/>
+  </g>
+
+  <g transform="translate(154 430)">
+    <circle cx="0" cy="0" r="8" fill="#4f46e5"/>
+    <path d="M12 0 C92 -34 156 -34 232 -2 C298 26 356 28 430 0" fill="none" stroke="#4f46e5" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 18"/>
+    <circle cx="450" cy="0" r="8" fill="#4f46e5"/>
+  </g>
+
+  <g transform="translate(768 486)">
+    <rect x="0" y="0" width="230" height="56" rx="18" fill="#0f1117" opacity="0.9"/>
+    <circle cx="38" cy="28" r="13" fill="#00a884"/>
+    <rect x="66" y="19" width="118" height="8" rx="4" fill="#ffffff" opacity="0.84"/>
+    <rect x="66" y="34" width="86" height="8" rx="4" fill="#ffffff" opacity="0.42"/>
+  </g>
+</svg>
