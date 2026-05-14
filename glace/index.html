@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow, noarchive">
+  <title>Glace - Le Marchand de Glaces</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #c8c8c8;
+      font-family: 'Times New Roman', Times, serif;
+      padding: 12px;
+    }
+    #wrapper { display: inline-block; }
+    #ui {
+      background: #d4d0c8;
+      border: 2px solid #808080;
+      border-bottom: 1px solid #a0a0a0;
+      padding: 6px 10px;
+      width: 1140px;
+      min-height: 90px;
+    }
+    .ui-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin: 3px 0;
+    }
+    .ui-info { font-size: 13px; color: #222; margin: 2px 0; }
+    button {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 14px;
+      padding: 3px 12px;
+      cursor: pointer;
+      background: #d4d0c8;
+      border: 2px solid;
+      border-color: #ffffff #808080 #808080 #ffffff;
+    }
+    button:active {
+      border-color: #808080 #ffffff #ffffff #808080;
+    }
+    input[type="text"] {
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 13px;
+      padding: 2px 4px;
+      width: 52px;
+      border: 2px inset #808080;
+      background: white;
+    }
+    canvas {
+      display: block;
+      border: 2px solid #808080;
+      border-top: 1px solid #606060;
+      cursor: default;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+<div id="wrapper">
+  <div id="ui">
+
+    <!-- Setup -->
+    <div id="panel-setup">
+      <div class="ui-row">
+        <button onclick="buyFlavor('Vanille')">Vanille</button>
+        <button onclick="buyFlavor('Chocolat')">Chocolat</button>
+        <button onclick="buyFlavor('Fraise')">Fraise</button>
+        <button onclick="buyFlavor('Pistache')">Pistache</button>
+        <button onclick="buyFlavor('Noix de Coco')">Noix de Coco</button>
+      </div>
+      <div class="ui-row">
+        <button onclick="commencer()">Commencer</button>
+        <button onclick="toggleOptions()">Options</button>
+      </div>
+      <div id="panel-options" style="display:none">
+        <div class="ui-row" style="margin-top:4px">
+          <span class="ui-info">Température [-20,-10] (-18°C réglementaire) :</span>
+          <input type="text" id="inputTemp" value="-18">
+          &nbsp;&nbsp;
+          <span class="ui-info">Durée de la simulation en secondes (&gt;10s) :</span>
+          <input type="text" id="inputDuree" value="30">
+        </div>
+      </div>
+      <div class="ui-info">Vous devez créer vos stocks. Cliquez sur les parfums pour en acheter puis Cliquez sur Commencer</div>
+      <div class="ui-info">Un pack de glace = 5€ = 10 portions (50 max)</div>
+    </div>
+
+    <!-- Game -->
+    <div id="panel-game" style="display:none">
+      <div class="ui-row">
+        <button onclick="togglePause()">Pause/Play</button>
+        &nbsp;
+        <button onclick="enterAchat()">Achat</button>
+      </div>
+    </div>
+
+    <!-- Achat -->
+    <div id="panel-achat" style="display:none">
+      <div class="ui-row">
+        <button onclick="buyFlavor('Vanille')">Vanille</button>
+        <button onclick="buyFlavor('Chocolat')">Chocolat</button>
+        <button onclick="buyFlavor('Fraise')">Fraise</button>
+        <button onclick="buyFlavor('Pistache')">Pistache</button>
+        <button onclick="buyFlavor('Noix de Coco')">Noix de Coco</button>
+        <button onclick="exitAchat()">Achat</button>
+      </div>
+      <div class="ui-info">Un pack de glace = 5€ = 10 portions (50 max)</div>
+    </div>
+
+    <!-- End -->
+    <div id="panel-end" style="display:none">
+      <div class="ui-row">
+        <button onclick="rejouer()">Rejouer</button>
+      </div>
+    </div>
+
+  </div>
+  <canvas id="canvas" width="1140" height="570" tabindex="0"></canvas>
+</div>
+
+<script>
+'use strict';
+
+// ── Constants ──────────────────────────────────────────────────────────────────
+const FLAVORS = ['Vanille', 'Chocolat', 'Fraise', 'Pistache', 'Noix de Coco'];
+const ARRIVE = 0, RECU = 1, PART = 2, ATTEND = 3;
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+// ── Game state ─────────────────────────────────────────────────────────────────
+let stock = {};
+let argent = 40;
+let temperature = 2;      // 0–10 internal; displayed as (temp-20)°C
+let tpsTotale = 2999;
+let nbClient = 29;
+let compteur = 0;
+let tpsCharge = 0;
+let charge = 0;
+let marche = false;
+let milieu = false;
+let fin = false;
+let achat = false;
+let pauseAvantAchat = false;
+let optionsOpen = false;
+
+let queue = [];            // FilePrio: clients sorted by tps
+let listeAttente = [];     // display names of waiting clients
+let historique = [];
+let argentCourbe = [];
+let nbClientHeureux = 0;
+let nbClientTriste = 0;
+let clientNom = '';
+let clientBoules = '';
+let clientParfums = '';
+let filevide = true;
+let tControleur = 0;
+
+const glaceImg = new Image();
+glaceImg.src = 'glace.gif';
+glaceImg.onload = () => draw();
+
+// ── Utilities ──────────────────────────────────────────────────────────────────
+function rand(min, max) {
+  return min + Math.floor(Math.random() * (max - min + 1));
+}
+
+function updateCharge() {
+  charge = Math.max(10 - Math.floor(temperature * temperature / 10), 0);
+}
+
+// ── Client ─────────────────────────────────────────────────────────────────────
+function createClient(numero, tprec) {
+  const tps = tprec + rand(0, 500);
+  const nbBoulesRaw = rand(1, 100);
+  const parfumsRaw = Array.from({ length: nbBoulesRaw }, () => rand(1, 100));
+  return { num: numero, tps, nbBoulesRaw, parfumsRaw, content: true, etat: ARRIVE };
+}
+
+function getNbBoules(c) {
+  if (c.nbBoulesRaw <= 25) return 1;
+  if (c.nbBoulesRaw <= 75) return 2;
+  return 3;
+}
+
+function getParfums(c) {
+  return c.parfumsRaw.slice(0, getNbBoules(c)).map(v => {
+    if (v <= 14) return 'Noix de Coco';
+    if (v <= 32) return 'Pistache';
+    if (v <= 50) return 'Fraise';
+    if (v <= 75) return 'Chocolat';
+    return 'Vanille';
+  });
+}
+
+// ── FilePrio ───────────────────────────────────────────────────────────────────
+function queueAdd(client) {
+  let i = 0;
+  while (i < queue.length && queue[i].tps <= client.tps) i++;
+  queue.splice(i, 0, client);
+}
+
+// ── UI panels ──────────────────────────────────────────────────────────────────
+function showPanel(name) {
+  ['setup', 'options', 'game', 'achat', 'end'].forEach(p => {
+    const el = document.getElementById('panel-' + p);
+    if (el) el.style.display = (p === name) ? '' : 'none';
+  });
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+function initGame() {
+  FLAVORS.forEach(f => stock[f] = 0);
+  argent = 40;
+  temperature = 2;
+  tpsTotale = 2999;
+  nbClient = Math.floor(tpsTotale / 100);
+  compteur = 0;
+  tpsCharge = 0;
+  marche = false;
+  milieu = false;
+  fin = false;
+  achat = false;
+  optionsOpen = false;
+  queue = [];
+  listeAttente = [];
+  historique = [];
+  argentCourbe = [];
+  nbClientHeureux = 0;
+  nbClientTriste = 0;
+  clientNom = '';
+  clientBoules = '';
+  clientParfums = '';
+  filevide = true;
+  updateCharge();
+  document.getElementById('inputTemp').value = '-18';
+  document.getElementById('inputDuree').value = '30';
+  document.getElementById('panel-options').style.display = 'none';
+  showPanel('setup');
+  draw();
+}
+
+// ── Actions ────────────────────────────────────────────────────────────────────
+function buyFlavor(flavor) {
+  if (argent >= 5 && stock[flavor] + 10 <= 50) {
+    argent -= 5;
+    stock[flavor] += 10;
+    draw();
+  }
+}
+
+function toggleOptions() {
+  optionsOpen = !optionsOpen;
+  document.getElementById('panel-options').style.display = optionsOpen ? '' : 'none';
+}
+
+function commencer() {
+  // Apply options if open
+  if (optionsOpen) {
+    const tempIn = parseInt(document.getElementById('inputTemp').value);
+    const dureeIn = parseInt(document.getElementById('inputDuree').value);
+    if (!isNaN(tempIn)) temperature = Math.min(Math.max(tempIn + 20, 0), 10);
+    if (!isNaN(dureeIn)) tpsTotale = Math.max((dureeIn - 1) * 100, 999);
+    nbClient = Math.floor(tpsTotale / 100);
+    updateCharge();
+  }
+
+  milieu = true;
+  clientNom = 'Aucun client ...';
+
+  tControleur = rand(0, tpsTotale);
+  let t = 10;
+  for (let i = 1; i <= nbClient; i++) {
+    const c = createClient(i, t);
+    if (i === 1) c.tps = t;
+    t = c.tps;
+    queueAdd(c);
+  }
+
+  showPanel('game');
+  draw();
+  canvas.focus();
+}
+
+function togglePause() {
+  marche = !marche;
+  draw();
+}
+
+function enterAchat() {
+  pauseAvantAchat = marche;
+  marche = false;
+  achat = true;
+  milieu = false;
+  showPanel('achat');
+  draw();
+}
+
+function exitAchat() {
+  achat = false;
+  milieu = true;
+  marche = pauseAvantAchat;
+  showPanel('game');
+  draw();
+}
+
+function rejouer() {
+  initGame();
+}
+
+// ── Keyboard ───────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (!milieu) return;
+  if (e.key === '+' || e.key === '=' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (temperature < 10) { temperature++; updateCharge(); draw(); }
+  }
+  if (e.key === '-' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (temperature > 0) { temperature--; updateCharge(); draw(); }
+  }
+});
+
+// ── Game loop ──────────────────────────────────────────────────────────────────
+function tick() {
+  if (fin) return;
+
+  if (compteur > tpsTotale) {
+    fin = true;
+    milieu = false;
+    showPanel('end');
+    draw();
+    return;
+  }
+
+  if (!marche) return;
+
+  // Charges every 1000 ticks
+  if (compteur % 1000 === 0 && tpsCharge !== compteur) {
+    tpsCharge = compteur;
+    if (charge > 0)
+      historique.push('== CHARGES -' + charge + '€ ==');
+    else
+      historique.push('== Aucune charges ==');
+    const loss = Math.max(Math.floor(temperature / 2) - 1, 0);
+    historique.push('  -' + loss + ' stock');
+    FLAVORS.forEach(f => { stock[f] = Math.max(stock[f] - loss, 0); });
+    argent -= charge;
+    draw();
+  }
+
+  // Bankruptcy
+  if (argent < 0) {
+    fin = true;
+    milieu = false;
+    showPanel('end');
+    draw();
+    return;
+  }
+
+  // Inspector
+  if (compteur === tControleur) {
+    historique.push('== INSPECTION CONTROLEUR ==');
+    if ((temperature - 20) > -18) {
+      historique.push('== STOCK IMPROPRE A LA CONSOMMATION ==');
+      historique.push('== SAISIE DU STOCK ainsi que -1500€ ==');
+      argent -= 1500;
+    } else {
+      historique.push('== Température réglementaire ==');
+      const next = Math.min(compteur + rand(1, 3000), tpsTotale + 1);
+      tControleur = rand(next, tpsTotale + 1);
+    }
+    draw();
+  }
+
+  // Process client queue
+  if (queue.length > 0 && queue[0].tps === compteur && argent >= 0) {
+    const C = queue.shift();
+
+    switch (C.etat) {
+
+      case ARRIVE:
+        if (filevide) {
+          clientNom = 'Client N°' + C.num;
+          clientBoules = ' ' + getNbBoules(C) + ' Boule' + (getNbBoules(C) > 1 ? 's' : '');
+          clientParfums = '  ' + getParfums(C).join('  ');
+          filevide = false;
+          C.etat = RECU;
+          C.tps += rand(100, 300);
+          queueAdd(C);
+        } else {
+          listeAttente.push('Client N°' + C.num);
+          C.etat = ATTEND;
+          queueAdd(C);
+        }
+        compteur--;
+        draw();
+        break;
+
+      case RECU: {
+        const parfums = getParfums(C);
+        const served = [];
+        for (let i = 0; i < parfums.length; i++) {
+          if (stock[parfums[i]] > 0) {
+            stock[parfums[i]]--;
+            served.push(parfums[i]);
+          } else {
+            served.forEach(f => stock[f]++);
+            historique.push('Client N°' + C.num + '  Non Servi');
+            C.content = false;
+            nbClientTriste++;
+            break;
+          }
+        }
+        if (C.content) {
+          historique.push('Client N°' + C.num + '  + ' + getNbBoules(C) + '€');
+          argent += getNbBoules(C);
+          nbClientHeureux++;
+        }
+        compteur--;
+        C.etat = PART;
+        filevide = true;
+        clientNom = 'Aucun client ...';
+        clientBoules = '';
+        clientParfums = '';
+        draw();
+        break;
+      }
+
+      case ATTEND:
+        if (filevide) {
+          clientNom = 'Client N°' + C.num;
+          clientBoules = ' ' + getNbBoules(C) + ' Boule' + (getNbBoules(C) > 1 ? 's' : '');
+          clientParfums = '  ' + getParfums(C).join('  ');
+          filevide = false;
+          C.etat = RECU;
+          C.tps += rand(100, 300);
+          listeAttente.shift();
+          draw();
+        }
+        C.tps += 1;
+        queueAdd(C);
+        compteur--;
+        break;
+    }
+  }
+
+  compteur++;
+  argentCourbe.push(Math.max(argent, -10));
+}
+
+setInterval(tick, 5);
+window.addEventListener('load', initGame);
+
+// ── Drawing ────────────────────────────────────────────────────────────────────
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = 'white';
+  ctx.fillRect(0, 0, W, H);
+
+  // Setup screen: show ice cream image
+  if (compteur === 0 && !milieu && !achat && !fin) {
+    if (glaceImg.complete && glaceImg.naturalWidth > 0)
+      ctx.drawImage(glaceImg, 370, 150);
+    else
+      drawIceCream(420, 280);
+  }
+
+  if (milieu || achat) {
+    drawGameScreen();
+    if (!marche && milieu) {
+      ctx.fillStyle = 'orange';
+      ctx.font = 'bold 24px "Times New Roman"';
+      ctx.fillText('PAUSE', 980, 50);
+    }
+  }
+
+  if (fin) {
+    drawEndScreen();
+    drawGraph(250, 460);
+  } else {
+    drawDynamic();
+  }
+}
+
+function drawDynamic() {
+  ctx.font = '14px "Times New Roman"';
+
+  // Time bar
+  if (compteur !== 0) {
+    const pct = (tpsTotale - compteur) / tpsTotale * 100; // 100→0
+    const r = Math.min(255, Math.max(0, Math.floor(255 - pct * 2)));
+    ctx.fillStyle = `rgb(${r},0,0)`;
+    ctx.fillRect(11, 51, Math.max(0, pct), 10);
+    ctx.fillStyle = 'black';
+    ctx.fillText('Tps restant', 10, 40);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(10, 50, 103, 12);
+  }
+
+  // Money
+  ctx.fillStyle = argent < 0 ? 'red' : 'black';
+  ctx.font = '14px "Times New Roman"';
+  ctx.fillText('Vous avez ' + argent + ' €', 10, 120);
+
+  // Stock bars
+  for (let i = 0; i < 5; i++) {
+    const f = FLAVORS[i];
+    const n = stock[f];
+    ctx.fillStyle = FLAVOR_COLORS[i];
+    ctx.fillRect(101, 141 + 14 * i, n, 10);
+    ctx.fillStyle = 'blue';
+    ctx.font = '12px "Times New Roman"';
+    ctx.fillText(n, 155, 151 + 14 * i);
+    ctx.fillStyle = 'black';
+    ctx.font = '13px "Times New Roman"';
+    ctx.fillText(f, 10, 151 + 14 * i);
+    ctx.strokeStyle = '#444';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(100, 140 + 14 * i, 50, 12);
+  }
+}
+
+const FLAVOR_COLORS = [
+  '#f5e642', // Vanille
+  '#6b3a1f', // Chocolat
+  '#e8405a', // Fraise
+  '#5a9e3c', // Pistache
+  '#f0f0f0', // Noix de Coco
+];
+
+function drawGameScreen() {
+  ctx.lineWidth = 1;
+
+  // Section headers
+  ctx.font = 'bold 14px "Times New Roman"';
+  ctx.fillStyle = 'black';
+  ctx.fillText('Commande en Cours', 300, 95);
+  ctx.fillText('Attente', 500, 95);
+  ctx.fillText('Historique', 720, 95);
+  ctx.fillText('Cahier des Charges', 300, 250);
+
+  // Current client
+  ctx.font = '14px "Times New Roman"';
+  ctx.fillStyle = 'black';
+  ctx.fillText(clientNom, 300, 120);
+  ctx.font = 'italic 14px "Times New Roman"';
+  ctx.fillText(clientBoules, 300, 140);
+  ctx.fillText(clientParfums, 300, 160);
+
+  // Waiting queue
+  ctx.font = 'italic 14px "Times New Roman"';
+  if (listeAttente.length === 0) {
+    ctx.fillText('File Vide', 500, 120);
+  } else {
+    for (let i = 0; i < Math.min(listeAttente.length, 8); i++)
+      ctx.fillText(listeAttente[i], 500, 120 + 20 * i);
+  }
+
+  // History
+  ctx.font = '13px "Times New Roman"';
+  while (historique.length > 10) historique.shift();
+  for (let i = 0; i < historique.length; i++) {
+    ctx.fillStyle = historique[i].startsWith('==') ? '#800000' : '#222';
+    ctx.fillText(historique[i], 720, 120 + 20 * i);
+  }
+
+  // Charges info
+  ctx.fillStyle = 'black';
+  ctx.font = '13px "Times New Roman"';
+  ctx.fillText('Les charges s\'élèvent à ' + charge + '€ toutes les 10s', 300, 275);
+  ctx.fillText('La température réglementaire est de -18°C', 300, 300);
+  const stockLoss = Math.max(Math.floor(temperature / 2) - 1, 0);
+  ctx.fillText('Actuellement : ' + stockLoss + ' stock de glaces', 300, 320);
+  ctx.fillText('impropres à la consommation (↑/↓ ou +/- pour régler)', 300, 340);
+
+  // Temperature display
+  ctx.font = 'bold 28px "Times New Roman"';
+  const t = temperature - 20;
+  const rv = Math.min(255, Math.floor(temperature * 25.5));
+  const bv = Math.min(255, Math.max(0, Math.floor(255 - temperature * 25.5)));
+  ctx.fillStyle = `rgb(${rv},100,${bv})`;
+  ctx.fillText(t + '°C', 480, 490);
+
+  // Divider line between panels
+  ctx.strokeStyle = '#aaa';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(290, 70); ctx.lineTo(290, 380); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(490, 70); ctx.lineTo(490, 210); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(710, 70); ctx.lineTo(710, 300); ctx.stroke();
+}
+
+function drawEndScreen() {
+  ctx.lineWidth = 1;
+  const score = argent * nbClientHeureux - 10 * nbClientTriste;
+
+  ctx.font = '15px "Times New Roman"';
+  ctx.fillStyle = 'black';
+  if (score >= 0)
+    ctx.fillText('Bravo ! Ton capital final était de ' + argent + ' €', 300, 95);
+  else
+    ctx.fillText('Sale perdant ! Ton capital était de ' + argent + ' €', 300, 95);
+
+  ctx.fillText('Tu as servi ' + nbClientHeureux + ' client(s) sur ' + (nbClientHeureux + nbClientTriste) + ' arrivés', 300, 125);
+
+  ctx.font = 'bold 16px "Times New Roman"';
+  ctx.fillStyle = score >= 0 ? '#006600' : '#cc0000';
+  ctx.fillText('Ton score : ' + score, 300, 158);
+
+  ctx.font = 'bold 14px "Times New Roman"';
+  ctx.fillStyle = 'black';
+  ctx.fillText('Historique', 720, 95);
+  ctx.font = '13px "Times New Roman"';
+  while (historique.length > 10) historique.shift();
+  for (let i = 0; i < historique.length; i++) {
+    ctx.fillStyle = historique[i].startsWith('==') ? '#800000' : '#222';
+    ctx.fillText(historique[i], 720, 120 + 20 * i);
+  }
+}
+
+function drawGraph(x, y) {
+  if (argentCourbe.length < 2) return;
+  ctx.lineWidth = 1;
+
+  // Axes
+  ctx.strokeStyle = 'black';
+  ctx.beginPath();
+  ctx.moveTo(x, y); ctx.lineTo(x + 400, y);
+  ctx.moveTo(x, y); ctx.lineTo(x, y - 200);
+  ctx.stroke();
+
+  // Max label
+  let max = argentCourbe[0];
+  for (const v of argentCourbe) if (v > max) max = v;
+  if (max <= 0) max = 1;
+  const scale = 150 / max;
+  ctx.font = '13px "Times New Roman"';
+  ctx.fillStyle = 'black';
+  ctx.fillText(max + ' €', x - 42, y - Math.floor(scale * max) + 4);
+  ctx.fillText('Argent en fonction du Temps', x + 60, y + 18);
+  ctx.fillText('0', x - 12, y);
+
+  // Curve
+  ctx.strokeStyle = 'red';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  const n = argentCourbe.length;
+  ctx.moveTo(x, y - Math.floor(scale * argentCourbe[0]));
+  for (let i = 1; i < n; i++) {
+    ctx.lineTo(x + Math.floor(400 * i / n), y - Math.floor(scale * argentCourbe[i]));
+  }
+  ctx.stroke();
+  ctx.lineWidth = 1;
+}
+
+function drawIceCream(cx, cy) {
+  // Simple fallback drawing if glace.gif doesn't load
+  ctx.fillStyle = '#f5e642';
+  ctx.beginPath(); ctx.ellipse(cx, cy - 30, 22, 20, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#e8405a';
+  ctx.beginPath(); ctx.ellipse(cx - 18, cy - 20, 18, 17, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#6b3a1f';
+  ctx.beginPath(); ctx.ellipse(cx + 18, cy - 20, 18, 17, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#c8862a';
+  ctx.beginPath();
+  ctx.moveTo(cx - 30, cy); ctx.lineTo(cx + 30, cy); ctx.lineTo(cx, cy + 60);
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle = '#8B5E1A';
+  ctx.font = 'bold 18px serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('🍦 Glace', cx, cy + 80);
+  ctx.textAlign = 'left';
+}
+</script>
+</body>
+</html>
